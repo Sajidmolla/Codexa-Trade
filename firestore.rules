@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /codexa_users/{email} {
+      allow read: if true;
+      allow create: if request.resource.data.realBal == 0
+                    && request.resource.data.role == 'USER';
+      allow update: if true;
+      allow delete: if false;
+    }
+    match /codexa_transactions/{txId} {
+      allow read: if true;
+      allow create: if request.resource.data.status == 'PENDING'
+                    && request.resource.data.amount >= 10;
+      allow update: if true;
+      allow delete: if false;
+    }
+    match /codexa_backups/{bkpId} {
+      allow read, create: if true;
+      allow update, delete: if false;
+    }
+  }
+}
