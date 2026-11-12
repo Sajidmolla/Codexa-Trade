@@ -15,7 +15,7 @@ input:disabled{background:#080b11;color:#64748b;border-color:#161e2c;cursor:not-
 .g{color:var(--em)}.r{color:var(--r)}.m{color:var(--m)}.y{color:var(--y)}
 
 /* Top Header */
-header{height:54px;flex:none;display:flex;align-items:center;gap:12px;padding:0 14px;background:#0b1019;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
+header{height:54px;flex:none;display:flex;align-items:center;gap:10px;padding:0 14px;background:#0b1019;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.3px}
 .brand-ic{width:30px;height:30px;border-radius:7px;background:#0a291e;border:1px solid #134e38;display:grid;place-items:center}
 .brand span{color:var(--em)}
@@ -34,9 +34,14 @@ header{height:54px;flex:none;display:flex;align-items:center;gap:12px;padding:0 
 .acc-tabs button.on{background:#0a291e;color:var(--em);border:1px solid #14533c}
 .bal-box{font-weight:700;font-size:13px;padding-left:8px;border-left:1px solid var(--bd);display:flex;align-items:center;gap:6px}
 .btn-em{background:var(--em);color:#04130d;font-weight:700;padding:7px 14px;border-radius:7px}.btn-em:hover{filter:brightness(1.08)}
-.btn-dk{background:var(--pn2);border:1px solid var(--bd);color:var(--t);font-weight:600;padding:7px 13px;border-radius:7px}.btn-dk:hover{border-color:#334155}
+.btn-dk{background:var(--pn2);border:1px solid var(--bd);color:var(--t);font-weight:600;padding:7px 12px;border-radius:7px}.btn-dk:hover{border-color:#334155}
 .btn-adm{background:#2d1f07;border:1px solid #78530c;color:var(--y);font-weight:700;padding:7px 12px;border-radius:7px;display:none}
 .btn-adm.show{display:inline-flex;align-items:center;gap:6px}
+.kyc-pill{padding:6px 10px;border-radius:7px;font-weight:700;font-size:11px;display:none;align-items:center;gap:5px;border:1px solid var(--bd);background:var(--pn2)}
+.kyc-pill.show{display:inline-flex}
+.kyc-pill.verified{background:#0a291e;border-color:#14533c;color:var(--em)}
+.kyc-pill.pending{background:#2d1f07;border-color:#78530c;color:var(--y)}
+.kyc-pill.rejected,.kyc-pill.unverified{background:#2c0f16;border-color:#7f1d1d;color:#fda4af}
 
 /* Markets Sub-Bar */
 .mk-bar{height:38px;flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;background:#080c12;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
@@ -91,8 +96,8 @@ th{color:var(--m);font-weight:600;text-align:left;padding:7px 10px;white-space:n
 td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-bottom:1px solid #141c29}
 .badge{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
 .badge.pending{background:#2d1f07;color:var(--y)}
-.badge.approved{background:#0a291e;color:var(--em)}
-.badge.rejected{background:#2c0f16;color:var(--r)}
+.badge.approved,.badge.verified{background:#0a291e;color:var(--em)}
+.badge.rejected,.badge.unverified{background:#2c0f16;color:var(--r)}
 .serial-tag{background:#152238;border:1px solid #263b5e;color:#60a5fa;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}
 
 /* Bottom Footer & Floating Telegram Support */
@@ -105,8 +110,8 @@ footer b{color:var(--t)}
 /* Modals */
 .modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:14px}
 .modal-bg.open{display:grid}
-.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:540px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
-.modal.wide{max-width:1100px}
+.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:560px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
+.modal.wide{max-width:1150px}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
 .mh h3{margin:0;font-size:16px}
 .fgrid{display:flex;flex-direction:column;gap:10px}
@@ -121,6 +126,12 @@ footer b{color:var(--t)}
 .note-tag{display:inline-block;margin-top:3px;padding:2px 7px;border-radius:4px;background:#1e293b;color:#f8fafc;font-size:11px}
 .note-tag.rej{background:#33121a;color:#fda4af;border:1px solid #7f1d1d}
 .note-tag.app{background:#0a291e;color:#6ee7b7;border:1px solid #14533c}
+.kyc-preview{width:100%;height:110px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);background:#080c12;margin-top:4px;cursor:pointer}
+.kyc-thumb{width:54px;height:36px;object-fit:cover;border-radius:4px;border:1px solid var(--bd);cursor:pointer;transition:transform .15s}
+.kyc-thumb:hover{transform:scale(1.1);border-color:var(--em)}
+.img-zoom-bg{display:none;position:fixed;inset:0;background:#000d;z-index:120;place-items:center;padding:20px}
+.img-zoom-bg.open{display:grid}
+.img-zoom-bg img{max-width:95vw;max-height:90vh;border-radius:8px;border:2px solid var(--em)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:100;box-shadow:0 8px 25px #000a}
 .toast.r{border-left-color:var(--r)}
 @media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2{grid-template-columns:1fr}footer{flex-direction:column;height:auto;padding:8px;gap:4px;text-align:center}}
@@ -151,6 +162,7 @@ footer b{color:var(--t)}
   </div>
   <button class="btn-em" onclick="openWallet('deposit')">Deposit</button>
   <button class="btn-dk" onclick="openWallet('withdraw')">Withdraw</button>
+  <button id="kycHeaderBtn" class="kyc-pill" onclick="openKyc()">🪪 KYC</button>
   <button id="adminBtn" class="btn-adm" onclick="openAdmin()">⚡ Admin Control</button>
   <button id="authBtn" class="btn-dk" onclick="openAuth()">👤 Login / Sign Up</button>
 </header>
@@ -228,7 +240,7 @@ footer b{color:var(--t)}
   <div>Risk Warning: Trading involves significant risk. | <a id="footerTgLink" href="https://t.me/codexatrade_support" target="_blank" style="color:var(--em);text-decoration:none">24/7 Official Telegram Support</a></div>
 </footer>
 
-<!-- Auth Modal (Sign Up with Name, Phone Number, Gmail & Locked Profile) -->
+<!-- Auth Modal (Sign Up with Name, Phone Number, Gmail & Locked Profile + KYC Status) -->
 <div class="modal-bg" id="authModal">
   <div class="modal">
     <div class="mh">
@@ -244,8 +256,11 @@ footer b{color:var(--t)}
         <label>Member Serial No. (Locked)
           <input id="profSerial" disabled>
         </label>
-        <label>Account Role
-          <input id="profRole" disabled>
+        <label>KYC Verification Status
+          <div style="display:flex;gap:6px">
+            <input id="profKyc" disabled>
+            <button class="btn-em" style="white-space:nowrap;padding:6px 10px" onclick="closeModals();openKyc()">Verify KYC</button>
+          </div>
         </label>
       </div>
       <label>Full Name (Editable)
@@ -288,7 +303,45 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- Wallet Modal (Separate Sender Number & TrxID fields for Deposit) -->
+<!-- KYC Verification Modal (User Document & Photo Submission) -->
+<div class="modal-bg" id="kycModal">
+  <div class="modal">
+    <div class="mh">
+      <h3>🪪 Identity Verification (KYC)</h3>
+      <button onclick="closeModals()">✕</button>
+    </div>
+    <div id="kycStatusBanner" class="rate-pill" style="margin-bottom:10px"></div>
+    <div id="kycNoteBanner" style="display:none;margin-bottom:10px"></div>
+
+    <div id="kycFormWrap" class="fgrid">
+      <div class="row2">
+        <label>Document Type *
+          <select id="kycDocType">
+            <option value="NID Card">National ID (NID Card)</option>
+            <option value="Passport">Passport</option>
+            <option value="Driving License">Driving License</option>
+          </select>
+        </label>
+        <label>Document Number *
+          <input id="kycDocNum" placeholder="Enter NID / Passport No.">
+        </label>
+      </div>
+      <div class="row2">
+        <label>Front Side Photo *
+          <input type="file" id="kycFrontFile" accept="image/*" onchange="previewKycFile(this,'kycFrontPrev')">
+          <img id="kycFrontPrev" class="kyc-preview" style="display:none" onclick="zoomImage(this.src)">
+        </label>
+        <label>Back Side / Selfie Photo *
+          <input type="file" id="kycBackFile" accept="image/*" onchange="previewKycFile(this,'kycBackPrev')">
+          <img id="kycBackPrev" class="kyc-preview" style="display:none" onclick="zoomImage(this.src)">
+        </label>
+      </div>
+      <button class="big l" id="kycSubmitBtn" onclick="submitKyc()">Submit KYC for Verification</button>
+    </div>
+  </div>
+</div>
+
+<!-- Wallet Modal (Deposit / Withdraw + KYC Lock Check) -->
 <div class="modal-bg" id="walletModal">
   <div class="modal">
     <div class="mh">
@@ -301,6 +354,10 @@ footer b{color:var(--t)}
       <button id="wTabAud" class="on" onclick="openWallet('audit')">🔍 History & Admin Note</button>
     </div>
     <div id="walletForm" class="fgrid">
+      <div id="kycWithdrawAlert" class="lock-note" style="display:none;border-color:#7f1d1d;color:#fda4af;background:#2c0f16">
+        ⚠️ <b>KYC Required for Withdraw:</b> Withdraw করার আগে আপনার KYC ভেরিফিকেশন সম্পন্ন করতে হবে। <button class="btn-em" style="padding:3px 8px;margin-left:6px;font-size:11px" onclick="closeModals();openKyc()">Verify KYC Now</button>
+      </div>
+
       <label>Payment Method
         <select id="wMethod" onchange="updateWalletCalc()">
           <option value="bKash">bKash (Personal · Send Money)</option>
@@ -359,7 +416,7 @@ footer b{color:var(--t)}
 <div class="modal-bg" id="adminModal">
   <div class="modal wide">
     <div class="mh">
-      <h3>⚡ Admin Control, Member Serial List & Gateway Settings</h3>
+      <h3>⚡ Admin Control, KYC Verification & Gateway Settings</h3>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-em" style="padding:5px 10px;font-size:11px" onclick="createCloudSnapshot()">☁️ Cloud Backup</button>
         <button class="btn-dk" style="padding:5px 10px;font-size:11px" onclick="downloadJsonBackup()">⬇ Export JSON</button>
@@ -367,13 +424,19 @@ footer b{color:var(--t)}
       </div>
     </div>
     <div class="seg">
-      <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals (With Admin Note)</button>
-      <button id="aTabUsers" class="on" onclick="renderAdmin('users')">Members Serial List & Balance Adjust</button>
-      <button id="aTabSettings" class="on" onclick="renderAdmin('settings')">⚙️ Numbers, Rate, Min/Max & Telegram</button>
-      <button id="aTabBackups" class="on" onclick="renderAdmin('backups')">Cloud Backups</button>
+      <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals</button>
+      <button id="aTabKyc" onclick="renderAdmin('kyc')">🪪 KYC Requests</button>
+      <button id="aTabUsers" onclick="renderAdmin('users')">Members Serial & Balance</button>
+      <button id="aTabSettings" onclick="renderAdmin('settings')">⚙️ Numbers, Rate & KYC Lock</button>
+      <button id="aTabBackups" onclick="renderAdmin('backups')">Cloud Backups</button>
     </div>
     <div id="adminBody" style="overflow:auto;max-height:62vh"></div>
   </div>
+</div>
+
+<!-- Fullscreen Image Zoom Modal for KYC Photos -->
+<div class="img-zoom-bg" id="imgZoomModal" onclick="this.classList.remove('open')">
+  <img id="imgZoomTarget" src="" alt="KYC Document Preview">
 </div>
 
 <script type="module">
@@ -409,7 +472,8 @@ footer b{color:var(--t)}
     maxDeposit: 5000,
     minWithdraw: 10,
     maxWithdraw: 5000,
-    telegramUrl: 'https://t.me/codexatrade_support'
+    telegramUrl: 'https://t.me/codexatrade_support',
+    requireKycForWithdraw: true
   };
 
   async function initSecureCloud() {
@@ -435,7 +499,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -461,7 +525,7 @@ footer b{color:var(--t)}
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v8') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v9') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -472,7 +536,10 @@ footer b{color:var(--t)}
 
   function assignSerialNumbers() {
     store.users.sort((a, b) => (a.createdTs || 0) - (b.createdTs || 0));
-    store.users.forEach((u, idx) => { u.serial = idx + 1; });
+    store.users.forEach((u, idx) => {
+      u.serial = idx + 1;
+      if (!u.kycStatus) u.kycStatus = 'UNVERIFIED';
+    });
   }
   assignSerialNumbers();
 
@@ -485,7 +552,7 @@ footer b{color:var(--t)}
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -509,7 +576,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -522,9 +589,12 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
       updateHeaderUI();
-      if ($('#adminModal').classList.contains('open') && $('#aTabUsers').classList.contains('on')) renderAdmin('users');
+      if ($('#adminModal').classList.contains('open')) {
+        if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
+        if ($('#aTabKyc').classList.contains('on')) renderAdmin('kyc');
+      }
     });
 
     onSnapshot(collection(db, 'codexa_transactions'), snap => {
@@ -532,7 +602,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -543,7 +613,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -563,7 +633,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -596,8 +666,114 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
+     KYC AUTO-COMPRESS IMAGE ENGINE & VERIFICATION FLOW
+     ===================================================================== */
+  let kycFrontData = '';
+  let kycBackData = '';
+
+  function compressImageFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxW = 720;
+          const scale = Math.min(1, maxW / img.width);
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const c = canvas.getContext('2d');
+          c.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', 0.68));
+        };
+        img.onerror = reject;
+        img.src = ev.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  window.previewKycFile = async function(inputEl, prevId) {
+    const file = inputEl.files && inputEl.files[0];
+    if (!file) return;
+    try {
+      const compressed = await compressImageFile(file);
+      if (prevId === 'kycFrontPrev') kycFrontData = compressed;
+      if (prevId === 'kycBackPrev') kycBackData = compressed;
+      const imgEl = document.getElementById(prevId);
+      imgEl.src = compressed;
+      imgEl.style.display = 'block';
+    } catch (_) {
+      toast('Failed to process image file', true);
+    }
+  };
+
+  window.zoomImage = function(src) {
+    if (!src) return;
+    $('#imgZoomTarget').src = src;
+    $('#imgZoomModal').classList.add('open');
+  };
+
+  window.openKyc = function() {
+    const u = getCurrentUser();
+    if (!u) { toast('Please Login or Sign Up first!', true); return openAuth(); }
+    $('#kycModal').classList.add('open');
+
+    const st = u.kycStatus || 'UNVERIFIED';
+    const badgeCls = st.toLowerCase();
+    $('#kycStatusBanner').innerHTML = `<span>Current KYC Status:</span> <span class="badge ${badgeCls}">${st}</span>`;
+
+    if (u.kycAdminNote) {
+      $('#kycNoteBanner').style.display = 'block';
+      $('#kycNoteBanner').innerHTML = `<div class="note-tag ${st==='REJECTED'?'rej':'app'}">📝 Admin Note: ${u.kycAdminNote}</div>`;
+    } else {
+      $('#kycNoteBanner').style.display = 'none';
+    }
+
+    if (st === 'VERIFIED' || st === 'PENDING') {
+      $('#kycFormWrap').style.display = 'none';
+      if (u.kycFront) {
+        $('#kycStatusBanner').innerHTML += `<div style="display:flex;gap:6px"><img src="${u.kycFront}" class="kyc-thumb" onclick="zoomImage(this.src)"><img src="${u.kycBack}" class="kyc-thumb" onclick="zoomImage(this.src)"></div>`;
+      }
+    } else {
+      $('#kycFormWrap').style.display = 'flex';
+      kycFrontData = '';
+      kycBackData = '';
+      $('#kycFrontPrev').style.display = 'none';
+      $('#kycBackPrev').style.display = 'none';
+    }
+  };
+
+  window.submitKyc = async function() {
+    const u = getCurrentUser();
+    if (!u) return;
+    const docType = $('#kycDocType').value;
+    const docNum = $('#kycDocNum').value.trim();
+    if (!docNum) return toast('আপনার Document Number লিখুন!', true);
+    if (!kycFrontData || !kycBackData) return toast('Front এবং Back/Selfie দুটি ছবিই আপলোড করুন!', true);
+
+    const btn = $('#kycSubmitBtn');
+    btn.disabled = true;
+    try {
+      u.kycStatus = 'PENDING';
+      u.kycDocType = docType;
+      u.kycDocNum = docNum;
+      u.kycFront = kycFrontData;
+      u.kycBack = kycBackData;
+      u.kycSubmittedAt = nowTime();
+      u.kycAdminNote = '';
+      await saveBackup(null, u);
+      updateHeaderUI();
+      openKyc();
+      toast('KYC Documents submitted! Waiting for Admin approval.');
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  /* =====================================================================
      DETERMINISTIC SHARED MARKET ENGINE + REAL BINANCE LIVE FEED
-     (Every user worldwide sees the EXACT SAME chart & candles on reload!)
      ===================================================================== */
   function detNoise(seed, step) {
     const x = Math.sin(seed * 12.9898 + step * 78.233) * 43758.5453;
@@ -605,7 +781,7 @@ footer b{color:var(--t)}
   }
 
   function deterministicPriceAt(m, unixSec) {
-    const bucket = Math.floor(unixSec / 5); // 5-second global synchronized ticks
+    const bucket = Math.floor(unixSec / 5);
     const slowWave = Math.sin(bucket / 180 + m.seed) * 0.012 + Math.cos(bucket / 47 + m.seed * 0.5) * 0.004;
     const micro = (detNoise(m.seed, bucket) - 0.5) * 0.0018;
     return m.base * (1 + slowWave + micro);
@@ -642,12 +818,10 @@ footer b{color:var(--t)}
     if (liveWs) { try { liveWs.close(); } catch (_) {} liveWs = null; }
     isBinanceLive = false;
 
-    // 1. Instantly render deterministic global synced chart (never random on reload!)
     C = buildDeterministicCandles(sym, tf);
     const activeM = MARKETS.find(x => x.sym === sym);
     $('#cPrice').textContent = '$' + fmt(activeM.price);
 
-    // 2. Try connecting to real Binance public market data so all users share real exchange candles
     try {
       const interval = BI_TF[tf] || '1m';
       const resp = await fetch(`https://api.binance.com/api/v3/klines?symbol=${sym}&interval=${interval}&limit=120`);
@@ -666,7 +840,6 @@ footer b{color:var(--t)}
       isBinanceLive = true;
       $('#feedBadge span').textContent = 'GLOBAL LIVE MARKET';
 
-      // Connect live WebSocket stream
       const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${sym.toLowerCase()}@kline_${interval}`);
       liveWs = ws;
       ws.onmessage = (ev) => {
@@ -692,19 +865,18 @@ footer b{color:var(--t)}
       };
       ws.onerror = () => { isBinanceLive = false; };
     } catch (_) {
-      // Fallback stays strictly on the deterministic UTC clock formula (100% identical for all users)
       $('#feedBadge span').textContent = 'LIVE SYNCED MARKET';
     }
   }
 
   /* =====================================================================
-     WORKING LEFT DRAWING TOOLBAR & INTERACTIVE CHART (PAN, ZOOM, CROSSHAIR)
+     WORKING LEFT DRAWING TOOLBAR & INTERACTIVE CHART
      ===================================================================== */
   let activeTool = 'cross';
-  let shapesByPair = {}; // { BTCUSDT: [ {type, p1, p2, pts} ] }
+  let shapesByPair = {};
   let drawingShape = null;
   let zoom = 1;
-  let panOffset = 0; // candles shifted from right
+  let panOffset = 0;
   let isPanning = false;
   let panStartX = 0;
   let panStartOffset = 0;
@@ -742,13 +914,8 @@ footer b{color:var(--t)}
     };
   }
 
-  window.zoomChart = function(f) {
-    zoom = Math.max(0.4, Math.min(3.5, zoom * f));
-  };
-  window.resetChart = function() {
-    zoom = 1;
-    panOffset = 0;
-  };
+  window.zoomChart = function(f) { zoom = Math.max(0.4, Math.min(3.5, zoom * f)); };
+  window.resetChart = function() { zoom = 1; panOffset = 0; };
 
   const cv = $('#cv'), ctx = cv.getContext('2d');
 
@@ -778,26 +945,19 @@ footer b{color:var(--t)}
       panOffset = Math.max(0, Math.min(maxPan, Math.round(panStartOffset + dx / (chartGeo.bw || 8))));
     } else if (drawingShape) {
       const pt = screenToData(mouseX, mouseY);
-      if (drawingShape.type === 'brush') {
-        drawingShape.pts.push(pt);
-      } else {
-        drawingShape.p2 = pt;
-      }
+      if (drawingShape.type === 'brush') drawingShape.pts.push(pt);
+      else drawingShape.p2 = pt;
     }
     cv.style.cursor = activeTool === 'cross' ? (isPanning ? 'grabbing' : 'crosshair') : 'cell';
   });
 
-  cv.addEventListener('mouseleave', () => {
-    mouseX = -1;
-    mouseY = -1;
-  });
+  cv.addEventListener('mouseleave', () => { mouseX = -1; mouseY = -1; });
 
   cv.addEventListener('mousedown', (e) => {
     const r = cv.getBoundingClientRect();
     mouseX = e.clientX - r.left;
     mouseY = e.clientY - r.top;
     if (mouseX > chartGeo.PW || mouseY > chartGeo.PH) return;
-
     if (!shapesByPair[sym]) shapesByPair[sym] = [];
 
     if (activeTool === 'cross') {
@@ -810,17 +970,13 @@ footer b{color:var(--t)}
     const pt = screenToData(mouseX, mouseY);
     if (activeTool === 'hline') {
       shapesByPair[sym].push({ type: 'hline', p1: pt });
-      // Auto switch back to crosshair after placing horizontal line
       activeTool = 'cross';
       document.querySelectorAll('#tb button').forEach(b => b.classList.toggle('on', b.dataset.t === 'cross'));
       return;
     }
 
-    if (activeTool === 'brush') {
-      drawingShape = { type: 'brush', pts: [pt] };
-    } else {
-      drawingShape = { type: activeTool, p1: pt, p2: pt };
-    }
+    if (activeTool === 'brush') drawingShape = { type: 'brush', pts: [pt] };
+    else drawingShape = { type: activeTool, p1: pt, p2: pt };
   });
 
   window.addEventListener('mouseup', () => {
@@ -867,7 +1023,6 @@ footer b{color:var(--t)}
     chartGeo = { PW, PH, min, max, startIdx, count: slice.length, bw };
     const yOf = v => PH * (1 - (v - min) / (max - min));
 
-    // Grid & Price Axis
     ctx.strokeStyle = '#172030';
     ctx.lineWidth = 1;
     ctx.font = '11px sans-serif';
@@ -879,15 +1034,13 @@ footer b{color:var(--t)}
       ctx.fillText(fmt(pr), PW + 6, y + 3);
     }
 
-    // Time Axis Labels
     const step = Math.max(1, Math.floor(slice.length / 6));
     for (let i = 0; i < slice.length; i += step) {
       const x = i * bw + bw / 2;
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, PH); ctx.stroke();
       const d = new Date((slice[i].t || 0) * 1000);
-      const lbl = d.toTimeString().slice(0, 5);
       ctx.fillStyle = '#64748b';
-      ctx.fillText(lbl, Math.max(2, x - 14), PH + 14);
+      ctx.fillText(d.toTimeString().slice(0, 5), Math.max(2, x - 14), PH + 14);
     }
 
     ctx.save();
@@ -895,7 +1048,6 @@ footer b{color:var(--t)}
     ctx.rect(0, 0, PW, PH);
     ctx.clip();
 
-    // Candles or Area
     if (chartType === 'area') {
       ctx.beginPath();
       slice.forEach((c, i) => {
@@ -920,7 +1072,6 @@ footer b{color:var(--t)}
       });
     }
 
-    // EMA Indicator
     if (showEma) {
       ctx.beginPath();
       ctx.strokeStyle = '#38bdf8';
@@ -934,7 +1085,6 @@ footer b{color:var(--t)}
       ctx.stroke();
     }
 
-    // Render User Drawings (Trendline, Horizontal Line, Fib Retracement, Brush)
     const allShapes = [...(shapesByPair[sym] || []), ...(drawingShape ? [drawingShape] : [])];
     const fibLevels = [0, 0.236, 0.382, 0.5, 0.618, 0.786, 1];
     const fibColors = ['#94a3b8', '#f6465d', '#f0b90b', '#00c076', '#38bdf8', '#a855f7', '#94a3b8'];
@@ -942,8 +1092,7 @@ footer b{color:var(--t)}
     allShapes.forEach(s => {
       ctx.lineWidth = 1.6;
       if (s.type === 'trend' && s.p1 && s.p2) {
-        const a = dataToScreen(s.p1.idx, s.p1.price);
-        const b = dataToScreen(s.p2.idx, s.p2.price);
+        const a = dataToScreen(s.p1.idx, s.p1.price), b = dataToScreen(s.p2.idx, s.p2.price);
         ctx.strokeStyle = '#f0b90b';
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         ctx.fillStyle = '#f0b90b';
@@ -958,12 +1107,10 @@ footer b{color:var(--t)}
         ctx.fillStyle = '#00c076';
         ctx.fillText(fmt(s.p1.price), 8, a.y - 5);
       } else if (s.type === 'fib' && s.p1 && s.p2) {
-        const a = dataToScreen(s.p1.idx, s.p1.price);
-        const b = dataToScreen(s.p2.idx, s.p2.price);
+        const a = dataToScreen(s.p1.idx, s.p1.price), b = dataToScreen(s.p2.idx, s.p2.price);
         const x1 = Math.min(a.x, b.x), x2 = Math.max(a.x, b.x, a.x + 120);
         fibLevels.forEach((lvl, idx) => {
-          const pLvl = s.p2.price + (s.p1.price - s.p2.price) * lvl;
-          const yLvl = yOf(pLvl);
+          const pLvl = s.p2.price + (s.p1.price - s.p2.price) * lvl, yLvl = yOf(pLvl);
           ctx.strokeStyle = fibColors[idx];
           ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(x1, yLvl); ctx.lineTo(x2, yLvl); ctx.stroke();
@@ -984,7 +1131,6 @@ footer b{color:var(--t)}
 
     ctx.restore();
 
-    // Axis Borders & Current Price Tag
     ctx.strokeStyle = '#1f2a3c';
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(PW + 0.5, 0); ctx.lineTo(PW + 0.5, H); ctx.stroke();
@@ -1003,7 +1149,6 @@ footer b{color:var(--t)}
     ctx.font = 'bold 11px sans-serif';
     ctx.fillText(fmt(lastC.c), PW + 5, yCur + 4);
 
-    // Interactive Crosshair on Mouse Hover
     if (mouseX >= 0 && mouseX <= PW && mouseY >= 0 && mouseY <= PH) {
       ctx.strokeStyle = '#64748b';
       ctx.setLineDash([4, 4]);
@@ -1028,6 +1173,16 @@ footer b{color:var(--t)}
     const isAdmin = (u && u.email.toLowerCase() === ADMIN_EMAIL) || (store.currentUserEmail === ADMIN_EMAIL);
     $('#adminBtn').classList.toggle('show', !!isAdmin);
     $('#authBtn').textContent = u ? `👤 #${u.serial || 1} ${u.name}` : (store.currentUserEmail ? `👤 ${store.currentUserEmail}` : '👤 Login / Sign Up');
+
+    const kycBtn = $('#kycHeaderBtn');
+    if (u && !isAdmin) {
+      const ks = u.kycStatus || 'UNVERIFIED';
+      kycBtn.className = `kyc-pill show ${ks.toLowerCase()}`;
+      kycBtn.textContent = ks === 'VERIFIED' ? '✅ KYC Verified' : ks === 'PENDING' ? '⏳ KYC Pending' : '🪪 Verify KYC';
+    } else {
+      kycBtn.className = 'kyc-pill';
+    }
+
     const bal = accMode === 'demo' ? demoBal : (u ? u.realBal : 0);
     $('#topBal').textContent = '$' + fmt(bal);
     $('#av2').textContent = '$' + fmt(bal);
@@ -1041,11 +1196,11 @@ footer b{color:var(--t)}
       $('#guestView').style.display = 'none';
       $('#authTitle').textContent = 'Account Profile (Locked Security)';
       $('#profSerial').value = `Member #${u.serial || 1}`;
+      $('#profKyc').value = u.kycStatus || 'UNVERIFIED';
       $('#editUserName').value = u.name;
       $('#profEmail').value = u.email;
       $('#profPhone').value = u.phone || 'Not Set';
       $('#profCreated').value = u.createdAt;
-      $('#profRole').value = u.email.toLowerCase() === ADMIN_EMAIL ? 'SUPER ADMIN' : 'Verified Member';
     } else {
       $('#loggedView').style.display = 'none';
       $('#guestView').style.display = 'flex';
@@ -1094,6 +1249,7 @@ footer b{color:var(--t)}
           phone,
           email,
           realBal: 0,
+          kycStatus: email === ADMIN_EMAIL ? 'VERIFIED' : 'UNVERIFIED',
           createdAt: nowTime(),
           role: email === ADMIN_EMAIL ? 'ADMIN' : 'USER'
         };
@@ -1124,6 +1280,7 @@ footer b{color:var(--t)}
                 phone: 'N/A',
                 email: store.currentUserEmail,
                 realBal: 0,
+                kycStatus: store.currentUserEmail === ADMIN_EMAIL ? 'VERIFIED' : 'UNVERIFIED',
                 createdAt: nowTime(),
                 role: store.currentUserEmail === ADMIN_EMAIL ? 'ADMIN' : 'USER'
               };
@@ -1169,14 +1326,14 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v8', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
   };
 
   /* =====================================================================
-     DEPOSIT & WITHDRAW (SEPARATE SENDER NUMBER & TRXID INPUTS)
+     DEPOSIT & WITHDRAW (WITH OPTIONAL ADMIN KYC LOCK ON WITHDRAW)
      ===================================================================== */
   window.openWallet = function(tab) {
     const u = getCurrentUser();
@@ -1190,6 +1347,10 @@ footer b{color:var(--t)}
     $('#payNumberBox').style.display = tab==='deposit' ? 'flex' : 'none';
     $('#depFieldsWrap').style.display = tab==='deposit' ? 'grid' : 'none';
     $('#witFieldWrap').style.display = tab==='withdraw' ? 'block' : 'none';
+
+    const kycBlocked = tab === 'withdraw' && store.settings.requireKycForWithdraw && (u.kycStatus !== 'VERIFIED') && u.email !== ADMIN_EMAIL;
+    $('#kycWithdrawAlert').style.display = kycBlocked ? 'block' : 'none';
+
     $('#walletTitle').textContent = tab==='deposit' ? 'Deposit Funds (bKash / Nagad / Rocket)' : tab==='withdraw' ? 'Withdraw Funds' : 'Transaction History & Admin Notes';
     $('#wSubmitBtn').textContent = tab==='deposit' ? 'Submit Deposit Request' : 'Submit Withdraw Request';
     $('#wSubmitBtn').className = 'big ' + (tab==='deposit' ? 'l' : 's');
@@ -1227,6 +1388,12 @@ footer b{color:var(--t)}
     const st = store.settings;
     const amt = parseFloat($('#wAmount').value);
     const method = $('#wMethod').value;
+
+    if (walletTab === 'withdraw' && st.requireKycForWithdraw && u.kycStatus !== 'VERIFIED' && u.email !== ADMIN_EMAIL) {
+      toast('Withdraw করতে আগে KYC Verify করুন!', true);
+      closeModals();
+      return openKyc();
+    }
 
     const min = walletTab === 'deposit' ? st.minDeposit : st.minWithdraw;
     const max = walletTab === 'deposit' ? st.maxDeposit : st.maxWithdraw;
@@ -1307,7 +1474,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL
+     ADMIN CONTROL PANEL (Transactions, KYC Verification, Members, Settings)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -1318,6 +1485,7 @@ footer b{color:var(--t)}
 
   window.renderAdmin = function(tab) {
     $('#aTabTx').classList.toggle('on', tab==='tx');
+    $('#aTabKyc').classList.toggle('on', tab==='kyc');
     $('#aTabUsers').classList.toggle('on', tab==='users');
     $('#aTabSettings').classList.toggle('on', tab==='settings');
     $('#aTabBackups').classList.toggle('on', tab==='backups');
@@ -1346,15 +1514,43 @@ footer b{color:var(--t)}
           ` : '<span class="m">Completed</span>'}</td>
         </tr>`).join('') || '<tr><td colspan="7" class="m" style="text-align:center;padding:20px">No transactions yet</td></tr>'}
       </table>`;
+    } else if (tab === 'kyc') {
+      const kycList = store.users.filter(u => u.kycDocNum || u.kycStatus === 'PENDING' || u.kycStatus === 'VERIFIED' || u.kycStatus === 'REJECTED');
+      $('#adminBody').innerHTML = `<table>
+        <tr><th>Member</th><th>Document Info</th><th>Photos (Click to Zoom)</th><th>Status & Note</th><th>KYC Action</th></tr>
+        ${kycList.map(u => `<tr>
+          <td><span class="serial-tag">#${u.serial}</span> <b>${u.name}</b><br><span class="m">${u.email} · ${u.phone||''}</span></td>
+          <td><b>${u.kycDocType || 'NID'}</b><br><span class="y">${u.kycDocNum || 'N/A'}</span><br><small class="m">${u.kycSubmittedAt || ''}</small></td>
+          <td>
+            <div style="display:flex;gap:6px">
+              ${u.kycFront ? `<img src="${u.kycFront}" class="kyc-thumb" onclick="zoomImage(this.src)" title="Front Photo">` : ''}
+              ${u.kycBack ? `<img src="${u.kycBack}" class="kyc-thumb" onclick="zoomImage(this.src)" title="Back/Selfie Photo">` : ''}
+            </div>
+          </td>
+          <td>
+            <span class="badge ${(u.kycStatus||'unverified').toLowerCase()}">${u.kycStatus || 'UNVERIFIED'}</span>
+            ${u.kycAdminNote ? `<br><span class="note-tag ${u.kycStatus==='REJECTED'?'rej':'app'}">${u.kycAdminNote}</span>` : ''}
+          </td>
+          <td>
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:190px">
+              <input id="kycnote_${u.email}" placeholder="KYC note / reject reason..." style="padding:4px 7px;font-size:11px">
+              <div style="display:flex;gap:5px">
+                <button class="btn-em" style="flex:1;padding:4px 8px" onclick="adminKycAct('${u.email}','VERIFIED')">Approve</button>
+                <button class="btn-dk" style="flex:1;padding:4px 8px;color:var(--r)" onclick="adminKycAct('${u.email}','REJECTED')">Reject</button>
+              </div>
+            </div>
+          </td>
+        </tr>`).join('') || '<tr><td colspan="5" class="m" style="text-align:center;padding:24px">No KYC submissions yet</td></tr>'}
+      </table>`;
     } else if (tab === 'users') {
       assignSerialNumbers();
       const rate = store.settings.dollarRate || 125;
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Serial No.</th><th>Joined Time</th><th>Member Info</th><th>Current Balance</th><th>Adjust Balance (USD / BDT)</th></tr>
+        <tr><th>Serial</th><th>Joined Time</th><th>Member Info & KYC</th><th>Current Balance</th><th>Adjust Balance (USD / BDT)</th></tr>
         ${store.users.map(u => `<tr>
           <td><span class="serial-tag">#${u.serial}</span></td>
           <td>${u.createdAt}</td>
-          <td><b>${u.name}</b> <span class="badge ${u.email===ADMIN_EMAIL?'approved':'pending'}">${u.role}</span><br><span class="m">${u.email} · ${u.phone||'N/A'}</span></td>
+          <td><b>${u.name}</b> <span class="badge ${(u.kycStatus||'unverified').toLowerCase()}">KYC: ${u.kycStatus||'UNVERIFIED'}</span><br><span class="m">${u.email} · ${u.phone||'N/A'}</span></td>
           <td><b class="g" style="font-size:13px">$${fmt(u.realBal)}</b><br><span class="y">≈ ${fmt(u.realBal * rate, 0)} BDT</span></td>
           <td>
             <div style="display:flex;gap:5px;align-items:center">
@@ -1404,9 +1600,17 @@ footer b{color:var(--t)}
             <input id="setMaxWit" type="number" value="${st.maxWithdraw}">
           </label>
         </div>
-        <label>Official Telegram Support Link
-          <input id="setTgUrl" value="${st.telegramUrl || 'https://t.me/codexatrade_support'}" placeholder="https://t.me/your_username">
-        </label>
+        <div class="row2">
+          <label>Official Telegram Support Link
+            <input id="setTgUrl" value="${st.telegramUrl || 'https://t.me/codexatrade_support'}">
+          </label>
+          <label>Require KYC Before Withdraw?
+            <select id="setKycLock">
+              <option value="true" ${st.requireKycForWithdraw ? 'selected' : ''}>Yes (KYC Verified Required)</option>
+              <option value="false" ${!st.requireKycForWithdraw ? 'selected' : ''}>No (Allow Without KYC)</option>
+            </select>
+          </label>
+        </div>
         <button class="big l" onclick="saveAdminSettings()">💾 Save All Settings</button>
       </div>`;
     } else {
@@ -1423,6 +1627,26 @@ footer b{color:var(--t)}
     }
   };
 
+  window.adminKycAct = async function(targetEmail, decision) {
+    const admin = getCurrentUser();
+    if (!admin || admin.email !== ADMIN_EMAIL) return;
+    const targetUser = store.users.find(u => u.email === targetEmail);
+    if (!targetUser) return;
+
+    const noteEl = document.getElementById('kycnote_' + targetEmail);
+    const noteVal = noteEl ? noteEl.value.trim() : '';
+    if (decision === 'REJECTED' && !noteVal) {
+      return toast('KYC Reject করার কারণ লিখুন!', true);
+    }
+
+    targetUser.kycStatus = decision;
+    targetUser.kycAdminNote = noteVal || (decision === 'VERIFIED' ? 'Identity Verified' : 'Rejected by Admin');
+    await saveBackup(null, targetUser);
+    updateHeaderUI();
+    renderAdmin('kyc');
+    toast(`Member #${targetUser.serial} KYC marked as ${decision}!`);
+  };
+
   window.saveAdminSettings = async function() {
     const admin = getCurrentUser();
     if (!admin || admin.email !== ADMIN_EMAIL) return;
@@ -1435,11 +1659,12 @@ footer b{color:var(--t)}
       maxDeposit: parseFloat($('#setMaxDep').value) || 5000,
       minWithdraw: parseFloat($('#setMinWit').value) || 10,
       maxWithdraw: parseFloat($('#setMaxWit').value) || 5000,
-      telegramUrl: $('#setTgUrl').value.trim() || 'https://t.me/codexatrade_support'
+      telegramUrl: $('#setTgUrl').value.trim() || 'https://t.me/codexatrade_support',
+      requireKycForWithdraw: $('#setKycLock').value === 'true'
     };
     applyTelegramLink();
     await saveBackup(null, null, true);
-    toast('All Payment Numbers, Rate, Min/Max & Telegram Link saved!');
+    toast('All Payment Numbers, Rate, KYC Lock & Telegram Link saved!');
   };
 
   window.adjustMemberBal = async function(targetEmail, mode) {
@@ -1640,7 +1865,6 @@ footer b{color:var(--t)}
     $('#ll').textContent = '$' + fmt(m.price * (1 - 1 / lev));
   }
 
-  // Synchronized 1-second tick loop (identical across all users)
   setInterval(() => {
     const nowSec = Math.floor(Date.now() / 1000);
     MARKETS.forEach(m => {
@@ -1668,7 +1892,6 @@ footer b{color:var(--t)}
       }
     }
 
-    // Deterministic Order Book & Recent Trades
     let aHtml = '', bHtml = '';
     for (let i = 5; i >= 1; i--) {
       const q = (0.15 + detNoise(active.seed + i, nowSec) * 1.8).toFixed(3);
