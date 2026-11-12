@@ -307,7 +307,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- KYC Verification Modal (Full Bangla Requirements: NID Front/Back, Live Selfie, DOB, Present & Permanent Address, Active Email) -->
+<!-- KYC Verification Modal (Full Bangla Requirements: NID Front/Back, Live Selfie, DOB, Present & Permanent Address, Active Number & Active Email) -->
 <div class="modal-bg" id="kycModal">
   <div class="modal">
     <div class="mh">
@@ -322,7 +322,7 @@ footer b{color:var(--t)}
     <div class="kyc-req-box" style="margin-bottom:12px">
       <div><b>১. জাতীয় পরিচয়পত্র (NID):</b> NID কার্ডের সামনের ও পেছনের পরিষ্কার ছবি এবং NID নম্বর।</div>
       <div><b>২. Selfie Verification:</b> ক্যামেরা দিয়ে তোলা নিজের সাম্প্রতিক পরিষ্কার ছবি।</div>
-      <div><b>৩. জন্মতারিখ ও ঠিকানা:</b> জাতীয় পরিচয়পত্র অনুযায়ী সঠিক জন্মতারিখ, বর্তমান ও স্থায়ী ঠিকানা এবং একটি সচল ইমেইল অ্যাড্রেস।</div>
+      <div><b>৩. জন্মতারিখ, সচল নম্বর ও ঠিকানা:</b> জাতীয় পরিচয়পত্র অনুযায়ী সঠিক জন্মতারিখ, একটি সচল মোবাইল নম্বর, সচল ইমেইল অ্যাড্রেস এবং বর্তমান ও স্থায়ী ঠিকানা।</div>
       <div class="kyc-req-warn">⚠️ <b>গুরুত্বপূর্ণ:</b> KYC সম্পন্ন করার সময় সব তথ্য ও ডকুমেন্ট অবশ্যই সঠিক, পরিষ্কার এবং আসল হতে হবে।</div>
     </div>
 
@@ -336,9 +336,14 @@ footer b{color:var(--t)}
         </label>
       </div>
 
-      <label>সচল ইমেইল অ্যাড্রেস (Active Email) *
-        <input id="kycEmail" type="email" placeholder="example@gmail.com">
-      </label>
+      <div class="row2">
+        <label>সচল মোবাইল নম্বর (Active Number) *
+          <input id="kycActivePhone" type="tel" placeholder="017XXXXXXXX">
+        </label>
+        <label>সচল ইমেইল অ্যাড্রেস (Active Email) *
+          <input id="kycEmail" type="email" placeholder="example@gmail.com">
+        </label>
+      </div>
 
       <div class="row2">
         <label>বর্তমান ঠিকানা (Present Address) *
@@ -527,7 +532,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -553,7 +558,7 @@ footer b{color:var(--t)}
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v10') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v11') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -580,7 +585,7 @@ footer b{color:var(--t)}
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -604,7 +609,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -617,7 +622,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open')) {
         if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
@@ -630,7 +635,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -641,7 +646,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -661,7 +666,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -772,6 +777,7 @@ footer b{color:var(--t)}
       }
     } else {
       $('#kycFormWrap').style.display = 'flex';
+      $('#kycActivePhone').value = u.phone || '';
       $('#kycEmail').value = u.email || '';
       kycFrontData = '';
       kycBackData = '';
@@ -787,12 +793,14 @@ footer b{color:var(--t)}
     if (!u) return;
     const nidNum = $('#kycNidNum').value.trim();
     const dob = $('#kycDob').value;
+    const activePhone = $('#kycActivePhone').value.trim();
     const activeEmail = $('#kycEmail').value.trim();
     const presentAddr = $('#kycPresentAddr').value.trim();
     const permAddr = $('#kycPermAddr').value.trim();
 
     if (!nidNum) return toast('জাতীয় পরিচয়পত্র (NID) নম্বর দিন!', true);
     if (!dob) return toast('NID অনুযায়ী সঠিক জন্মতারিখ দিন!', true);
+    if (!activePhone || activePhone.length < 11) return toast('একটি সচল মোবাইল নম্বর দিন!', true);
     if (!activeEmail || !activeEmail.includes('@')) return toast('একটি সচল ইমেইল অ্যাড্রেস দিন!', true);
     if (!presentAddr || !permAddr) return toast('বর্তমান ও স্থায়ী ঠিকানা সঠিকভাবে লিখুন!', true);
     if (!kycFrontData || !kycBackData) return toast('NID কার্ডের সামনের ও পেছনের পরিষ্কার ছবি দিন!', true);
@@ -805,6 +813,7 @@ footer b{color:var(--t)}
       u.kycDocType = 'NID Card';
       u.kycDocNum = nidNum;
       u.kycDob = dob;
+      u.kycActivePhone = activePhone;
       u.kycActiveEmail = activeEmail;
       u.kycPresentAddr = presentAddr;
       u.kycPermAddr = permAddr;
@@ -1376,7 +1385,7 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
@@ -1524,7 +1533,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (Full KYC Details: NID, DOB, Present/Perm Address, Selfie)
+     ADMIN CONTROL PANEL (Full KYC Details: NID, DOB, Active Phone/Email, Address, Selfie)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -1567,12 +1576,13 @@ footer b{color:var(--t)}
     } else if (tab === 'kyc') {
       const kycList = store.users.filter(u => u.kycDocNum || u.kycStatus === 'PENDING' || u.kycStatus === 'VERIFIED' || u.kycStatus === 'REJECTED');
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Member</th><th>NID, DOB & Active Email</th><th>Present & Permanent Address</th><th>NID Front · Back · Selfie</th><th>Status & Note</th><th>KYC Action</th></tr>
+        <tr><th>Member</th><th>NID, DOB, Phone & Email</th><th>Present & Permanent Address</th><th>NID Front · Back · Selfie</th><th>Status & Note</th><th>KYC Action</th></tr>
         ${kycList.map(u => `<tr>
-          <td><span class="serial-tag">#${u.serial}</span> <b>${u.name}</b><br><span class="m">${u.phone||''}</span><br><small class="m">${u.kycSubmittedAt || ''}</small></td>
+          <td><span class="serial-tag">#${u.serial}</span> <b>${u.name}</b><br><small class="m">${u.kycSubmittedAt || ''}</small></td>
           <td>
             <b>NID:</b> <span class="y">${u.kycDocNum || 'N/A'}</span><br>
             <b>DOB:</b> <span>${u.kycDob || 'N/A'}</span><br>
+            <b>Phone:</b> <span class="g">${u.kycActivePhone || u.phone || 'N/A'}</span><br>
             <b>Email:</b> <span class="m">${u.kycActiveEmail || u.email}</span>
           </td>
           <td style="white-space:normal;min-width:180px">
