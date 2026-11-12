@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Codexa Trade · Secured Cloud Backup</title>
+<title>Codexa Trade · Firebase Auth & Cloud Backup</title>
 <style>
 :root{--bg:#090d14;--pn:#0f1520;--pn2:#151d2b;--bd:#1f2a3c;--em:#00c076;--em2:#00a364;--r:#f6465d;--y:#f0b90b;--t:#eaecef;--m:#848e9c;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
@@ -118,7 +118,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     <div class="brand-ic"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#00c076" d="M12 4L3 20h18z"/></svg></div>
     Codexa <span>Trade</span>
   </div>
-  <div class="cloud-badge" id="cloudStatus"><i></i><span>CONNECTING VAULT...</span></div>
+  <div class="cloud-badge" id="cloudStatus"><i></i><span>CONNECTING AUTH & VAULT...</span></div>
   <div class="pairw">
     <button id="pb" class="pair-btn">BTC/USDT <span class="g">+88%</span> ▾</button>
     <div id="pl" class="pl"></div>
@@ -250,7 +250,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       <label>Gmail Address *
         <input id="authEmail" type="email" placeholder="yourname@gmail.com">
       </label>
-      <label>Password *
+      <label>Password (min 6 chars) *
         <input id="authPass" type="password" placeholder="••••••••">
       </label>
       <button class="big l" id="authSubmitBtn" onclick="submitAuth()">Login Now</button>
@@ -309,19 +309,30 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   </div>
 </div>
 
-<!-- Zero-Leak Architecture: Keys load securely from Vercel Env (/api/config) -->
+<!-- Zero-Leak Architecture + Firebase Authentication & Firestore -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-analytics.js";
-  import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    updateProfile,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+  import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    getDoc,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
   const ADMIN_EMAIL = "roxi@gmail.com";
   let db = null;
-
-  async function hashPassword(raw) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw + '_codexa_salt_2026'));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
+  let auth = null;
 
   async function initSecureCloud() {
     try {
@@ -332,8 +343,27 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 
       const app = initializeApp(cfg);
       if (cfg.measurementId) { try { getAnalytics(app); } catch (_) {} }
+      auth = getAuth(app);
       db = getFirestore(app);
-      document.querySelector('#cloudStatus span').textContent = 'VAULT + FIREBASE SYNC';
+      document.querySelector('#cloudStatus span').textContent = 'FIREBASE AUTH + CLOUD SYNC';
+
+      onAuthStateChanged(auth, async (fbUser) => {
+        if (fbUser && fbUser.email) {
+          store.currentUserEmail = fbUser.email.toLowerCase();
+          // Ensure user record exists in Firestore
+          const uRef = doc(db, 'codexa_users', store.currentUserEmail);
+          const snap = await getDoc(uRef);
+          if (snap.exists()) {
+            const uData = snap.data();
+            const idx = store.users.findIndex(x => x.email === uData.email);
+            if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
+          }
+          localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+          updateHeaderUI();
+          renderBottomTable();
+        }
+      });
+
       attachFirestoreListeners();
     } catch (e) {
       console.warn("Running in local vault mode until Vercel Env Vars are active:", e.message);
@@ -352,31 +382,15 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     {sym:'BNBUSDT',label:'BNB/USDT',name:'BNB',price:645.2,chg:'-0.21%',pay:'90%'}
   ];
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v3') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v4') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
     currentUserEmail: null
   };
 
-  (async () => {
-    if (!store.users.some(u => u.email === ADMIN_EMAIL)) {
-      const adminHash = await hashPassword('123456');
-      store.users.push({
-        name: 'Admin Roxi',
-        phone: '01700000000',
-        email: ADMIN_EMAIL,
-        passHash: adminHash,
-        realBal: 5000,
-        createdAt: '10 Nov 2026, 10:00:00 AM',
-        role: 'ADMIN'
-      });
-      localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
-    }
-  })();
-
   async function saveBackup(syncTx=null, syncUser=null) {
-    localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -390,13 +404,6 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 
   function attachFirestoreListeners() {
     if (!db) return;
-    const adminRef = doc(db, 'codexa_users', ADMIN_EMAIL);
-    getDoc(adminRef).then(snap => {
-      if (!snap.exists()) {
-        const defAdmin = store.users.find(u => u.email === ADMIN_EMAIL);
-        if (defAdmin) setDoc(adminRef, defAdmin);
-      }
-    }).catch(() => {});
 
     onSnapshot(collection(db, 'codexa_users'), snap => {
       snap.forEach(d => {
@@ -404,7 +411,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
         const idx = store.users.findIndex(x => x.email === u.email);
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
-      localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open') && $('#aTabUsers').classList.contains('on')) renderAdmin('users');
     }, () => {
@@ -416,7 +423,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -427,7 +434,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -447,7 +454,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -461,7 +468,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     a.href = URL.createObjectURL(blob);
     a.download = `codexa-backup-${Date.now()}.json`;
     a.click();
-    toast('Encrypted JSON Backup downloaded!');
+    toast('JSON Backup downloaded!');
   };
 
   let sym='BTCUSDT', tf='1m', chartType='candle', showEma=true, accMode='demo', demoBal=10000;
@@ -476,14 +483,17 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     d.className = 'toast' + (isErr ? ' r' : '');
     d.textContent = msg;
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), 2800);
+    setTimeout(() => d.remove(), 3200);
   }
 
+  /* =====================================================================
+     AUTHENTICATION (FIREBASE AUTHENTICATOR + FIRESTORE PROFILE LOCK)
+     ===================================================================== */
   function updateHeaderUI() {
     const u = getCurrentUser();
-    const isAdmin = u && u.email.toLowerCase() === ADMIN_EMAIL;
+    const isAdmin = (u && u.email.toLowerCase() === ADMIN_EMAIL) || (store.currentUserEmail === ADMIN_EMAIL);
     $('#adminBtn').classList.toggle('show', !!isAdmin);
-    $('#authBtn').textContent = u ? `👤 ${u.name} (${isAdmin?'ADMIN':'USER'})` : '👤 Login / Sign Up';
+    $('#authBtn').textContent = u ? `👤 ${u.name} (${isAdmin?'ADMIN':'USER'})` : (store.currentUserEmail ? `👤 ${store.currentUserEmail}` : '👤 Login / Sign Up');
     const bal = accMode === 'demo' ? demoBal : (u ? u.realBal : 0);
     $('#topBal').textContent = '$' + fmt(bal);
     $('#av2').textContent = '$' + fmt(bal);
@@ -500,7 +510,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       $('#profEmail').value = u.email;
       $('#profPhone').value = u.phone || 'Not Set';
       $('#profCreated').value = u.createdAt;
-      $('#profRole').value = u.email.toLowerCase() === ADMIN_EMAIL ? 'SUPER ADMIN (Full Control)' : 'Standard Trader (Verified)';
+      $('#profRole').value = u.email.toLowerCase() === ADMIN_EMAIL ? 'SUPER ADMIN (Full Control)' : 'Standard Trader (Firebase Verified)';
     } else {
       $('#loggedView').style.display = 'none';
       $('#guestView').style.display = 'flex';
@@ -521,42 +531,90 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   window.submitAuth = async function() {
     const email = $('#authEmail').value.trim().toLowerCase();
     const pass = $('#authPass').value.trim();
+    const btn = $('#authSubmitBtn');
+    btn.disabled = true;
 
-    if (authMode === 'signup') {
-      const name = $('#authName').value.trim();
-      const phone = $('#authPhone').value.trim();
-      if (!name || !phone || !email || !pass) return toast('Name, Phone Number, Gmail এবং Password সবগুলো পূরণ করুন!', true);
-      if (!email.includes('@')) return toast('সঠিক Gmail / Email দিন!', true);
-      if (pass.length < 6) return toast('Password কমপক্ষে ৬ অক্ষরের দিন!', true);
-      if (store.users.some(u => u.email === email)) return toast('এই Gmail দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!', true);
-      if (store.users.some(u => u.phone === phone)) return toast('এই Phone Number দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!', true);
+    try {
+      if (authMode === 'signup') {
+        const name = $('#authName').value.trim();
+        const phone = $('#authPhone').value.trim();
+        if (!name || !phone || !email || !pass) {
+          throw new Error('Name, Phone Number, Gmail এবং Password সবগুলো পূরণ করুন!');
+        }
+        if (!email.includes('@')) throw new Error('সঠিক Gmail / Email দিন!');
+        if (pass.length < 6) throw new Error('Password কমপক্ষে ৬ অক্ষরের দিন!');
+        if (store.users.some(u => u.phone === phone)) throw new Error('এই Phone Number দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!');
 
-      const passHash = await hashPassword(pass);
-      const newUser = {
-        name,
-        phone,
-        email,
-        passHash,
-        realBal: 0,
-        createdAt: nowTime(),
-        role: email === ADMIN_EMAIL ? 'ADMIN' : 'USER'
-      };
-      store.users.push(newUser);
-      store.currentUserEmail = email;
-      await saveBackup(null, newUser);
-      toast(`Account created at ${newUser.createdAt}`);
-    } else {
-      if (!email || !pass) return toast('Please enter Gmail and password', true);
-      const passHash = await hashPassword(pass);
-      const found = store.users.find(u => u.email === email && (u.passHash === passHash || u.pass === pass));
-      if (!found) return toast('Invalid Gmail or password', true);
-      store.currentUserEmail = found.email;
-      await saveBackup();
-      toast(`Welcome back, ${found.name}!`);
+        let uid = 'local-' + Date.now();
+        if (auth) {
+          // 1. Register user directly inside Firebase Authentication
+          const cred = await createUserWithEmailAndPassword(auth, email, pass);
+          uid = cred.user.uid;
+          await updateProfile(cred.user, { displayName: name });
+        }
+
+        const newUser = {
+          uid,
+          name,
+          phone,
+          email,
+          realBal: 0,
+          createdAt: nowTime(),
+          role: email === ADMIN_EMAIL ? 'ADMIN' : 'USER'
+        };
+        store.users.push(newUser);
+        store.currentUserEmail = email;
+        await saveBackup(null, newUser);
+        toast(`Firebase Auth & Account created at ${newUser.createdAt}`);
+      } else {
+        if (!email || !pass) throw new Error('Please enter Gmail and password');
+
+        if (auth) {
+          // 1. Sign in directly through Firebase Authentication
+          const cred = await signInWithEmailAndPassword(auth, email, pass);
+          store.currentUserEmail = cred.user.email.toLowerCase();
+
+          // Sync profile from Firestore if not already cached locally
+          if (db) {
+            const snap = await getDoc(doc(db, 'codexa_users', store.currentUserEmail));
+            if (snap.exists()) {
+              const uData = snap.data();
+              const idx = store.users.findIndex(x => x.email === uData.email);
+              if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
+            } else {
+              const fallbackUser = {
+                uid: cred.user.uid,
+                name: cred.user.displayName || email.split('@')[0],
+                phone: 'N/A',
+                email: store.currentUserEmail,
+                realBal: 0,
+                createdAt: nowTime(),
+                role: store.currentUserEmail === ADMIN_EMAIL ? 'ADMIN' : 'USER'
+              };
+              store.users.push(fallbackUser);
+              await saveBackup(null, fallbackUser);
+            }
+          }
+        } else {
+          const found = store.users.find(u => u.email === email);
+          if (!found) throw new Error('Account not found! Please Sign Up first.');
+          store.currentUserEmail = found.email;
+        }
+        await saveBackup();
+        toast(`Welcome back!`);
+      }
+      closeModals();
+      updateHeaderUI();
+      renderBottomTable();
+    } catch (err) {
+      let msg = err.message || 'Authentication failed';
+      if (err.code === 'auth/email-already-in-use') msg = 'এই Gmail দিয়ে আগেই Firebase-এ অ্যাকাউন্ট খোলা আছে! Login করুন।';
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') msg = 'Gmail অথবা Password ভুল হয়েছে!';
+      if (err.code === 'auth/operation-not-allowed') msg = 'Firebase Console -> Authentication -> Sign-in method থেকে Email/Password Enable করুন!';
+      toast(msg, true);
+    } finally {
+      btn.disabled = false;
     }
-    closeModals();
-    updateHeaderUI();
-    renderBottomTable();
   };
 
   window.updateUserName = async function() {
@@ -565,19 +623,26 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     const newName = $('#editUserName').value.trim();
     if (!newName) return toast('Name cannot be empty!', true);
     u.name = newName;
+    if (auth && auth.currentUser) {
+      try { await updateProfile(auth.currentUser, { displayName: newName }); } catch (_) {}
+    }
     await saveBackup(null, u);
     updateHeaderUI();
     toast('Name updated successfully! (Gmail & Number remain locked)');
   };
 
-  window.logoutUser = function() {
+  window.logoutUser = async function() {
+    if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v3', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
   };
 
+  /* =====================================================================
+     DEPOSIT, WITHDRAW & AUDIT LOG SYSTEM
+     ===================================================================== */
   window.openWallet = function(tab) {
     const u = getCurrentUser();
     if (!u) { toast('Please Login or Sign Up first!', true); return openAuth(); }
@@ -648,6 +713,9 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     `).join('') : '<div class="m">No audit records found yet.</div>';
   }
 
+  /* =====================================================================
+     ADMIN CONTROL PANEL (Strictly restricted to roxi@gmail.com)
+     ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
     if (!u || u.email.toLowerCase() !== ADMIN_EMAIL) return toast('Unauthorized! Admin only.', true);
