@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Codexa Trade · Live Crypto & Binary Trading Platform</title>
+<title>Codexa Trade · Live Crypto, Commodities & Stocks Trading Platform</title>
 <style>
 :root{--bg:#090d14;--pn:#0f1520;--pn2:#151d2b;--bd:#1f2a3c;--em:#00c076;--em2:#00a364;--r:#f6465d;--y:#f0b90b;--t:#eaecef;--m:#848e9c;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
@@ -23,8 +23,8 @@ header{height:54px;flex:none;display:flex;align-items:center;gap:10px;padding:0 
 .live-badge i{width:7px;height:7px;border-radius:50%;background:var(--em);box-shadow:0 0 8px var(--em)}
 .pairw{position:relative}
 .pair-btn{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--pn2);border:1px solid var(--bd);border-radius:7px;font-weight:700;font-size:13px}
-.pl{display:none;position:fixed;top:52px;left:220px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;z-index:50;min-width:190px;box-shadow:0 10px 30px #000a}
-.pl.o{display:block}.pl div{padding:9px 12px;cursor:pointer;display:flex;justify-content:space-between}.pl div:hover{background:#1e293b}
+.pl{display:none;position:fixed;top:52px;left:220px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;z-index:50;min-width:225px;max-height:360px;overflow-y:auto;box-shadow:0 10px 30px #000a}
+.pl.o{display:block}.pl div{padding:9px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a2333}.pl div:hover{background:#1e293b}
 .sp{flex:1}
 
 /* Account & Balance Pill */
@@ -46,9 +46,10 @@ header{height:54px;flex:none;display:flex;align-items:center;gap:10px;padding:0 
 /* Markets Sub-Bar */
 .mk-bar{height:38px;flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;background:#080c12;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
 .mk-lbl{color:var(--m);font-size:10px;font-weight:700;letter-spacing:.6px}
-.mk-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;background:var(--pn);border:1px solid var(--bd);cursor:pointer;font-size:11px}
+.mk-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;background:var(--pn);border:1px solid var(--bd);cursor:pointer;font-size:11px;flex:none}
 .mk-chip.on{border-color:var(--em);background:#0c1e1b}
 .mk-pay{background:#0a291e;color:var(--em);padding:1px 5px;border-radius:4px;font-weight:700;font-size:10px}
+.cat-tag{font-size:9px;padding:1px 4px;border-radius:3px;background:#1e293b;color:#94a3b8;font-weight:700;text-transform:uppercase}
 
 /* Main Workspace */
 main{flex:1;min-height:0;position:relative}
@@ -222,7 +223,7 @@ footer b{color:var(--t)}
       <div class="lq" style="margin-top:6px" id="pc"></div>
       <div class="cal">
         <div><span class="m">Volume</span><b id="nv">$2,000.00</b></div>
-        <div><span class="m">Est. Payout (88%)</span><b id="payEst" class="g">+$88.00</b></div>
+        <div><span class="m">Est. Payout (<span id="payPctLbl">88%</span>)</span><b id="payEst" class="g">+$88.00</b></div>
         <div><span class="m">Liq. Price (Long)</span><b id="ll" class="r">--</b></div>
       </div>
       <button class="big l" onclick="placeTrade('L')">Buy / Long</button>
@@ -247,11 +248,11 @@ footer b{color:var(--t)}
 
 <!-- Website Copyright & Risk Footer -->
 <footer>
-  <div>© 2026 <b style="color:var(--em)">Codexa Trade</b>. All Rights Reserved. | Synchronized Live Market & Futures Platform.</div>
+  <div>© 2026 <b style="color:var(--em)">Codexa Trade</b>. All Rights Reserved. | Crypto, Gold, Silver & Global Stocks Trading Platform.</div>
   <div>Risk Warning: Trading involves significant risk. | <a id="footerTgLink" href="https://t.me/codexatrade_support" target="_blank" style="color:var(--em);text-decoration:none">24/7 Official Telegram Support</a></div>
 </footer>
 
-<!-- Banned Member Fullscreen Lock Screen (Shows Exact Ban Reason Written by Admin) -->
+<!-- Banned Member Fullscreen Lock Screen -->
 <div class="ban-screen" id="banOverlay">
   <div class="ban-card">
     <div class="ban-icon">🚫</div>
@@ -270,7 +271,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- Auth Modal (Sign Up with Name, Phone Number, Gmail & Locked Profile + KYC Status) -->
+<!-- Auth Modal -->
 <div class="modal-bg" id="authModal">
   <div class="modal">
     <div class="mh">
@@ -333,7 +334,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- KYC Verification Modal (Full Bangla Requirements) -->
+<!-- KYC Verification Modal -->
 <div class="modal-bg" id="kycModal">
   <div class="modal">
     <div class="mh">
@@ -399,7 +400,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- Wallet Modal (Deposit / Withdraw + KYC Lock Check) -->
+<!-- Wallet Modal -->
 <div class="modal-bg" id="walletModal">
   <div class="modal">
     <div class="mh">
@@ -470,7 +471,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- Admin Panel Modal (Only visible to roxi@gmail.com) -->
+<!-- Admin Panel Modal -->
 <div class="modal-bg" id="adminModal">
   <div class="modal wide">
     <div class="mh">
@@ -492,7 +493,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- Fullscreen Image Zoom Modal for KYC Photos -->
+<!-- Fullscreen Image Zoom Modal -->
 <div class="img-zoom-bg" id="imgZoomModal" onclick="this.classList.remove('open')">
   <img id="imgZoomTarget" src="" alt="KYC Document Preview">
 </div>
@@ -557,7 +558,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -573,17 +574,27 @@ footer b{color:var(--t)}
   const fmt=(n,d=2)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
   const nowTime=()=>new Date().toLocaleString('en-GB',{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
 
+  /* =====================================================================
+     EXPANDED MULTI-ASSET MARKETS: Crypto, Commodities (Gold, Silver) & Stocks (Apple, Tesla, BND)
+     - Crypto pairs with `binance: true` sync directly with Binance Live API + WebSocket
+     - Commodities & US Stocks/ETFs sync globally across all users via deterministic market clock
+     ===================================================================== */
   const MARKETS = [
-    {sym:'BTCUSDT',label:'BTC/USDT',name:'Bitcoin',base:95000,price:95000,chg:'+3.24%',pay:'88%',seed:101},
-    {sym:'ETHUSDT',label:'ETH/USDT',name:'Ethereum',base:3420,price:3420,chg:'+1.85%',pay:'86%',seed:202},
-    {sym:'SOLUSDT',label:'SOL/USDT',name:'Solana',base:215.4,price:215.4,chg:'+4.92%',pay:'85%',seed:303},
-    {sym:'BNBUSDT',label:'BNB/USDT',name:'BNB',base:645.2,price:645.2,chg:'-0.21%',pay:'90%',seed:404}
+    {sym:'BTCUSDT',  label:'BTC/USDT', name:'Bitcoin',            cat:'Crypto',    base:95000.00, price:95000.00, chg:'+3.24%', pay:'88%', payNum:0.88, seed:101, binance:true},
+    {sym:'XAUUSD',   label:'GOLD/USD', name:'Gold (XAU)',         cat:'Commodity', base:4310.50,  price:4310.50,  chg:'+1.15%', pay:'90%', payNum:0.90, seed:505, binance:false},
+    {sym:'XAGUSD',   label:'SILVER',   name:'Silver (XAG)',       cat:'Commodity', base:52.40,    price:52.40,    chg:'+0.85%', pay:'87%', payNum:0.87, seed:606, binance:false},
+    {sym:'AAPLUSD',  label:'APPLE',    name:'Apple Inc. (AAPL)',  cat:'Stock',     base:228.50,   price:228.50,   chg:'+1.42%', pay:'86%', payNum:0.86, seed:707, binance:false},
+    {sym:'TSLAUSD',  label:'TESLA',    name:'Tesla Inc. (TSLA)',  cat:'Stock',     base:318.20,   price:318.20,   chg:'+4.18%', pay:'89%', payNum:0.89, seed:808, binance:false},
+    {sym:'BNDUSD',   label:'BND',      name:'Vanguard Bond (BND)',cat:'ETF/Bond',  base:73.45,    price:73.45,    chg:'+0.32%', pay:'85%', payNum:0.85, seed:909, binance:false},
+    {sym:'ETHUSDT',  label:'ETH/USDT', name:'Ethereum',           cat:'Crypto',    base:3420.00,  price:3420.00,  chg:'+1.85%', pay:'86%', payNum:0.86, seed:202, binance:true},
+    {sym:'SOLUSDT',  label:'SOL/USDT', name:'Solana',             cat:'Crypto',    base:215.40,   price:215.40,   chg:'+4.92%', pay:'85%', payNum:0.85, seed:303, binance:true},
+    {sym:'BNBUSDT',  label:'BNB/USDT', name:'BNB',                cat:'Crypto',    base:645.20,   price:645.20,   chg:'-0.21%', pay:'90%', payNum:0.90, seed:404, binance:true}
   ];
 
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v12') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v13') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -612,7 +623,7 @@ footer b{color:var(--t)}
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -636,7 +647,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -649,7 +660,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open')) {
         if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
@@ -662,7 +673,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -673,7 +684,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -693,7 +704,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -725,9 +736,6 @@ footer b{color:var(--t)}
     setTimeout(() => d.remove(), 3400);
   }
 
-  /* =====================================================================
-     BAN ENFORCEMENT CHECK (Shows Ban Reason Screen Instantly to Banned User)
-     ===================================================================== */
   function enforceBanCheck() {
     const u = getCurrentUser();
     const banScreen = $('#banOverlay');
@@ -924,9 +932,14 @@ footer b{color:var(--t)}
     if (liveWs) { try { liveWs.close(); } catch (_) {} liveWs = null; }
     isBinanceLive = false;
 
-    C = buildDeterministicCandles(sym, tf);
     const activeM = MARKETS.find(x => x.sym === sym);
+    C = buildDeterministicCandles(sym, tf);
     $('#cPrice').textContent = '$' + fmt(activeM.price);
+
+    if (!activeM.binance) {
+      $('#feedBadge span').textContent = `${activeM.cat.toUpperCase()} LIVE FEED`;
+      return;
+    }
 
     try {
       const interval = BI_TF[tf] || '1m';
@@ -1445,7 +1458,7 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
@@ -1595,7 +1608,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (With Member Ban / Unban & Mandatory Ban Reason Note)
+     ADMIN CONTROL PANEL
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -1783,9 +1796,7 @@ footer b{color:var(--t)}
     if (shouldBan) {
       const noteEl = document.getElementById('ban_note_' + targetEmail);
       const reason = noteEl ? noteEl.value.trim() : '';
-      if (!reason) {
-        return toast('ব্যান করার কারণ (Ban Note) লিখুন!', true);
-      }
+      if (!reason) return toast('ব্যান করার কারণ (Ban Note) লিখুন!', true);
       targetUser.isBanned = true;
       targetUser.banReason = reason;
       targetUser.bannedAt = nowTime();
@@ -1810,9 +1821,7 @@ footer b{color:var(--t)}
 
     const noteEl = document.getElementById('kycnote_' + targetEmail);
     const noteVal = noteEl ? noteEl.value.trim() : '';
-    if (decision === 'REJECTED' && !noteVal) {
-      return toast('KYC Reject করার কারণ লিখুন!', true);
-    }
+    if (decision === 'REJECTED' && !noteVal) return toast('KYC Reject করার কারণ লিখুন!', true);
 
     targetUser.kycStatus = decision;
     targetUser.kycAdminNote = noteVal || (decision === 'VERIFIED' ? 'NID & Selfie Verified' : 'Rejected by Admin');
@@ -1902,9 +1911,7 @@ footer b{color:var(--t)}
 
     const noteInput = document.getElementById('note_' + txId);
     const noteVal = noteInput ? noteInput.value.trim() : '';
-    if (decision === 'REJECTED' && !noteVal) {
-      return toast('Reject করার কারণ (Admin Note) লিখুন!', true);
-    }
+    if (decision === 'REJECTED' && !noteVal) return toast('Reject করার কারণ (Admin Note) লিখুন!', true);
 
     const targetUser = store.users.find(u => u.email === tx.email);
     const tNow = nowTime();
@@ -1927,15 +1934,25 @@ footer b{color:var(--t)}
     document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('open'));
   };
 
+  /* =====================================================================
+     MULTI-ASSET MARKETS BAR & DROPDOWN (BTC, GOLD, SILVER, APPLE, TESLA, BND)
+     ===================================================================== */
   function initMarkets() {
     $('#mkBar').innerHTML = '<span class="mk-lbl">MARKETS:</span>' + MARKETS.map(m => `
       <div class="mk-chip ${m.sym===sym?'on':''}" onclick="selectPair('${m.sym}')">
-        <b>${m.label}</b> <span id="mp_${m.sym}">$${fmt(m.price)}</span>
+        <b>${m.label}</b> <span class="cat-tag">${m.cat}</span>
+        <span id="mp_${m.sym}">$${fmt(m.price)}</span>
         <span class="${m.chg.startsWith('+')?'g':'r'}">${m.chg}</span>
         <span class="mk-pay">${m.pay}</span>
       </div>
     `).join('');
-    $('#pl').innerHTML = MARKETS.map(m => `<div onclick="selectPair('${m.sym}');document.querySelector('#pl').classList.remove('o')"><span>${m.label}</span><span class="g">${m.pay}</span></div>`).join('');
+
+    $('#pl').innerHTML = MARKETS.map(m => `
+      <div onclick="selectPair('${m.sym}');document.querySelector('#pl').classList.remove('o')">
+        <span><b>${m.label}</b> <small class="m">(${m.name})</small></span>
+        <span class="g">${m.pay}</span>
+      </div>
+    `).join('');
   }
 
   window.selectPair = function(s) {
@@ -1944,8 +1961,9 @@ footer b{color:var(--t)}
     const m = MARKETS.find(x => x.sym === s);
     $('#pb').innerHTML = `${m.label} <span class="g">+${m.pay}</span> ▾`;
     $('#cPair').textContent = m.label;
-    $('#cName').textContent = m.name;
+    $('#cName').textContent = `${m.name} · ${m.cat}`;
     initMarkets();
+    updateCalc();
     loadSharedMarketChart();
   };
 
@@ -1963,11 +1981,11 @@ footer b{color:var(--t)}
     $('#tAudit').textContent = `Deposit & Withdraw History / Admin Note (${visibleTx.length})`;
 
     if (btab === 'pos') {
-      $('#pt').innerHTML = `<tr><th>Pair</th><th>Side</th><th>Amount</th><th>Entry</th><th>Current</th><th>PnL</th><th>Action</th></tr>` +
+      $('#pt').innerHTML = `<tr><th>Asset</th><th>Side</th><th>Amount</th><th>Entry</th><th>Current</th><th>PnL</th><th>Action</th></tr>` +
         (pos.length ? pos.map((p, i) => {
           const cur = MARKETS.find(m => m.sym === p.sym).price;
           const pnl = (p.side === 'L' ? cur - p.entry : p.entry - cur) / p.entry * p.amt * p.lev;
-          return `<tr><td><b>${p.sym}</b></td><td class="${p.side==='L'?'g':'r'}">${p.side==='L'?'LONG':'SHORT'} ${p.lev}x</td><td>$${fmt(p.amt)}</td><td>$${fmt(p.entry)}</td><td>$${fmt(cur)}</td><td class="${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${fmt(pnl)}</td><td><button class="btn-dk" style="padding:2px 8px" onclick="closeTrade(${i})">Close</button></td></tr>`;
+          return `<tr><td><b>${p.label || p.sym}</b></td><td class="${p.side==='L'?'g':'r'}">${p.side==='L'?'LONG':'SHORT'} ${p.lev}x</td><td>$${fmt(p.amt)}</td><td>$${fmt(p.entry)}</td><td>$${fmt(cur)}</td><td class="${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${fmt(pnl)}</td><td><button class="btn-dk" style="padding:2px 8px" onclick="closeTrade(${i})">Close</button></td></tr>`;
         }).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No open positions</td></tr>');
     } else {
       $('#pt').innerHTML = `<tr><th>Timestamp</th><th>Member</th><th>Type</th><th>USD / BDT</th><th>Method · Sender · TrxID</th><th>Status</th><th>Admin Note / Reason</th></tr>` +
@@ -1994,10 +2012,10 @@ footer b{color:var(--t)}
 
     if (accMode === 'demo') demoBal -= amt; else { u.realBal = Number((u.realBal - amt).toFixed(2)); saveBackup(null, u); }
     const m = MARKETS.find(x => x.sym === sym);
-    pos.push({ sym, side, amt, lev, entry: m.price, mode: accMode });
+    pos.push({ sym, label: m.label, side, amt, lev, entry: m.price, mode: accMode });
     updateHeaderUI();
     renderBottomTable();
-    toast(`${side==='L'?'Long':'Short'} opened on ${m.label}`);
+    toast(`${side==='L'?'Long':'Short'} opened on ${m.label} (${m.name})`);
   };
 
   window.closeTrade = function(idx) {
@@ -2038,7 +2056,8 @@ footer b{color:var(--t)}
     const m = MARKETS.find(x => x.sym === sym);
     $('#lv').textContent = lev + 'x';
     $('#nv').textContent = '$' + fmt(amt * lev);
-    $('#payEst').textContent = '+$' + fmt(amt * 0.88);
+    $('#payPctLbl').textContent = m.pay;
+    $('#payEst').textContent = '+$' + fmt(amt * m.payNum);
     $('#ll').textContent = '$' + fmt(m.price * (1 - 1 / lev));
   }
 
@@ -2069,14 +2088,15 @@ footer b{color:var(--t)}
       }
     }
 
+    const spreadStep = Math.max(0.02, active.price * 0.00015);
     let aHtml = '', bHtml = '';
     for (let i = 5; i >= 1; i--) {
       const q = (0.15 + detNoise(active.seed + i, nowSec) * 1.8).toFixed(3);
-      aHtml += `<div class="br"><span class="r">${fmt(active.price + i * 1.5)}</span><span>${q}</span><span>${fmt(active.price * 0.5)}</span></div>`;
+      aHtml += `<div class="br"><span class="r">${fmt(active.price + i * spreadStep)}</span><span>${q}</span><span>${fmt(active.price * 0.5)}</span></div>`;
     }
     for (let i = 1; i <= 5; i++) {
       const q = (0.15 + detNoise(active.seed + i + 10, nowSec) * 1.8).toFixed(3);
-      bHtml += `<div class="br"><span class="g">${fmt(active.price - i * 1.5)}</span><span>${q}</span><span>${fmt(active.price * 0.5)}</span></div>`;
+      bHtml += `<div class="br"><span class="g">${fmt(active.price - i * spreadStep)}</span><span>${q}</span><span>${fmt(active.price * 0.5)}</span></div>`;
     }
     $('#bk').innerHTML = aHtml + `<div class="sr"><b class="g">$${fmt(active.price)}</b></div>` + bHtml;
     $('#tp').innerHTML = Array.from({length:6}, (_, idx) => {
