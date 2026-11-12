@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Codexa Trade · Firebase Auth & Cloud Backup</title>
+<title>Codexa Trade · Live Crypto & Binary Trading Platform</title>
 <style>
 :root{--bg:#090d14;--pn:#0f1520;--pn2:#151d2b;--bd:#1f2a3c;--em:#00c076;--em2:#00a364;--r:#f6465d;--y:#f0b90b;--t:#eaecef;--m:#848e9c;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
@@ -19,11 +19,11 @@ header{height:54px;flex:none;display:flex;align-items:center;gap:12px;padding:0 
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.3px}
 .brand-ic{width:30px;height:30px;border-radius:7px;background:#0a291e;border:1px solid #134e38;display:grid;place-items:center}
 .brand span{color:var(--em)}
-.cloud-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;background:#0a251c;border:1px solid #134a36;color:var(--em);font-size:10px;font-weight:700;letter-spacing:.5px}
-.cloud-badge i{width:7px;height:7px;border-radius:50%;background:var(--em);box-shadow:0 0 8px var(--em)}
+.live-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;background:#0a251c;border:1px solid #134a36;color:var(--em);font-size:10px;font-weight:700;letter-spacing:.5px}
+.live-badge i{width:7px;height:7px;border-radius:50%;background:var(--em);box-shadow:0 0 8px var(--em)}
 .pairw{position:relative}
 .pair-btn{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--pn2);border:1px solid var(--bd);border-radius:7px;font-weight:700;font-size:13px}
-.pl{display:none;position:fixed;top:52px;left:240px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;z-index:50;min-width:190px;box-shadow:0 10px 30px #000a}
+.pl{display:none;position:fixed;top:52px;left:220px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;z-index:50;min-width:190px;box-shadow:0 10px 30px #000a}
 .pl.o{display:block}.pl div{padding:9px 12px;cursor:pointer;display:flex;justify-content:space-between}.pl div:hover{background:#1e293b}
 .sp{flex:1}
 
@@ -92,12 +92,20 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 .badge.pending{background:#2d1f07;color:var(--y)}
 .badge.approved{background:#0a291e;color:var(--em)}
 .badge.rejected{background:#2c0f16;color:var(--r)}
+.serial-tag{background:#152238;border:1px solid #263b5e;color:#60a5fa;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}
+
+/* Bottom Footer & Floating Telegram Support */
+footer{height:34px;flex:none;background:#080c12;border-top:1px solid var(--bd);padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--m);overflow-x:auto;white-space:nowrap}
+footer b{color:var(--t)}
+.tg-float{position:fixed;right:18px;bottom:44px;z-index:70;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#229ED9,#1a82b5);color:#fff;font-weight:700;padding:10px 16px;border-radius:99px;box-shadow:0 6px 22px rgba(34,158,217,.45);text-decoration:none;transition:transform .15s}
+.tg-float:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.tg-float svg{width:18px;height:18px;fill:#fff}
 
 /* Modals */
 .modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:14px}
 .modal-bg.open{display:grid}
 .modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:540px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
-.modal.wide{max-width:1040px}
+.modal.wide{max-width:1100px}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
 .mh h3{margin:0;font-size:16px}
 .fgrid{display:flex;flex-direction:column;gap:10px}
@@ -109,9 +117,12 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 .audit-box{margin-top:14px;background:#090d14;border:1px solid var(--bd);border-radius:7px;padding:10px;max-height:200px;overflow:auto}
 .audit-item{padding:7px 0;border-bottom:1px solid #161f2e;font-size:11px}
 .audit-item:last-child{border-bottom:0}
+.note-tag{display:inline-block;margin-top:3px;padding:2px 7px;border-radius:4px;background:#1e293b;color:#f8fafc;font-size:11px}
+.note-tag.rej{background:#33121a;color:#fda4af;border:1px solid #7f1d1d}
+.note-tag.app{background:#0a291e;color:#6ee7b7;border:1px solid #14533c}
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:100;box-shadow:0 8px 25px #000a}
 .toast.r{border-left-color:var(--r)}
-@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2{grid-template-columns:1fr}}
+@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2{grid-template-columns:1fr}footer{flex-direction:column;height:auto;padding:8px;gap:4px;text-align:center}}
 </style>
 </head>
 <body>
@@ -121,7 +132,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     <div class="brand-ic"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#00c076" d="M12 4L3 20h18z"/></svg></div>
     Codexa <span>Trade</span>
   </div>
-  <div class="cloud-badge" id="cloudStatus"><i></i><span>CONNECTING AUTH & VAULT...</span></div>
+  <div class="live-badge"><i></i><span>LIVE MARKET</span></div>
   <div class="pairw">
     <button id="pb" class="pair-btn">BTC/USDT <span class="g">+88%</span> ▾</button>
     <div id="pl" class="pl"></div>
@@ -197,12 +208,24 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     <div id="pp" class="pn">
       <div class="pt">
         <button id="tPos" class="on" onclick="setTab('pos')">Positions (0)</button>
-        <button id="tAudit" onclick="setTab('audit')">Deposit & Withdraw Audit Log (0)</button>
+        <button id="tAudit" onclick="setTab('audit')">Deposit & Withdraw History / Admin Note (0)</button>
       </div>
       <table id="pt"></table>
     </div>
   </section>
 </main>
+
+<!-- Floating Telegram Support Button -->
+<a id="tgSupportBtn" class="tg-float" href="https://t.me/codexatrade_support" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+  <span>Telegram Support</span>
+</a>
+
+<!-- Website Copyright & Risk Footer -->
+<footer>
+  <div>© 2026 <b style="color:var(--em)">Codexa Trade</b>. All Rights Reserved. | Secure Digital Asset & Futures Trading Platform.</div>
+  <div>Risk Warning: Trading involves significant risk. | <a id="footerTgLink" href="https://t.me/codexatrade_support" target="_blank" style="color:var(--em);text-decoration:none">24/7 Official Telegram Support</a></div>
+</footer>
 
 <!-- Auth Modal (Sign Up with Name, Phone Number, Gmail & Locked Profile) -->
 <div class="modal-bg" id="authModal">
@@ -212,10 +235,17 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       <button onclick="closeModals()">✕</button>
     </div>
 
-    <!-- Logged-In Profile View (Only Name Editable, Gmail/Number/Time Permanently Locked) -->
     <div id="loggedView" class="fgrid" style="display:none">
       <div class="lock-note">
-        🔒 <b>Security Policy:</b> Account create করার পর শুধুমাত্র আপনার <b>Name</b> পরিবর্তন করতে পারবেন। Gmail, Phone Number এবং Creation Time স্থায়ীভাবে লক করা থাকে।
+        🔒 <b>Security Policy:</b> Account create করার পর শুধুমাত্র আপনার <b>Name</b> পরিবর্তন করতে পারবেন। Member Serial ID, Gmail, Phone Number এবং Creation Time স্থায়ীভাবে লক করা থাকে।
+      </div>
+      <div class="row2">
+        <label>Member Serial No. (Locked)
+          <input id="profSerial" disabled>
+        </label>
+        <label>Account Role
+          <input id="profRole" disabled>
+        </label>
       </div>
       <label>Full Name (Editable)
         <div style="display:flex;gap:8px">
@@ -232,17 +262,13 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       <label>Account Created Timestamp (Locked)
         <input id="profCreated" disabled>
       </label>
-      <label>Account Role
-        <input id="profRole" disabled>
-      </label>
       <button class="big s" onclick="logoutUser()">Logout</button>
     </div>
 
-    <!-- Login / Sign Up Form -->
     <div id="guestView" class="fgrid">
       <div class="seg">
         <button id="tabLogin" class="on" onclick="switchAuthMode('login')">Login</button>
-        <button id="tabSignup" onclick="switchAuthMode('signup')">Create Account (Sign Up)</button>
+        <button id="tabSignup" class="on" onclick="switchAuthMode('signup')">Create Account (Sign Up)</button>
       </div>
       <label id="nameWrap" style="display:none">Full Name *
         <input id="authName" placeholder="Enter your full name">
@@ -261,7 +287,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   </div>
 </div>
 
-<!-- Wallet Modal (bKash / Nagad / Rocket + Live 125 BDT Rate + Min/Max + Audit) -->
+<!-- Wallet Modal (bKash / Nagad / Rocket + Live 125 BDT Rate + Min/Max + Admin Note View) -->
 <div class="modal-bg" id="walletModal">
   <div class="modal">
     <div class="mh">
@@ -271,7 +297,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     <div class="seg">
       <button id="wTabDep" class="on" onclick="openWallet('deposit')">Deposit</button>
       <button id="wTabWit" onclick="openWallet('withdraw')">Withdraw</button>
-      <button id="wTabAud" onclick="openWallet('audit')">🔍 Audit Trail</button>
+      <button id="wTabAud" onclick="openWallet('audit')">🔍 History & Admin Note</button>
     </div>
     <div id="walletForm" class="fgrid">
       <label>Payment Method
@@ -282,7 +308,6 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
         </select>
       </label>
 
-      <!-- Admin-controlled Payment Number Card (shown in Deposit) -->
       <div class="pay-card" id="payNumberBox">
         <div>
           <span class="m" id="payMethodLbl" style="display:block;font-size:11px">Send Money to bKash Number:</span>
@@ -311,7 +336,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       <button class="big l" id="wSubmitBtn" onclick="submitWalletTx()">Submit Request</button>
     </div>
     <div class="audit-box">
-      <b style="display:block;margin-bottom:6px;color:var(--em)">Live Transaction & Audit Log (Timestamped)</b>
+      <b style="display:block;margin-bottom:6px;color:var(--em)">Transaction Audit & Admin Remarks</b>
       <div id="walletAuditList"></div>
     </div>
   </div>
@@ -321,7 +346,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 <div class="modal-bg" id="adminModal">
   <div class="modal wide">
     <div class="mh">
-      <h3>⚡ Admin Control, Gateway Settings & Balance Adjust</h3>
+      <h3>⚡ Admin Control, Member Serial List & Gateway Settings</h3>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-em" style="padding:5px 10px;font-size:11px" onclick="createCloudSnapshot()">☁️ Cloud Backup</button>
         <button class="btn-dk" style="padding:5px 10px;font-size:11px" onclick="downloadJsonBackup()">⬇ Export JSON</button>
@@ -329,16 +354,15 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       </div>
     </div>
     <div class="seg">
-      <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals (Audit)</button>
-      <button id="aTabUsers" onclick="renderAdmin('users')">Members & Adjust Balance (TK/USD)</button>
-      <button id="aTabSettings" onclick="renderAdmin('settings')">⚙️ Payment Numbers, Rate & Min/Max</button>
+      <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals (With Admin Note)</button>
+      <button id="aTabUsers" onclick="renderAdmin('users')">Members Serial List & Balance Adjust</button>
+      <button id="aTabSettings" onclick="renderAdmin('settings')">⚙️ Numbers, Rate, Min/Max & Telegram</button>
       <button id="aTabBackups" onclick="renderAdmin('backups')">Cloud Backups</button>
     </div>
     <div id="adminBody" style="overflow:auto;max-height:62vh"></div>
   </div>
 </div>
 
-<!-- Zero-Leak Architecture + Firebase Authentication & Firestore -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-analytics.js";
@@ -371,7 +395,8 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     minDeposit: 5,
     maxDeposit: 5000,
     minWithdraw: 10,
-    maxWithdraw: 5000
+    maxWithdraw: 5000,
+    telegramUrl: 'https://t.me/codexatrade_support'
   };
 
   async function initSecureCloud() {
@@ -385,7 +410,6 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       if (cfg.measurementId) { try { getAnalytics(app); } catch (_) {} }
       auth = getAuth(app);
       db = getFirestore(app);
-      document.querySelector('#cloudStatus span').textContent = 'FIREBASE AUTH + CLOUD SYNC';
 
       onAuthStateChanged(auth, async (fbUser) => {
         if (fbUser && fbUser.email) {
@@ -397,7 +421,8 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
             const idx = store.users.findIndex(x => x.email === uData.email);
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
-          localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+          assignSerialNumbers();
+          localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -405,8 +430,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 
       attachFirestoreListeners();
     } catch (e) {
-      console.warn("Running in local vault mode until Vercel Env Vars are active:", e.message);
-      document.querySelector('#cloudStatus span').textContent = 'LOCAL VAULT MODE';
+      console.warn("Running in local storage mode:", e.message);
     }
   }
 
@@ -421,7 +445,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     {sym:'BNBUSDT',label:'BNB/USDT',name:'BNB',price:645.2,chg:'-0.21%',pay:'90%'}
   ];
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v5') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v6') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -430,16 +454,32 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   };
   if (!store.settings) store.settings = { ...DEFAULT_SETTINGS };
 
+  // Ensure every member has a strict sequential Serial Number (#1, #2, #3...) sorted by creation order
+  function assignSerialNumbers() {
+    store.users.sort((a, b) => (a.createdTs || 0) - (b.createdTs || 0));
+    store.users.forEach((u, idx) => {
+      u.serial = idx + 1;
+    });
+  }
+  assignSerialNumbers();
+
+  function applyTelegramLink() {
+    const link = store.settings.telegramUrl || 'https://t.me/codexatrade_support';
+    $('#tgSupportBtn').href = link;
+    $('#footerTgLink').href = link;
+  }
+  applyTelegramLink();
+
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
-    localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+    assignSerialNumbers();
+    localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
         if (syncTx) await setDoc(doc(db, 'codexa_transactions', syncTx.id), syncTx, { merge: true });
         if (syncSettings) await setDoc(doc(db, 'codexa_settings', 'global'), store.settings, { merge: true });
       } catch (err) {
-        console.error("Firestore sync error:", err);
-        document.querySelector('#cloudStatus span').textContent = 'CHECK FIRESTORE RULES';
+        console.error("Cloud sync error:", err);
       }
     }
   }
@@ -447,7 +487,6 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   function attachFirestoreListeners() {
     if (!db) return;
 
-    // Live Settings Sync (bKash/Nagad/Rocket numbers, Dollar Rate 125 TK, Min/Max)
     const setRef = doc(db, 'codexa_settings', 'global');
     getDoc(setRef).then(snap => {
       if (!snap.exists()) setDoc(setRef, store.settings);
@@ -456,7 +495,8 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     onSnapshot(setRef, snap => {
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
-        localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+        applyTelegramLink();
+        localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -468,11 +508,10 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
         const idx = store.users.findIndex(x => x.email === u.email);
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
-      localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+      assignSerialNumbers();
+      localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open') && $('#aTabUsers').classList.contains('on')) renderAdmin('users');
-    }, () => {
-      document.querySelector('#cloudStatus span').textContent = 'CHECK FIRESTORE RULES';
     });
 
     onSnapshot(collection(db, 'codexa_transactions'), snap => {
@@ -480,7 +519,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -491,7 +530,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -511,7 +550,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -544,13 +583,13 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   }
 
   /* =====================================================================
-     AUTHENTICATION (FIREBASE AUTHENTICATOR + FIRESTORE PROFILE LOCK)
+     AUTHENTICATION & SERIAL NUMBER ASSIGNMENT
      ===================================================================== */
   function updateHeaderUI() {
     const u = getCurrentUser();
     const isAdmin = (u && u.email.toLowerCase() === ADMIN_EMAIL) || (store.currentUserEmail === ADMIN_EMAIL);
     $('#adminBtn').classList.toggle('show', !!isAdmin);
-    $('#authBtn').textContent = u ? `👤 ${u.name} (${isAdmin?'ADMIN':'USER'})` : (store.currentUserEmail ? `👤 ${store.currentUserEmail}` : '👤 Login / Sign Up');
+    $('#authBtn').textContent = u ? `👤 #${u.serial || 1} ${u.name}` : (store.currentUserEmail ? `👤 ${store.currentUserEmail}` : '👤 Login / Sign Up');
     const bal = accMode === 'demo' ? demoBal : (u ? u.realBal : 0);
     $('#topBal').textContent = '$' + fmt(bal);
     $('#av2').textContent = '$' + fmt(bal);
@@ -563,11 +602,12 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       $('#loggedView').style.display = 'flex';
       $('#guestView').style.display = 'none';
       $('#authTitle').textContent = 'Account Profile (Locked Security)';
+      $('#profSerial').value = `Member #${u.serial || 1}`;
       $('#editUserName').value = u.name;
       $('#profEmail').value = u.email;
       $('#profPhone').value = u.phone || 'Not Set';
       $('#profCreated').value = u.createdAt;
-      $('#profRole').value = u.email.toLowerCase() === ADMIN_EMAIL ? 'SUPER ADMIN (Full Control)' : 'Standard Trader (Firebase Verified)';
+      $('#profRole').value = u.email.toLowerCase() === ADMIN_EMAIL ? 'SUPER ADMIN' : 'Verified Member';
     } else {
       $('#loggedView').style.display = 'none';
       $('#guestView').style.display = 'flex';
@@ -607,7 +647,10 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
           await updateProfile(cred.user, { displayName: name });
         }
 
+        const nextSerial = store.users.length + 1;
         const newUser = {
+          serial: nextSerial,
+          createdTs: Date.now(),
           uid,
           name,
           phone,
@@ -617,9 +660,10 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
           role: email === ADMIN_EMAIL ? 'ADMIN' : 'USER'
         };
         store.users.push(newUser);
+        assignSerialNumbers();
         store.currentUserEmail = email;
         await saveBackup(null, newUser);
-        toast(`Firebase Auth & Account created at ${newUser.createdAt}`);
+        toast(`Account Created! Your Member Serial is #${newUser.serial}`);
       } else {
         if (!email || !pass) throw new Error('Please enter Gmail and password');
 
@@ -635,6 +679,8 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
               if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
             } else {
               const fallbackUser = {
+                serial: store.users.length + 1,
+                createdTs: Date.now(),
                 uid: cred.user.uid,
                 name: cred.user.displayName || email.split('@')[0],
                 phone: 'N/A',
@@ -660,9 +706,8 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       renderBottomTable();
     } catch (err) {
       let msg = err.message || 'Authentication failed';
-      if (err.code === 'auth/email-already-in-use') msg = 'এই Gmail দিয়ে আগেই Firebase-এ অ্যাকাউন্ট খোলা আছে! Login করুন।';
+      if (err.code === 'auth/email-already-in-use') msg = 'এই Gmail দিয়ে আগেই অ্যাকাউন্ট খোলা আছে! Login করুন।';
       if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') msg = 'Gmail অথবা Password ভুল হয়েছে!';
-      if (err.code === 'auth/operation-not-allowed') msg = 'Firebase Console -> Authentication -> Sign-in method থেকে Email/Password Enable করুন!';
       toast(msg, true);
     } finally {
       btn.disabled = false;
@@ -680,20 +725,20 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     }
     await saveBackup(null, u);
     updateHeaderUI();
-    toast('Name updated successfully! (Gmail & Number remain locked)');
+    toast('Name updated successfully! (Serial, Gmail & Number remain locked)');
   };
 
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
   };
 
   /* =====================================================================
-     DEPOSIT & WITHDRAW (bKash / Nagad / Rocket + 125 BDT Rate + Min/Max)
+     DEPOSIT & WITHDRAW + ADMIN NOTE DISPLAY
      ===================================================================== */
   window.openWallet = function(tab) {
     const u = getCurrentUser();
@@ -705,7 +750,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     $('#wTabAud').classList.toggle('on', tab==='audit');
     $('#walletForm').style.display = tab==='audit' ? 'none' : 'flex';
     $('#payNumberBox').style.display = tab==='deposit' ? 'flex' : 'none';
-    $('#walletTitle').textContent = tab==='deposit' ? 'Deposit Funds (bKash / Nagad / Rocket)' : tab==='withdraw' ? 'Withdraw Funds' : 'Transaction Audit Trail';
+    $('#walletTitle').textContent = tab==='deposit' ? 'Deposit Funds (bKash / Nagad / Rocket)' : tab==='withdraw' ? 'Withdraw Funds' : 'Transaction History & Admin Notes';
     $('#wRefLbl').firstChild.textContent = tab==='deposit' ? 'Your Sender Number & TrxID *' : 'Your Personal bKash / Nagad / Rocket Number *';
     $('#wRef').placeholder = tab==='deposit' ? 'e.g. 017XXXXXXXX · TrxID: 9A7B6C' : 'e.g. 017XXXXXXXX (Personal)';
     $('#wSubmitBtn').textContent = tab==='deposit' ? 'Submit Deposit Request' : 'Submit Withdraw Request';
@@ -756,11 +801,12 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 
     const timeStr = nowTime();
     const bdtAmount = amt * st.dollarRate;
-    if (walletTab === 'withdraw') u.realBal -= amt;
+    if (walletTab === 'withdraw') u.realBal = Number((u.realBal - amt).toFixed(2));
 
     const tx = {
       id: 'TX-' + Date.now(),
       ts: Date.now(),
+      userSerial: u.serial || 1,
       email: u.email,
       phone: u.phone || '',
       userName: u.name,
@@ -771,9 +817,10 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       rateUsed: st.dollarRate,
       ref,
       status: 'PENDING',
+      adminNote: '',
       createdAt: timeStr,
       audit: [
-        { time: timeStr, action: `${walletTab.toUpperCase()} $${fmt(amt)} (${fmt(bdtAmount,0)} BDT @ ${st.dollarRate}৳) via ${method}`, by: `${u.name} (${u.email})` }
+        { time: timeStr, action: `${walletTab.toUpperCase()} $${fmt(amt)} (${fmt(bdtAmount,0)} BDT @ ${st.dollarRate}৳) via ${method}`, by: `#${u.serial || 1} ${u.name}` }
       ]
     };
     store.transactions.unshift(tx);
@@ -794,15 +841,16 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
           <b>${t.type} · $${fmt(t.amount)} (${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''}) · ${t.method}</b>
           <span class="badge ${t.status.toLowerCase()}">${t.status}</span>
         </div>
-        <div class="m">User: ${t.userName} (${t.email}) | Ref: ${t.ref}</div>
-        <div class="m">Requested: ${t.createdAt}</div>
+        <div class="m">Member #${t.userSerial || '?'} · ${t.userName} | Ref: ${t.ref}</div>
+        <div class="m">Time: ${t.createdAt}</div>
+        ${t.adminNote ? `<div class="note-tag ${t.status==='REJECTED'?'rej':'app'}">📝 Admin Note: ${t.adminNote}</div>` : ''}
         ${t.audit.map(a => `<div style="color:#94a3b8;margin-top:2px">↳ [${a.time}] ${a.action}</div>`).join('')}
       </div>
-    `).join('') : '<div class="m">No audit records found yet.</div>';
+    `).join('') : '<div class="m">No records found yet.</div>';
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (Payment Numbers, Rate, Min/Max & Member Balance Adjust)
+     ADMIN CONTROL PANEL (Serial Members, Admin Reject/Approve Note, Settings)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -819,31 +867,41 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 
     if (tab === 'tx') {
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Date & Time</th><th>User & Number</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status & Audit</th><th>Admin Action</th></tr>
+        <tr><th>Time</th><th>Member (Serial)</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status & Note</th><th>Admin Action (Write Note)</th></tr>
         ${store.transactions.map(t => `<tr>
           <td>${t.createdAt}</td>
-          <td><b>${t.userName}</b><br><span class="m">${t.email} · ${t.phone||''}</span></td>
+          <td><span class="serial-tag">#${t.userSerial || '?'}</span> <b>${t.userName}</b><br><span class="m">${t.email} · ${t.phone||''}</span></td>
           <td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
           <td><b>$${fmt(t.amount)}</b><br><span class="y">${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''}</span></td>
           <td><b>${t.method}</b><br><span class="m">${t.ref}</span></td>
-          <td><span class="badge ${t.status.toLowerCase()}">${t.status}</span><br><small class="m">${t.audit[t.audit.length-1].time}</small></td>
+          <td>
+            <span class="badge ${t.status.toLowerCase()}">${t.status}</span>
+            ${t.adminNote ? `<br><span class="note-tag ${t.status==='REJECTED'?'rej':'app'}">Note: ${t.adminNote}</span>` : ''}
+          </td>
           <td>${t.status==='PENDING' ? `
-            <button class="btn-em" style="padding:4px 8px" onclick="adminAct('${t.id}','APPROVED')">Approve</button>
-            <button class="btn-dk" style="padding:4px 8px;color:var(--r)" onclick="adminAct('${t.id}','REJECTED')">Reject</button>
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:190px">
+              <input id="note_${t.id}" placeholder="Write note / reject reason..." style="padding:4px 7px;font-size:11px">
+              <div style="display:flex;gap:5px">
+                <button class="btn-em" style="flex:1;padding:4px 8px" onclick="adminAct('${t.id}','APPROVED')">Approve</button>
+                <button class="btn-dk" style="flex:1;padding:4px 8px;color:var(--r)" onclick="adminAct('${t.id}','REJECTED')">Reject</button>
+              </div>
+            </div>
           ` : '<span class="m">Completed</span>'}</td>
         </tr>`).join('') || '<tr><td colspan="7" class="m" style="text-align:center;padding:20px">No transactions yet</td></tr>'}
       </table>`;
     } else if (tab === 'users') {
+      assignSerialNumbers();
       const rate = store.settings.dollarRate || 125;
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Created Time</th><th>Member Info</th><th>Current Balance</th><th>Adjust Member Balance (USD or BDT)</th></tr>
+        <tr><th>Serial No.</th><th>Joined Time</th><th>Member Info</th><th>Current Balance</th><th>Adjust Balance (USD / BDT)</th></tr>
         ${store.users.map(u => `<tr>
+          <td><span class="serial-tag">#${u.serial}</span></td>
           <td>${u.createdAt}</td>
           <td><b>${u.name}</b> <span class="badge ${u.email===ADMIN_EMAIL?'approved':'pending'}">${u.role}</span><br><span class="m">${u.email} · ${u.phone||'N/A'}</span></td>
           <td><b class="g" style="font-size:13px">$${fmt(u.realBal)}</b><br><span class="y">≈ ${fmt(u.realBal * rate, 0)} BDT</span></td>
           <td>
             <div style="display:flex;gap:5px;align-items:center">
-              <input id="adj_${u.email}" type="number" placeholder="Amount" style="width:95px;padding:5px 7px">
+              <input id="adj_${u.email}" type="number" placeholder="Amount" style="width:90px;padding:5px 7px">
               <select id="cur_${u.email}" style="width:72px;padding:5px">
                 <option value="USD">USD ($)</option>
                 <option value="BDT">BDT (৳)</option>
@@ -889,16 +947,19 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
             <input id="setMaxWit" type="number" value="${st.maxWithdraw}">
           </label>
         </div>
-        <button class="big l" onclick="saveAdminSettings()">💾 Save All Payment & Rate Settings</button>
+        <label>Official Telegram Support Link
+          <input id="setTgUrl" value="${st.telegramUrl || 'https://t.me/codexatrade_support'}" placeholder="https://t.me/your_username">
+        </label>
+        <button class="big l" onclick="saveAdminSettings()">💾 Save All Settings</button>
       </div>`;
     } else {
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Backup ID</th><th>Backup Time</th><th>Created By</th><th>Users Count</th><th>Transactions Count</th></tr>
+        <tr><th>Backup ID</th><th>Backup Time</th><th>Created By</th><th>Members Count</th><th>Transactions Count</th></tr>
         ${store.backups.map(b => `<tr>
           <td><b>${b.id}</b></td>
           <td>${b.createdAt}</td>
           <td>${b.createdBy}</td>
-          <td>${b.totalUsers} Users</td>
+          <td>${b.totalUsers} Members</td>
           <td>${b.totalTransactions} Records</td>
         </tr>`).join('') || '<tr><td colspan="5" class="m" style="text-align:center;padding:20px">Click "Cloud Backup" above to save a permanent snapshot</td></tr>'}
       </table>`;
@@ -916,10 +977,12 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       minDeposit: parseFloat($('#setMinDep').value) || 5,
       maxDeposit: parseFloat($('#setMaxDep').value) || 5000,
       minWithdraw: parseFloat($('#setMinWit').value) || 10,
-      maxWithdraw: parseFloat($('#setMaxWit').value) || 5000
+      maxWithdraw: parseFloat($('#setMaxWit').value) || 5000,
+      telegramUrl: $('#setTgUrl').value.trim() || 'https://t.me/codexatrade_support'
     };
+    applyTelegramLink();
     await saveBackup(null, null, true);
-    toast('Payment Numbers, 125 BDT Rate & Min/Max Limits updated live!');
+    toast('All Payment Numbers, Rate, Min/Max & Telegram Link saved!');
   };
 
   window.adjustMemberBal = async function(targetEmail, mode) {
@@ -942,9 +1005,11 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     }
 
     const tNow = nowTime();
+    const noteText = `Admin ${mode === 'add' ? 'Added' : 'Deducted'} ${rawAmt} ${currency}`;
     const adjTx = {
       id: 'ADJ-' + Date.now(),
       ts: Date.now(),
+      userSerial: targetUser.serial || 1,
       email: targetUser.email,
       phone: targetUser.phone || '',
       userName: targetUser.name,
@@ -953,11 +1018,12 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       amount: Number(usdDelta.toFixed(2)),
       bdtAmount: Number((usdDelta * rate).toFixed(0)),
       rateUsed: rate,
-      ref: `Admin ${mode === 'add' ? 'Added' : 'Deducted'} ${rawAmt} ${currency}`,
+      ref: noteText,
       status: 'APPROVED',
+      adminNote: noteText,
       createdAt: tNow,
       audit: [
-        { time: tNow, action: `Admin ${mode === 'add' ? 'added' : 'deducted'} $${fmt(usdDelta)} (${rawAmt} ${currency})`, by: admin.email }
+        { time: tNow, action: noteText, by: admin.email }
       ]
     };
 
@@ -966,7 +1032,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     updateHeaderUI();
     renderAdmin('users');
     renderBottomTable();
-    toast(`Adjusted ${targetUser.name}'s balance (${mode === 'add' ? '+' : '-'}$${fmt(usdDelta)})!`);
+    toast(`Adjusted #${targetUser.serial} ${targetUser.name}'s balance!`);
   };
 
   window.adminAct = async function(txId, decision) {
@@ -974,20 +1040,28 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     if (!admin || admin.email !== ADMIN_EMAIL) return;
     const tx = store.transactions.find(x => x.id === txId);
     if (!tx || tx.status !== 'PENDING') return;
+
+    const noteInput = document.getElementById('note_' + txId);
+    const noteVal = noteInput ? noteInput.value.trim() : '';
+    if (decision === 'REJECTED' && !noteVal) {
+      return toast('Reject করার কারণ (Admin Note) লিখুন!', true);
+    }
+
     const targetUser = store.users.find(u => u.email === tx.email);
     const tNow = nowTime();
 
     tx.status = decision;
+    tx.adminNote = noteVal || (decision === 'APPROVED' ? 'Verified & Approved' : 'Rejected by Admin');
     if (targetUser) {
       if (tx.type === 'DEPOSIT' && decision === 'APPROVED') targetUser.realBal = Number((targetUser.realBal + tx.amount).toFixed(2));
       if (tx.type === 'WITHDRAW' && decision === 'REJECTED') targetUser.realBal = Number((targetUser.realBal + tx.amount).toFixed(2));
     }
-    tx.audit.push({ time: tNow, action: `Admin marked ${tx.type} as ${decision}`, by: admin.email });
+    tx.audit.push({ time: tNow, action: `Admin ${decision}: ${tx.adminNote}`, by: admin.email });
     await saveBackup(tx, targetUser);
     updateHeaderUI();
     renderAdmin('tx');
     renderBottomTable();
-    toast(`Transaction ${decision} & Cloud Backup updated!`);
+    toast(`Transaction ${decision} with Note!`);
   };
 
   window.closeModals = function() {
@@ -1094,7 +1168,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     const u = getCurrentUser();
     const visibleTx = store.transactions.filter(t => !u || u.email===ADMIN_EMAIL || t.email===u.email);
     $('#tPos').textContent = `Positions (${pos.length})`;
-    $('#tAudit').textContent = `Deposit & Withdraw Audit Log (${visibleTx.length})`;
+    $('#tAudit').textContent = `Deposit & Withdraw History / Admin Note (${visibleTx.length})`;
 
     if (btab === 'pos') {
       $('#pt').innerHTML = `<tr><th>Pair</th><th>Side</th><th>Amount</th><th>Entry</th><th>Current</th><th>PnL</th><th>Action</th></tr>` +
@@ -1104,12 +1178,15 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
           return `<tr><td><b>${p.sym}</b></td><td class="${p.side==='L'?'g':'r'}">${p.side==='L'?'LONG':'SHORT'} ${p.lev}x</td><td>$${fmt(p.amt)}</td><td>$${fmt(p.entry)}</td><td>$${fmt(cur)}</td><td class="${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${fmt(pnl)}</td><td><button class="btn-dk" style="padding:2px 8px" onclick="closeTrade(${i})">Close</button></td></tr>`;
         }).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No open positions</td></tr>');
     } else {
-      $('#pt').innerHTML = `<tr><th>Timestamp</th><th>User</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status</th><th>Latest Audit Note</th></tr>` +
+      $('#pt').innerHTML = `<tr><th>Timestamp</th><th>Member</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status</th><th>Admin Note / Reason</th></tr>` +
         (visibleTx.length ? visibleTx.map(t => `<tr>
-          <td>${t.createdAt}</td><td>${t.userName} (${t.email})</td><td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
-          <td><b>$${fmt(t.amount)}</b> <span class="y">(${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''})</span></td><td>${t.method} (${t.ref})</td>
+          <td>${t.createdAt}</td>
+          <td><span class="serial-tag">#${t.userSerial || '?'}</span> ${t.userName}</td>
+          <td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
+          <td><b>$${fmt(t.amount)}</b> <span class="y">(${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''})</span></td>
+          <td>${t.method} (${t.ref})</td>
           <td><span class="badge ${t.status.toLowerCase()}">${t.status}</span></td>
-          <td class="m">${t.audit[t.audit.length-1].action}</td>
+          <td>${t.adminNote ? `<span class="note-tag ${t.status==='REJECTED'?'rej':'app'}">${t.adminNote}</span>` : '<span class="m">Waiting for admin review</span>'}</td>
         </tr>`).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No deposit/withdraw records yet</td></tr>');
     }
   }
