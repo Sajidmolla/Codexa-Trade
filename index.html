@@ -9,8 +9,8 @@
 *{box-sizing:border-box}html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--t);font:12px/1.4 "IBM Plex Sans",-apple-system,"Segoe UI",Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
 button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
-input,select{font:inherit;color:var(--t);background:#0c111a;border:1px solid var(--bd);border-radius:6px;padding:8px 10px;outline:none;width:100%}
-input:focus,select:focus{border-color:var(--em)}
+input,select,textarea{font:inherit;color:var(--t);background:#0c111a;border:1px solid var(--bd);border-radius:6px;padding:8px 10px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--em)}
 input:disabled{background:#080b11;color:#64748b;border-color:#161e2c;cursor:not-allowed}
 .g{color:var(--em)}.r{color:var(--r)}.m{color:var(--m)}.y{color:var(--y)}
 
@@ -110,31 +110,35 @@ footer b{color:var(--t)}
 /* Modals */
 .modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:14px}
 .modal-bg.open{display:grid}
-.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:560px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
-.modal.wide{max-width:1150px}
+.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:600px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
+.modal.wide{max-width:1200px}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
 .mh h3{margin:0;font-size:16px}
 .fgrid{display:flex;flex-direction:column;gap:10px}
 .fgrid label{display:flex;flex-direction:column;gap:4px;color:var(--m)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .pay-card{background:#0a1917;border:1px solid #14533c;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
 .rate-pill{background:#0b1019;border:1px solid var(--bd);border-radius:7px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
 .lock-note{font-size:11px;color:#64748b;background:#090d14;border:1px solid var(--bd);padding:8px 10px;border-radius:6px}
+.kyc-req-box{background:#0a1726;border:1px solid #1e3a5f;border-radius:8px;padding:11px 13px;font-size:11.5px;line-height:1.55;color:#cbd5e1}
+.kyc-req-box b{color:var(--em)}
+.kyc-req-warn{margin-top:6px;padding:6px 9px;border-radius:5px;background:#2d1f07;border:1px solid #78530c;color:#fde68a;font-size:11px}
 .audit-box{margin-top:14px;background:#090d14;border:1px solid var(--bd);border-radius:7px;padding:10px;max-height:200px;overflow:auto}
 .audit-item{padding:7px 0;border-bottom:1px solid #161f2e;font-size:11px}
 .audit-item:last-child{border-bottom:0}
 .note-tag{display:inline-block;margin-top:3px;padding:2px 7px;border-radius:4px;background:#1e293b;color:#f8fafc;font-size:11px}
 .note-tag.rej{background:#33121a;color:#fda4af;border:1px solid #7f1d1d}
 .note-tag.app{background:#0a291e;color:#6ee7b7;border:1px solid #14533c}
-.kyc-preview{width:100%;height:110px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);background:#080c12;margin-top:4px;cursor:pointer}
-.kyc-thumb{width:54px;height:36px;object-fit:cover;border-radius:4px;border:1px solid var(--bd);cursor:pointer;transition:transform .15s}
-.kyc-thumb:hover{transform:scale(1.1);border-color:var(--em)}
+.kyc-preview{width:100%;height:96px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);background:#080c12;margin-top:4px;cursor:pointer}
+.kyc-thumb{width:46px;height:34px;object-fit:cover;border-radius:4px;border:1px solid var(--bd);cursor:pointer;transition:transform .15s}
+.kyc-thumb:hover{transform:scale(1.12);border-color:var(--em)}
 .img-zoom-bg{display:none;position:fixed;inset:0;background:#000d;z-index:120;place-items:center;padding:20px}
 .img-zoom-bg.open{display:grid}
 .img-zoom-bg img{max-width:95vw;max-height:90vh;border-radius:8px;border:2px solid var(--em)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:100;box-shadow:0 8px 25px #000a}
 .toast.r{border-left-color:var(--r)}
-@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2{grid-template-columns:1fr}footer{flex-direction:column;height:auto;padding:8px;gap:4px;text-align:center}}
+@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2,.row3{grid-template-columns:1fr}footer{flex-direction:column;height:auto;padding:8px;gap:4px;text-align:center}}
 </style>
 </head>
 <body>
@@ -303,40 +307,64 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- KYC Verification Modal (User Document & Photo Submission) -->
+<!-- KYC Verification Modal (Full Bangla Requirements: NID Front/Back, Live Selfie, DOB, Present & Permanent Address, Active Email) -->
 <div class="modal-bg" id="kycModal">
   <div class="modal">
     <div class="mh">
-      <h3>🪪 Identity Verification (KYC)</h3>
+      <h3>🪪 KYC Verification Requirements</h3>
       <button onclick="closeModals()">✕</button>
     </div>
+
     <div id="kycStatusBanner" class="rate-pill" style="margin-bottom:10px"></div>
     <div id="kycNoteBanner" style="display:none;margin-bottom:10px"></div>
 
+    <!-- Bangla Requirements Instruction Card -->
+    <div class="kyc-req-box" style="margin-bottom:12px">
+      <div><b>১. জাতীয় পরিচয়পত্র (NID):</b> NID কার্ডের সামনের ও পেছনের পরিষ্কার ছবি এবং NID নম্বর।</div>
+      <div><b>২. Selfie Verification:</b> ক্যামেরা দিয়ে তোলা নিজের সাম্প্রতিক পরিষ্কার ছবি।</div>
+      <div><b>৩. জন্মতারিখ ও ঠিকানা:</b> জাতীয় পরিচয়পত্র অনুযায়ী সঠিক জন্মতারিখ, বর্তমান ও স্থায়ী ঠিকানা এবং একটি সচল ইমেইল অ্যাড্রেস।</div>
+      <div class="kyc-req-warn">⚠️ <b>গুরুত্বপূর্ণ:</b> KYC সম্পন্ন করার সময় সব তথ্য ও ডকুমেন্ট অবশ্যই সঠিক, পরিষ্কার এবং আসল হতে হবে।</div>
+    </div>
+
     <div id="kycFormWrap" class="fgrid">
       <div class="row2">
-        <label>Document Type *
-          <select id="kycDocType">
-            <option value="NID Card">National ID (NID Card)</option>
-            <option value="Passport">Passport</option>
-            <option value="Driving License">Driving License</option>
-          </select>
+        <label>জাতীয় পরিচয়পত্র (NID) নম্বর *
+          <input id="kycNidNum" placeholder="NID নাম্বার লিখুন">
         </label>
-        <label>Document Number *
-          <input id="kycDocNum" placeholder="Enter NID / Passport No.">
+        <label>জন্মতারিখ (NID অনুযায়ী) *
+          <input id="kycDob" type="date">
         </label>
       </div>
+
+      <label>সচল ইমেইল অ্যাড্রেস (Active Email) *
+        <input id="kycEmail" type="email" placeholder="example@gmail.com">
+      </label>
+
       <div class="row2">
-        <label>Front Side Photo *
-          <input type="file" id="kycFrontFile" accept="image/*" onchange="previewKycFile(this,'kycFrontPrev')">
+        <label>বর্তমান ঠিকানা (Present Address) *
+          <input id="kycPresentAddr" placeholder="গ্রাম/রোড, থানা, জেলা">
+        </label>
+        <label>স্থায়ী ঠিকানা (Permanent Address) *
+          <input id="kycPermAddr" placeholder="গ্রাম/রোড, থানা, জেলা">
+        </label>
+      </div>
+
+      <div class="row3">
+        <label>NID সামনের ছবি (Front) *
+          <input type="file" accept="image/*" onchange="previewKycFile(this,'kycFrontPrev')">
           <img id="kycFrontPrev" class="kyc-preview" style="display:none" onclick="zoomImage(this.src)">
         </label>
-        <label>Back Side / Selfie Photo *
-          <input type="file" id="kycBackFile" accept="image/*" onchange="previewKycFile(this,'kycBackPrev')">
+        <label>NID পেছনের ছবি (Back) *
+          <input type="file" accept="image/*" onchange="previewKycFile(this,'kycBackPrev')">
           <img id="kycBackPrev" class="kyc-preview" style="display:none" onclick="zoomImage(this.src)">
         </label>
+        <label>Selfie ছবি (ক্যামেরা/সাম্প্রতিক) *
+          <input type="file" accept="image/*" capture="user" onchange="previewKycFile(this,'kycSelfiePrev')">
+          <img id="kycSelfiePrev" class="kyc-preview" style="display:none" onclick="zoomImage(this.src)">
+        </label>
       </div>
-      <button class="big l" id="kycSubmitBtn" onclick="submitKyc()">Submit KYC for Verification</button>
+
+      <button class="big l" id="kycSubmitBtn" onclick="submitKyc()">Submit KYC Verification</button>
     </div>
   </div>
 </div>
@@ -499,7 +527,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -525,7 +553,7 @@ footer b{color:var(--t)}
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v9') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v10') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -552,7 +580,7 @@ footer b{color:var(--t)}
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -576,7 +604,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -589,7 +617,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open')) {
         if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
@@ -602,7 +630,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -613,7 +641,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -633,7 +661,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -662,14 +690,15 @@ footer b{color:var(--t)}
     d.className = 'toast' + (isErr ? ' r' : '');
     d.textContent = msg;
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), 3200);
+    setTimeout(() => d.remove(), 3400);
   }
 
   /* =====================================================================
-     KYC AUTO-COMPRESS IMAGE ENGINE & VERIFICATION FLOW
+     KYC AUTO-COMPRESS IMAGE ENGINE & FULL BANGLA REQUIREMENTS FLOW
      ===================================================================== */
   let kycFrontData = '';
   let kycBackData = '';
+  let kycSelfieData = '';
 
   function compressImageFile(file) {
     return new Promise((resolve, reject) => {
@@ -678,13 +707,13 @@ footer b{color:var(--t)}
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const maxW = 720;
+          const maxW = 640;
           const scale = Math.min(1, maxW / img.width);
           canvas.width = Math.round(img.width * scale);
           canvas.height = Math.round(img.height * scale);
           const c = canvas.getContext('2d');
           c.drawImage(img, 0, 0, canvas.width, canvas.height);
-          resolve(canvas.toDataURL('image/jpeg', 0.68));
+          resolve(canvas.toDataURL('image/jpeg', 0.65));
         };
         img.onerror = reject;
         img.src = ev.target.result;
@@ -701,11 +730,12 @@ footer b{color:var(--t)}
       const compressed = await compressImageFile(file);
       if (prevId === 'kycFrontPrev') kycFrontData = compressed;
       if (prevId === 'kycBackPrev') kycBackData = compressed;
+      if (prevId === 'kycSelfiePrev') kycSelfieData = compressed;
       const imgEl = document.getElementById(prevId);
       imgEl.src = compressed;
       imgEl.style.display = 'block';
     } catch (_) {
-      toast('Failed to process image file', true);
+      toast('ছবি প্রসেস করা যায়নি, অন্য ছবি দিন', true);
     }
   };
 
@@ -733,40 +763,60 @@ footer b{color:var(--t)}
 
     if (st === 'VERIFIED' || st === 'PENDING') {
       $('#kycFormWrap').style.display = 'none';
-      if (u.kycFront) {
-        $('#kycStatusBanner').innerHTML += `<div style="display:flex;gap:6px"><img src="${u.kycFront}" class="kyc-thumb" onclick="zoomImage(this.src)"><img src="${u.kycBack}" class="kyc-thumb" onclick="zoomImage(this.src)"></div>`;
+      if (u.kycFront || u.kycSelfie) {
+        $('#kycStatusBanner').innerHTML += `<div style="display:flex;gap:5px">
+          ${u.kycFront ? `<img src="${u.kycFront}" class="kyc-thumb" onclick="zoomImage(this.src)" title="NID Front">` : ''}
+          ${u.kycBack ? `<img src="${u.kycBack}" class="kyc-thumb" onclick="zoomImage(this.src)" title="NID Back">` : ''}
+          ${u.kycSelfie ? `<img src="${u.kycSelfie}" class="kyc-thumb" onclick="zoomImage(this.src)" title="Selfie">` : ''}
+        </div>`;
       }
     } else {
       $('#kycFormWrap').style.display = 'flex';
+      $('#kycEmail').value = u.email || '';
       kycFrontData = '';
       kycBackData = '';
+      kycSelfieData = '';
       $('#kycFrontPrev').style.display = 'none';
       $('#kycBackPrev').style.display = 'none';
+      $('#kycSelfiePrev').style.display = 'none';
     }
   };
 
   window.submitKyc = async function() {
     const u = getCurrentUser();
     if (!u) return;
-    const docType = $('#kycDocType').value;
-    const docNum = $('#kycDocNum').value.trim();
-    if (!docNum) return toast('আপনার Document Number লিখুন!', true);
-    if (!kycFrontData || !kycBackData) return toast('Front এবং Back/Selfie দুটি ছবিই আপলোড করুন!', true);
+    const nidNum = $('#kycNidNum').value.trim();
+    const dob = $('#kycDob').value;
+    const activeEmail = $('#kycEmail').value.trim();
+    const presentAddr = $('#kycPresentAddr').value.trim();
+    const permAddr = $('#kycPermAddr').value.trim();
+
+    if (!nidNum) return toast('জাতীয় পরিচয়পত্র (NID) নম্বর দিন!', true);
+    if (!dob) return toast('NID অনুযায়ী সঠিক জন্মতারিখ দিন!', true);
+    if (!activeEmail || !activeEmail.includes('@')) return toast('একটি সচল ইমেইল অ্যাড্রেস দিন!', true);
+    if (!presentAddr || !permAddr) return toast('বর্তমান ও স্থায়ী ঠিকানা সঠিকভাবে লিখুন!', true);
+    if (!kycFrontData || !kycBackData) return toast('NID কার্ডের সামনের ও পেছনের পরিষ্কার ছবি দিন!', true);
+    if (!kycSelfieData) return toast('ক্যামেরা দিয়ে তোলা নিজের সাম্প্রতিক Selfie ছবি দিন!', true);
 
     const btn = $('#kycSubmitBtn');
     btn.disabled = true;
     try {
       u.kycStatus = 'PENDING';
-      u.kycDocType = docType;
-      u.kycDocNum = docNum;
+      u.kycDocType = 'NID Card';
+      u.kycDocNum = nidNum;
+      u.kycDob = dob;
+      u.kycActiveEmail = activeEmail;
+      u.kycPresentAddr = presentAddr;
+      u.kycPermAddr = permAddr;
       u.kycFront = kycFrontData;
       u.kycBack = kycBackData;
+      u.kycSelfie = kycSelfieData;
       u.kycSubmittedAt = nowTime();
       u.kycAdminNote = '';
       await saveBackup(null, u);
       updateHeaderUI();
       openKyc();
-      toast('KYC Documents submitted! Waiting for Admin approval.');
+      toast('KYC তথ্য ও ডকুমেন্ট সফলভাবে জমা হয়েছে! অ্যাডমিন যাচাইয়ের পর Approved হবে।');
     } finally {
       btn.disabled = false;
     }
@@ -1326,7 +1376,7 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v9', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v10', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
@@ -1474,7 +1524,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (Transactions, KYC Verification, Members, Settings)
+     ADMIN CONTROL PANEL (Full KYC Details: NID, DOB, Present/Perm Address, Selfie)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -1517,14 +1567,23 @@ footer b{color:var(--t)}
     } else if (tab === 'kyc') {
       const kycList = store.users.filter(u => u.kycDocNum || u.kycStatus === 'PENDING' || u.kycStatus === 'VERIFIED' || u.kycStatus === 'REJECTED');
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Member</th><th>Document Info</th><th>Photos (Click to Zoom)</th><th>Status & Note</th><th>KYC Action</th></tr>
+        <tr><th>Member</th><th>NID, DOB & Active Email</th><th>Present & Permanent Address</th><th>NID Front · Back · Selfie</th><th>Status & Note</th><th>KYC Action</th></tr>
         ${kycList.map(u => `<tr>
-          <td><span class="serial-tag">#${u.serial}</span> <b>${u.name}</b><br><span class="m">${u.email} · ${u.phone||''}</span></td>
-          <td><b>${u.kycDocType || 'NID'}</b><br><span class="y">${u.kycDocNum || 'N/A'}</span><br><small class="m">${u.kycSubmittedAt || ''}</small></td>
+          <td><span class="serial-tag">#${u.serial}</span> <b>${u.name}</b><br><span class="m">${u.phone||''}</span><br><small class="m">${u.kycSubmittedAt || ''}</small></td>
           <td>
-            <div style="display:flex;gap:6px">
-              ${u.kycFront ? `<img src="${u.kycFront}" class="kyc-thumb" onclick="zoomImage(this.src)" title="Front Photo">` : ''}
-              ${u.kycBack ? `<img src="${u.kycBack}" class="kyc-thumb" onclick="zoomImage(this.src)" title="Back/Selfie Photo">` : ''}
+            <b>NID:</b> <span class="y">${u.kycDocNum || 'N/A'}</span><br>
+            <b>DOB:</b> <span>${u.kycDob || 'N/A'}</span><br>
+            <b>Email:</b> <span class="m">${u.kycActiveEmail || u.email}</span>
+          </td>
+          <td style="white-space:normal;min-width:180px">
+            <b>বর্তমান:</b> <span class="m">${u.kycPresentAddr || 'N/A'}</span><br>
+            <b>স্থায়ী:</b> <span class="m">${u.kycPermAddr || 'N/A'}</span>
+          </td>
+          <td>
+            <div style="display:flex;gap:5px">
+              ${u.kycFront ? `<img src="${u.kycFront}" class="kyc-thumb" onclick="zoomImage(this.src)" title="NID Front">` : ''}
+              ${u.kycBack ? `<img src="${u.kycBack}" class="kyc-thumb" onclick="zoomImage(this.src)" title="NID Back">` : ''}
+              ${u.kycSelfie ? `<img src="${u.kycSelfie}" class="kyc-thumb" onclick="zoomImage(this.src)" title="Selfie Photo">` : ''}
             </div>
           </td>
           <td>
@@ -1532,7 +1591,7 @@ footer b{color:var(--t)}
             ${u.kycAdminNote ? `<br><span class="note-tag ${u.kycStatus==='REJECTED'?'rej':'app'}">${u.kycAdminNote}</span>` : ''}
           </td>
           <td>
-            <div style="display:flex;flex-direction:column;gap:4px;min-width:190px">
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:180px">
               <input id="kycnote_${u.email}" placeholder="KYC note / reject reason..." style="padding:4px 7px;font-size:11px">
               <div style="display:flex;gap:5px">
                 <button class="btn-em" style="flex:1;padding:4px 8px" onclick="adminKycAct('${u.email}','VERIFIED')">Approve</button>
@@ -1540,7 +1599,7 @@ footer b{color:var(--t)}
               </div>
             </div>
           </td>
-        </tr>`).join('') || '<tr><td colspan="5" class="m" style="text-align:center;padding:24px">No KYC submissions yet</td></tr>'}
+        </tr>`).join('') || '<tr><td colspan="6" class="m" style="text-align:center;padding:24px">No KYC submissions yet</td></tr>'}
       </table>`;
     } else if (tab === 'users') {
       assignSerialNumbers();
@@ -1640,7 +1699,7 @@ footer b{color:var(--t)}
     }
 
     targetUser.kycStatus = decision;
-    targetUser.kycAdminNote = noteVal || (decision === 'VERIFIED' ? 'Identity Verified' : 'Rejected by Admin');
+    targetUser.kycAdminNote = noteVal || (decision === 'VERIFIED' ? 'NID & Selfie Verified' : 'Rejected by Admin');
     await saveBackup(null, targetUser);
     updateHeaderUI();
     renderAdmin('kyc');
