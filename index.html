@@ -96,8 +96,8 @@ th{color:var(--m);font-weight:600;text-align:left;padding:7px 10px;white-space:n
 td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-bottom:1px solid #141c29}
 .badge{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
 .badge.pending{background:#2d1f07;color:var(--y)}
-.badge.approved,.badge.verified{background:#0a291e;color:var(--em)}
-.badge.rejected,.badge.unverified{background:#2c0f16;color:var(--r)}
+.badge.approved,.badge.verified,.badge.active{background:#0a291e;color:var(--em)}
+.badge.rejected,.badge.unverified,.badge.banned{background:#2c0f16;color:var(--r)}
 .serial-tag{background:#152238;border:1px solid #263b5e;color:#60a5fa;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}
 
 /* Bottom Footer & Floating Telegram Support */
@@ -107,11 +107,18 @@ footer b{color:var(--t)}
 .tg-float:hover{transform:translateY(-2px);filter:brightness(1.06)}
 .tg-float svg{width:18px;height:18px;fill:#fff}
 
+/* Banned Member Fullscreen Lock Overlay */
+.ban-screen{display:none;position:fixed;inset:0;background:rgba(6,9,15,.96);z-index:150;place-items:center;padding:18px;backdrop-filter:blur(6px)}
+.ban-screen.open{display:grid}
+.ban-card{background:#111622;border:1px solid #7f1d1d;border-top:4px solid var(--r);border-radius:12px;width:100%;max-width:480px;padding:24px;text-align:center;box-shadow:0 25px 60px #000e}
+.ban-icon{width:56px;height:56px;border-radius:50%;background:#2c0f16;border:1px solid #991b1b;color:var(--r);font-size:26px;display:grid;place-items:center;margin:0 auto 12px}
+.ban-reason-box{background:#1c0b10;border:1px solid #7f1d1d;border-radius:8px;padding:12px;margin:14px 0;text-align:left;color:#fecaca;font-size:12.5px;line-height:1.5}
+
 /* Modals */
 .modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:14px}
 .modal-bg.open{display:grid}
 .modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:600px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
-.modal.wide{max-width:1200px}
+.modal.wide{max-width:1260px}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
 .mh h3{margin:0;font-size:16px}
 .fgrid{display:flex;flex-direction:column;gap:10px}
@@ -136,7 +143,7 @@ footer b{color:var(--t)}
 .img-zoom-bg{display:none;position:fixed;inset:0;background:#000d;z-index:120;place-items:center;padding:20px}
 .img-zoom-bg.open{display:grid}
 .img-zoom-bg img{max-width:95vw;max-height:90vh;border-radius:8px;border:2px solid var(--em)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:100;box-shadow:0 8px 25px #000a}
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:180;box-shadow:0 8px 25px #000a}
 .toast.r{border-left-color:var(--r)}
 @media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2,.row3{grid-template-columns:1fr}footer{flex-direction:column;height:auto;padding:8px;gap:4px;text-align:center}}
 </style>
@@ -244,6 +251,25 @@ footer b{color:var(--t)}
   <div>Risk Warning: Trading involves significant risk. | <a id="footerTgLink" href="https://t.me/codexatrade_support" target="_blank" style="color:var(--em);text-decoration:none">24/7 Official Telegram Support</a></div>
 </footer>
 
+<!-- Banned Member Fullscreen Lock Screen (Shows Exact Ban Reason Written by Admin) -->
+<div class="ban-screen" id="banOverlay">
+  <div class="ban-card">
+    <div class="ban-icon">🚫</div>
+    <h2 style="margin:0 0 6px;color:var(--r);font-size:20px">আপনার অ্যাকাউন্টটি ব্যান (BANNED) করা হয়েছে!</h2>
+    <p class="m" style="margin:0">Member: <b id="banMemberInfo" style="color:var(--t)"></b></p>
+    <div class="ban-reason-box">
+      <b style="color:#fda4af;display:block;margin-bottom:4px">📋 ব্যান করার কারণ (Admin Note):</b>
+      <span id="banReasonText">Policy violation</span>
+      <div class="m" style="margin-top:8px;font-size:11px">Banned Time: <span id="banTimeText"></span></div>
+    </div>
+    <p class="m" style="font-size:11.5px;margin-bottom:14px">আপনার অ্যাকাউন্টটি পুনরায় সচল (Unban) করতে চাইলে নিচের টেলিগ্রাম সাপোর্টে যোগাযোগ করুন।</p>
+    <div style="display:flex;gap:10px">
+      <a id="banTgLink" href="https://t.me/codexatrade_support" target="_blank" class="btn-em" style="flex:1;text-decoration:none;text-align:center;padding:10px">💬 Contact Support</a>
+      <button class="btn-dk" style="flex:1;padding:10px" onclick="logoutUser()">Logout</button>
+    </div>
+  </div>
+</div>
+
 <!-- Auth Modal (Sign Up with Name, Phone Number, Gmail & Locked Profile + KYC Status) -->
 <div class="modal-bg" id="authModal">
   <div class="modal">
@@ -307,7 +333,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- KYC Verification Modal (Full Bangla Requirements: NID Front/Back, Live Selfie, DOB, Present & Permanent Address, Active Number & Active Email) -->
+<!-- KYC Verification Modal (Full Bangla Requirements) -->
 <div class="modal-bg" id="kycModal">
   <div class="modal">
     <div class="mh">
@@ -318,7 +344,6 @@ footer b{color:var(--t)}
     <div id="kycStatusBanner" class="rate-pill" style="margin-bottom:10px"></div>
     <div id="kycNoteBanner" style="display:none;margin-bottom:10px"></div>
 
-    <!-- Bangla Requirements Instruction Card -->
     <div class="kyc-req-box" style="margin-bottom:12px">
       <div><b>১. জাতীয় পরিচয়পত্র (NID):</b> NID কার্ডের সামনের ও পেছনের পরিষ্কার ছবি এবং NID নম্বর।</div>
       <div><b>২. Selfie Verification:</b> ক্যামেরা দিয়ে তোলা নিজের সাম্প্রতিক পরিষ্কার ছবি।</div>
@@ -449,7 +474,7 @@ footer b{color:var(--t)}
 <div class="modal-bg" id="adminModal">
   <div class="modal wide">
     <div class="mh">
-      <h3>⚡ Admin Control, KYC Verification & Gateway Settings</h3>
+      <h3>⚡ Admin Control, Member Ban/Unban & Gateway Settings</h3>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-em" style="padding:5px 10px;font-size:11px" onclick="createCloudSnapshot()">☁️ Cloud Backup</button>
         <button class="btn-dk" style="padding:5px 10px;font-size:11px" onclick="downloadJsonBackup()">⬇ Export JSON</button>
@@ -459,7 +484,7 @@ footer b{color:var(--t)}
     <div class="seg">
       <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals</button>
       <button id="aTabKyc" onclick="renderAdmin('kyc')">🪪 KYC Requests</button>
-      <button id="aTabUsers" onclick="renderAdmin('users')">Members Serial & Balance</button>
+      <button id="aTabUsers" onclick="renderAdmin('users')">Members Serial, Ban/Unban & Balance</button>
       <button id="aTabSettings" onclick="renderAdmin('settings')">⚙️ Numbers, Rate & KYC Lock</button>
       <button id="aTabBackups" onclick="renderAdmin('backups')">Cloud Backups</button>
     </div>
@@ -532,7 +557,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -558,7 +583,7 @@ footer b{color:var(--t)}
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v11') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v12') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -572,6 +597,7 @@ footer b{color:var(--t)}
     store.users.forEach((u, idx) => {
       u.serial = idx + 1;
       if (!u.kycStatus) u.kycStatus = 'UNVERIFIED';
+      if (typeof u.isBanned !== 'boolean') u.isBanned = false;
     });
   }
   assignSerialNumbers();
@@ -580,12 +606,13 @@ footer b{color:var(--t)}
     const link = store.settings.telegramUrl || 'https://t.me/codexatrade_support';
     $('#tgSupportBtn').href = link;
     $('#footerTgLink').href = link;
+    $('#banTgLink').href = link;
   }
   applyTelegramLink();
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -609,7 +636,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -622,7 +649,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open')) {
         if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
@@ -635,7 +662,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -646,7 +673,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -666,7 +693,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -696,6 +723,24 @@ footer b{color:var(--t)}
     d.textContent = msg;
     document.body.appendChild(d);
     setTimeout(() => d.remove(), 3400);
+  }
+
+  /* =====================================================================
+     BAN ENFORCEMENT CHECK (Shows Ban Reason Screen Instantly to Banned User)
+     ===================================================================== */
+  function enforceBanCheck() {
+    const u = getCurrentUser();
+    const banScreen = $('#banOverlay');
+    if (u && u.isBanned && u.email.toLowerCase() !== ADMIN_EMAIL) {
+      $('#banMemberInfo').textContent = `#${u.serial || 1} ${u.name} (${u.email})`;
+      $('#banReasonText').textContent = u.banReason || 'Account suspended by Administrator.';
+      $('#banTimeText').textContent = u.bannedAt || 'N/A';
+      banScreen.classList.add('open');
+      return true;
+    } else {
+      banScreen.classList.remove('open');
+      return false;
+    }
   }
 
   /* =====================================================================
@@ -751,6 +796,7 @@ footer b{color:var(--t)}
   };
 
   window.openKyc = function() {
+    if (enforceBanCheck()) return;
     const u = getCurrentUser();
     if (!u) { toast('Please Login or Sign Up first!', true); return openAuth(); }
     $('#kycModal').classList.add('open');
@@ -789,6 +835,7 @@ footer b{color:var(--t)}
   };
 
   window.submitKyc = async function() {
+    if (enforceBanCheck()) return;
     const u = getCurrentUser();
     if (!u) return;
     const nidNum = $('#kycNidNum').value.trim();
@@ -1228,6 +1275,7 @@ footer b{color:var(--t)}
      AUTHENTICATION & SERIAL NUMBER ASSIGNMENT
      ===================================================================== */
   function updateHeaderUI() {
+    enforceBanCheck();
     const u = getCurrentUser();
     const isAdmin = (u && u.email.toLowerCase() === ADMIN_EMAIL) || (store.currentUserEmail === ADMIN_EMAIL);
     $('#adminBtn').classList.toggle('show', !!isAdmin);
@@ -1308,6 +1356,9 @@ footer b{color:var(--t)}
           phone,
           email,
           realBal: 0,
+          isBanned: false,
+          banReason: '',
+          bannedAt: '',
           kycStatus: email === ADMIN_EMAIL ? 'VERIFIED' : 'UNVERIFIED',
           createdAt: nowTime(),
           role: email === ADMIN_EMAIL ? 'ADMIN' : 'USER'
@@ -1339,6 +1390,9 @@ footer b{color:var(--t)}
                 phone: 'N/A',
                 email: store.currentUserEmail,
                 realBal: 0,
+                isBanned: false,
+                banReason: '',
+                bannedAt: '',
                 kycStatus: store.currentUserEmail === ADMIN_EMAIL ? 'VERIFIED' : 'UNVERIFIED',
                 createdAt: nowTime(),
                 role: store.currentUserEmail === ADMIN_EMAIL ? 'ADMIN' : 'USER'
@@ -1353,7 +1407,12 @@ footer b{color:var(--t)}
           store.currentUserEmail = found.email;
         }
         await saveBackup();
-        toast(`Welcome back!`);
+        const loggedU = getCurrentUser();
+        if (loggedU && loggedU.isBanned) {
+          toast('আপনার অ্যাকাউন্টটি ব্যান করা হয়েছে!', true);
+        } else {
+          toast(`Welcome back!`);
+        }
       }
       closeModals();
       updateHeaderUI();
@@ -1369,6 +1428,7 @@ footer b{color:var(--t)}
   };
 
   window.updateUserName = async function() {
+    if (enforceBanCheck()) return;
     const u = getCurrentUser();
     if (!u) return;
     const newName = $('#editUserName').value.trim();
@@ -1385,16 +1445,17 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v11', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v12', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
   };
 
   /* =====================================================================
-     DEPOSIT & WITHDRAW (WITH OPTIONAL ADMIN KYC LOCK ON WITHDRAW)
+     DEPOSIT & WITHDRAW
      ===================================================================== */
   window.openWallet = function(tab) {
+    if (enforceBanCheck()) return;
     const u = getCurrentUser();
     if (!u) { toast('Please Login or Sign Up first!', true); return openAuth(); }
     walletTab = tab;
@@ -1442,6 +1503,7 @@ footer b{color:var(--t)}
   };
 
   window.submitWalletTx = async function() {
+    if (enforceBanCheck()) return;
     const u = getCurrentUser();
     if (!u) return;
     const st = store.settings;
@@ -1533,7 +1595,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (Full KYC Details: NID, DOB, Active Phone/Email, Address, Selfie)
+     ADMIN CONTROL PANEL (With Member Ban / Unban & Mandatory Ban Reason Note)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -1615,22 +1677,37 @@ footer b{color:var(--t)}
       assignSerialNumbers();
       const rate = store.settings.dollarRate || 125;
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Serial</th><th>Joined Time</th><th>Member Info & KYC</th><th>Current Balance</th><th>Adjust Balance (USD / BDT)</th></tr>
+        <tr><th>Serial</th><th>Member Info & Status</th><th>Current Balance</th><th>Adjust Balance (USD / BDT)</th><th>Ban / Unban Control (With Note)</th></tr>
         ${store.users.map(u => `<tr>
-          <td><span class="serial-tag">#${u.serial}</span></td>
-          <td>${u.createdAt}</td>
-          <td><b>${u.name}</b> <span class="badge ${(u.kycStatus||'unverified').toLowerCase()}">KYC: ${u.kycStatus||'UNVERIFIED'}</span><br><span class="m">${u.email} · ${u.phone||'N/A'}</span></td>
+          <td><span class="serial-tag">#${u.serial}</span><br><small class="m">${u.createdAt}</small></td>
+          <td>
+            <b>${u.name}</b>
+            <span class="badge ${u.isBanned ? 'banned' : 'active'}">${u.isBanned ? '🚫 BANNED' : 'ACTIVE'}</span>
+            <span class="badge ${(u.kycStatus||'unverified').toLowerCase()}">KYC: ${u.kycStatus||'UNVERIFIED'}</span>
+            <br><span class="m">${u.email} · ${u.phone||'N/A'}</span>
+            ${u.isBanned && u.banReason ? `<br><span class="note-tag rej">Ban Reason: ${u.banReason}</span>` : ''}
+          </td>
           <td><b class="g" style="font-size:13px">$${fmt(u.realBal)}</b><br><span class="y">≈ ${fmt(u.realBal * rate, 0)} BDT</span></td>
           <td>
             <div style="display:flex;gap:5px;align-items:center">
-              <input id="adj_${u.email}" type="number" placeholder="Amount" style="width:90px;padding:5px 7px">
-              <select id="cur_${u.email}" style="width:72px;padding:5px">
-                <option value="USD">USD ($)</option>
-                <option value="BDT">BDT (৳)</option>
+              <input id="adj_${u.email}" type="number" placeholder="Amount" style="width:82px;padding:5px 7px">
+              <select id="cur_${u.email}" style="width:68px;padding:5px">
+                <option value="USD">USD</option>
+                <option value="BDT">BDT</option>
               </select>
-              <button class="btn-em" style="padding:5px 9px" onclick="adjustMemberBal('${u.email}','add')">+ Add</button>
-              <button class="btn-dk" style="padding:5px 9px;color:var(--r)" onclick="adjustMemberBal('${u.email}','sub')">− Cut</button>
+              <button class="btn-em" style="padding:5px 8px" onclick="adjustMemberBal('${u.email}','add')">+ Add</button>
+              <button class="btn-dk" style="padding:5px 8px;color:var(--r)" onclick="adjustMemberBal('${u.email}','sub')">− Cut</button>
             </div>
+          </td>
+          <td>
+            ${u.email === ADMIN_EMAIL ? '<span class="y">Super Admin</span>' : (
+              u.isBanned
+              ? `<button class="btn-em" style="padding:5px 12px" onclick="toggleMemberBan('${u.email}', false)">✅ Unban Member</button>`
+              : `<div style="display:flex;gap:5px;align-items:center">
+                  <input id="ban_note_${u.email}" placeholder="Write ban reason..." style="width:145px;padding:5px 7px;font-size:11px">
+                  <button class="btn-dk" style="padding:5px 10px;color:var(--r);border-color:#7f1d1d" onclick="toggleMemberBan('${u.email}', true)">🚫 Ban</button>
+                </div>`
+            )}
           </td>
         </tr>`).join('')}
       </table>`;
@@ -1693,6 +1770,35 @@ footer b{color:var(--t)}
           <td>${b.totalTransactions} Records</td>
         </tr>`).join('') || '<tr><td colspan="5" class="m" style="text-align:center;padding:20px">Click "Cloud Backup" above to save a permanent snapshot</td></tr>'}
       </table>`;
+    }
+  };
+
+  window.toggleMemberBan = async function(targetEmail, shouldBan) {
+    const admin = getCurrentUser();
+    if (!admin || admin.email !== ADMIN_EMAIL) return;
+    if (targetEmail === ADMIN_EMAIL) return toast('Cannot ban Super Admin!', true);
+    const targetUser = store.users.find(u => u.email === targetEmail);
+    if (!targetUser) return;
+
+    if (shouldBan) {
+      const noteEl = document.getElementById('ban_note_' + targetEmail);
+      const reason = noteEl ? noteEl.value.trim() : '';
+      if (!reason) {
+        return toast('ব্যান করার কারণ (Ban Note) লিখুন!', true);
+      }
+      targetUser.isBanned = true;
+      targetUser.banReason = reason;
+      targetUser.bannedAt = nowTime();
+      await saveBackup(null, targetUser);
+      renderAdmin('users');
+      toast(`Member #${targetUser.serial} (${targetUser.name}) BANNED!`);
+    } else {
+      targetUser.isBanned = false;
+      targetUser.banReason = '';
+      targetUser.bannedAt = '';
+      await saveBackup(null, targetUser);
+      renderAdmin('users');
+      toast(`Member #${targetUser.serial} (${targetUser.name}) UNBANNED!`);
     }
   };
 
@@ -1878,6 +1984,7 @@ footer b{color:var(--t)}
   }
 
   window.placeTrade = function(side) {
+    if (enforceBanCheck()) return;
     const u = getCurrentUser();
     if (accMode === 'real' && !u) { toast('Login required for Real trading!', true); return openAuth(); }
     const amt = parseFloat($('#mg').value) || 0;
@@ -1894,6 +2001,7 @@ footer b{color:var(--t)}
   };
 
   window.closeTrade = function(idx) {
+    if (enforceBanCheck()) return;
     const p = pos[idx];
     const cur = MARKETS.find(m => m.sym === p.sym).price;
     const pnl = (p.side === 'L' ? cur - p.entry : p.entry - cur) / p.entry * p.amt * p.lev;
