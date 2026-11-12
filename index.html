@@ -72,7 +72,7 @@ main{flex:1;min-height:0;position:relative}
 .sr{padding:6px 9px;font-size:14px;border-block:1px solid var(--bd);margin:3px 0}
 
 #tk{grid-column:4;grid-row:1/3;padding:12px;overflow:auto}
-.seg{display:flex;gap:4px;margin-bottom:10px}.seg button{flex:1;padding:6px;background:var(--pn2);border:1px solid var(--bd);border-radius:5px;color:var(--m);font-weight:600}
+.seg{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}.seg button{flex:1;padding:6px 8px;background:var(--pn2);border:1px solid var(--bd);border-radius:5px;color:var(--m);font-weight:600;white-space:nowrap}
 .seg button.on{color:var(--em);border-color:var(--em);background:#0a291e}
 .fl{display:flex;justify-content:space-between;color:var(--m);margin:8px 0 4px}
 .lq{display:flex;gap:4px}.lq button{flex:1;padding:4px;background:var(--pn2);border:1px solid var(--bd);border-radius:4px;color:var(--m)}
@@ -96,19 +96,22 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 /* Modals */
 .modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:14px}
 .modal-bg.open{display:grid}
-.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:520px;max-height:90vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
-.modal.wide{max-width:980px}
+.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:540px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
+.modal.wide{max-width:1040px}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
 .mh h3{margin:0;font-size:16px}
 .fgrid{display:flex;flex-direction:column;gap:10px}
 .fgrid label{display:flex;flex-direction:column;gap:4px;color:var(--m)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-card{background:#0a1917;border:1px solid #14533c;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.rate-pill{background:#0b1019;border:1px solid var(--bd);border-radius:7px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
 .lock-note{font-size:11px;color:#64748b;background:#090d14;border:1px solid var(--bd);padding:8px 10px;border-radius:6px}
-.audit-box{margin-top:14px;background:#090d14;border:1px solid var(--bd);border-radius:7px;padding:10px;max-height:220px;overflow:auto}
+.audit-box{margin-top:14px;background:#090d14;border:1px solid var(--bd);border-radius:7px;padding:10px;max-height:200px;overflow:auto}
 .audit-item{padding:7px 0;border-bottom:1px solid #161f2e;font-size:11px}
 .audit-item:last-child{border-bottom:0}
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:100;box-shadow:0 8px 25px #000a}
 .toast.r{border-left-color:var(--r)}
-@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}}
+@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -258,7 +261,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   </div>
 </div>
 
-<!-- Wallet Modal (Deposit / Withdraw + Audit Option) -->
+<!-- Wallet Modal (bKash / Nagad / Rocket + Live 125 BDT Rate + Min/Max + Audit) -->
 <div class="modal-bg" id="walletModal">
   <div class="modal">
     <div class="mh">
@@ -272,14 +275,39 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     </div>
     <div id="walletForm" class="fgrid">
       <label>Payment Method
-        <select id="wMethod">
-          <option value="Binance Pay / USDT (TRC20)">Binance Pay / USDT (TRC20)</option>
-          <option value="bKash Personal">bKash (017XXXXXXXX)</option>
-          <option value="Nagad Personal">Nagad (018XXXXXXXX)</option>
+        <select id="wMethod" onchange="updateWalletCalc()">
+          <option value="bKash">bKash (Personal · Send Money)</option>
+          <option value="Nagad">Nagad (Personal · Send Money)</option>
+          <option value="Rocket">Rocket (Personal · Send Money)</option>
         </select>
       </label>
-      <label>Amount (USD)<input id="wAmount" type="number" placeholder="Minimum $10" value="50"></label>
-      <label id="wRefLbl">Transaction ID / Sender Number<input id="wRef" placeholder="Enter TxID or Wallet Address"></label>
+
+      <!-- Admin-controlled Payment Number Card (shown in Deposit) -->
+      <div class="pay-card" id="payNumberBox">
+        <div>
+          <span class="m" id="payMethodLbl" style="display:block;font-size:11px">Send Money to bKash Number:</span>
+          <b id="payNumberVal" style="font-size:15px;color:var(--em);letter-spacing:.5px">01737966207</b>
+        </div>
+        <button class="btn-dk" style="padding:5px 10px;font-size:11px" onclick="copyPayNumber()">📋 Copy</button>
+      </div>
+
+      <div class="rate-pill">
+        <span>Dollar Rate: <b class="y" id="lblRate">1 USD = 125 BDT</b></span>
+        <span class="m" id="lblLimits">Min: $5 · Max: $5,000</span>
+      </div>
+
+      <label>Amount (USD)
+        <input id="wAmount" type="number" value="10" oninput="updateWalletCalc()">
+      </label>
+
+      <div class="rate-pill" style="background:#0a1917;border-color:#14533c">
+        <span id="bdtCalcLbl">Total Payable in BDT:</span>
+        <b class="g" style="font-size:14px" id="bdtCalcVal">1,250 BDT</b>
+      </div>
+
+      <label id="wRefLbl">Sender Number / Transaction ID (TrxID)
+        <input id="wRef" placeholder="Enter Sender Number & TrxID">
+      </label>
       <button class="big l" id="wSubmitBtn" onclick="submitWalletTx()">Submit Request</button>
     </div>
     <div class="audit-box">
@@ -293,19 +321,20 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 <div class="modal-bg" id="adminModal">
   <div class="modal wide">
     <div class="mh">
-      <h3>⚡ Admin Control & Encrypted Cloud Backup Vault</h3>
+      <h3>⚡ Admin Control, Gateway Settings & Balance Adjust</h3>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-em" style="padding:5px 10px;font-size:11px" onclick="createCloudSnapshot()">☁️ Create Full Backup Now</button>
+        <button class="btn-em" style="padding:5px 10px;font-size:11px" onclick="createCloudSnapshot()">☁️ Cloud Backup</button>
         <button class="btn-dk" style="padding:5px 10px;font-size:11px" onclick="downloadJsonBackup()">⬇ Export JSON</button>
         <button onclick="closeModals()">✕</button>
       </div>
     </div>
     <div class="seg">
       <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals (Audit)</button>
-      <button id="aTabUsers" onclick="renderAdmin('users')">Registered Users (Name, Gmail, Number & Time)</button>
-      <button id="aTabBackups" onclick="renderAdmin('backups')">Cloud Backup Snapshots</button>
+      <button id="aTabUsers" onclick="renderAdmin('users')">Members & Adjust Balance (TK/USD)</button>
+      <button id="aTabSettings" onclick="renderAdmin('settings')">⚙️ Payment Numbers, Rate & Min/Max</button>
+      <button id="aTabBackups" onclick="renderAdmin('backups')">Cloud Backups</button>
     </div>
-    <div id="adminBody" style="overflow:auto;max-height:60vh"></div>
+    <div id="adminBody" style="overflow:auto;max-height:62vh"></div>
   </div>
 </div>
 
@@ -334,6 +363,17 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   let db = null;
   let auth = null;
 
+  const DEFAULT_SETTINGS = {
+    bkashNumber: '01737966207',
+    nagadNumber: '01737966207',
+    rocketNumber: '01737966207',
+    dollarRate: 125,
+    minDeposit: 5,
+    maxDeposit: 5000,
+    minWithdraw: 10,
+    maxWithdraw: 5000
+  };
+
   async function initSecureCloud() {
     try {
       const res = await fetch('/api/config', { cache: 'no-store' });
@@ -350,7 +390,6 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       onAuthStateChanged(auth, async (fbUser) => {
         if (fbUser && fbUser.email) {
           store.currentUserEmail = fbUser.email.toLowerCase();
-          // Ensure user record exists in Firestore
           const uRef = doc(db, 'codexa_users', store.currentUserEmail);
           const snap = await getDoc(uRef);
           if (snap.exists()) {
@@ -358,7 +397,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
             const idx = store.users.findIndex(x => x.email === uData.email);
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
-          localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -382,19 +421,22 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     {sym:'BNBUSDT',label:'BNB/USDT',name:'BNB',price:645.2,chg:'-0.21%',pay:'90%'}
   ];
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v4') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v5') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
+    settings: { ...DEFAULT_SETTINGS },
     currentUserEmail: null
   };
+  if (!store.settings) store.settings = { ...DEFAULT_SETTINGS };
 
-  async function saveBackup(syncTx=null, syncUser=null) {
-    localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+  async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
+    localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
         if (syncTx) await setDoc(doc(db, 'codexa_transactions', syncTx.id), syncTx, { merge: true });
+        if (syncSettings) await setDoc(doc(db, 'codexa_settings', 'global'), store.settings, { merge: true });
       } catch (err) {
         console.error("Firestore sync error:", err);
         document.querySelector('#cloudStatus span').textContent = 'CHECK FIRESTORE RULES';
@@ -405,13 +447,28 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   function attachFirestoreListeners() {
     if (!db) return;
 
+    // Live Settings Sync (bKash/Nagad/Rocket numbers, Dollar Rate 125 TK, Min/Max)
+    const setRef = doc(db, 'codexa_settings', 'global');
+    getDoc(setRef).then(snap => {
+      if (!snap.exists()) setDoc(setRef, store.settings);
+    }).catch(() => {});
+
+    onSnapshot(setRef, snap => {
+      if (snap.exists()) {
+        store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
+        localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
+        if ($('#walletModal').classList.contains('open')) updateWalletCalc();
+        if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
+      }
+    });
+
     onSnapshot(collection(db, 'codexa_users'), snap => {
       snap.forEach(d => {
         const u = d.data();
         const idx = store.users.findIndex(x => x.email === u.email);
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
-      localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open') && $('#aTabUsers').classList.contains('on')) renderAdmin('users');
     }, () => {
@@ -423,7 +480,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -434,7 +491,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -454,7 +511,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -463,7 +520,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   window.downloadJsonBackup = function() {
     const admin = getCurrentUser();
     if (!admin || admin.email !== ADMIN_EMAIL) return;
-    const blob = new Blob([JSON.stringify({ exportedAt: nowTime(), users: store.users, transactions: store.transactions }, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify({ exportedAt: nowTime(), settings: store.settings, users: store.users, transactions: store.transactions }, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `codexa-backup-${Date.now()}.json`;
@@ -538,16 +595,13 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       if (authMode === 'signup') {
         const name = $('#authName').value.trim();
         const phone = $('#authPhone').value.trim();
-        if (!name || !phone || !email || !pass) {
-          throw new Error('Name, Phone Number, Gmail এবং Password সবগুলো পূরণ করুন!');
-        }
+        if (!name || !phone || !email || !pass) throw new Error('Name, Phone Number, Gmail এবং Password সবগুলো পূরণ করুন!');
         if (!email.includes('@')) throw new Error('সঠিক Gmail / Email দিন!');
         if (pass.length < 6) throw new Error('Password কমপক্ষে ৬ অক্ষরের দিন!');
         if (store.users.some(u => u.phone === phone)) throw new Error('এই Phone Number দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!');
 
         let uid = 'local-' + Date.now();
         if (auth) {
-          // 1. Register user directly inside Firebase Authentication
           const cred = await createUserWithEmailAndPassword(auth, email, pass);
           uid = cred.user.uid;
           await updateProfile(cred.user, { displayName: name });
@@ -570,11 +624,9 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
         if (!email || !pass) throw new Error('Please enter Gmail and password');
 
         if (auth) {
-          // 1. Sign in directly through Firebase Authentication
           const cred = await signInWithEmailAndPassword(auth, email, pass);
           store.currentUserEmail = cred.user.email.toLowerCase();
 
-          // Sync profile from Firestore if not already cached locally
           if (db) {
             const snap = await getDoc(doc(db, 'codexa_users', store.currentUserEmail));
             if (snap.exists()) {
@@ -634,14 +686,14 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v4', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v5', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
   };
 
   /* =====================================================================
-     DEPOSIT, WITHDRAW & AUDIT LOG SYSTEM
+     DEPOSIT & WITHDRAW (bKash / Nagad / Rocket + 125 BDT Rate + Min/Max)
      ===================================================================== */
   window.openWallet = function(tab) {
     const u = getCurrentUser();
@@ -652,24 +704,58 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     $('#wTabWit').classList.toggle('on', tab==='withdraw');
     $('#wTabAud').classList.toggle('on', tab==='audit');
     $('#walletForm').style.display = tab==='audit' ? 'none' : 'flex';
-    $('#walletTitle').textContent = tab==='deposit' ? 'Deposit Funds' : tab==='withdraw' ? 'Withdraw Funds' : 'Transaction Audit Trail';
-    $('#wRefLbl').firstChild.textContent = tab==='deposit' ? 'Transaction ID / Sender Info' : 'Your Receiving Wallet / Account Number';
+    $('#payNumberBox').style.display = tab==='deposit' ? 'flex' : 'none';
+    $('#walletTitle').textContent = tab==='deposit' ? 'Deposit Funds (bKash / Nagad / Rocket)' : tab==='withdraw' ? 'Withdraw Funds' : 'Transaction Audit Trail';
+    $('#wRefLbl').firstChild.textContent = tab==='deposit' ? 'Your Sender Number & TrxID *' : 'Your Personal bKash / Nagad / Rocket Number *';
+    $('#wRef').placeholder = tab==='deposit' ? 'e.g. 017XXXXXXXX · TrxID: 9A7B6C' : 'e.g. 017XXXXXXXX (Personal)';
     $('#wSubmitBtn').textContent = tab==='deposit' ? 'Submit Deposit Request' : 'Submit Withdraw Request';
     $('#wSubmitBtn').className = 'big ' + (tab==='deposit' ? 'l' : 's');
+    updateWalletCalc();
     renderWalletAudit();
+  };
+
+  window.updateWalletCalc = function() {
+    const st = store.settings;
+    const method = $('#wMethod').value;
+    const amt = parseFloat($('#wAmount').value) || 0;
+    const num = method === 'bKash' ? st.bkashNumber : method === 'Nagad' ? st.nagadNumber : st.rocketNumber;
+    $('#payMethodLbl').textContent = `Send Money to ${method} Personal Number:`;
+    $('#payNumberVal').textContent = num;
+
+    const min = walletTab === 'deposit' ? st.minDeposit : st.minWithdraw;
+    const max = walletTab === 'deposit' ? st.maxDeposit : st.maxWithdraw;
+    $('#lblRate').textContent = `1 USD = ${st.dollarRate} BDT`;
+    $('#lblLimits').textContent = `Min: $${min} · Max: $${max}`;
+
+    const bdt = amt * st.dollarRate;
+    $('#bdtCalcLbl').textContent = walletTab === 'deposit' ? 'Total Send Money (BDT):' : 'You Will Receive (BDT):';
+    $('#bdtCalcVal').textContent = `${fmt(bdt)} BDT (${fmt(bdt, 0)} ৳)`;
+  };
+
+  window.copyPayNumber = function() {
+    const num = $('#payNumberVal').textContent;
+    navigator.clipboard.writeText(num);
+    toast(`Copied number: ${num}`);
   };
 
   window.submitWalletTx = async function() {
     const u = getCurrentUser();
     if (!u) return;
+    const st = store.settings;
     const amt = parseFloat($('#wAmount').value);
     const method = $('#wMethod').value;
     const ref = $('#wRef').value.trim();
-    if (!(amt >= 10)) return toast('Minimum amount is $10', true);
-    if (!ref) return toast('Please enter Transaction ID or Wallet details', true);
+
+    const min = walletTab === 'deposit' ? st.minDeposit : st.minWithdraw;
+    const max = walletTab === 'deposit' ? st.maxDeposit : st.maxWithdraw;
+    if (!(amt >= min && amt <= max)) {
+      return toast(`${walletTab.toUpperCase()} limit is $${min} to $${max}!`, true);
+    }
+    if (!ref) return toast('Please enter Sender Number / TrxID or Receiving Number', true);
     if (walletTab === 'withdraw' && amt > u.realBal) return toast('Insufficient Real Balance!', true);
 
     const timeStr = nowTime();
+    const bdtAmount = amt * st.dollarRate;
     if (walletTab === 'withdraw') u.realBal -= amt;
 
     const tx = {
@@ -681,11 +767,13 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
       type: walletTab.toUpperCase(),
       method,
       amount: amt,
+      bdtAmount,
+      rateUsed: st.dollarRate,
       ref,
       status: 'PENDING',
       createdAt: timeStr,
       audit: [
-        { time: timeStr, action: `${walletTab.toUpperCase()} request of $${fmt(amt)} submitted via ${method}`, by: `${u.name} (${u.email})` }
+        { time: timeStr, action: `${walletTab.toUpperCase()} $${fmt(amt)} (${fmt(bdtAmount,0)} BDT @ ${st.dollarRate}৳) via ${method}`, by: `${u.name} (${u.email})` }
       ]
     };
     store.transactions.unshift(tx);
@@ -693,7 +781,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     updateHeaderUI();
     renderWalletAudit();
     renderBottomTable();
-    toast(`${tx.type} request submitted & backed up in Cloud!`);
+    toast(`${tx.type} ($${fmt(amt)} / ${fmt(bdtAmount,0)} BDT) submitted!`);
   };
 
   function renderWalletAudit() {
@@ -703,7 +791,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     $('#walletAuditList').innerHTML = list.length ? list.map(t => `
       <div class="audit-item">
         <div style="display:flex;justify-content:space-between">
-          <b>${t.type} · $${fmt(t.amount)} (${t.method})</b>
+          <b>${t.type} · $${fmt(t.amount)} (${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''}) · ${t.method}</b>
           <span class="badge ${t.status.toLowerCase()}">${t.status}</span>
         </div>
         <div class="m">User: ${t.userName} (${t.email}) | Ref: ${t.ref}</div>
@@ -714,7 +802,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (Strictly restricted to roxi@gmail.com)
+     ADMIN CONTROL PANEL (Payment Numbers, Rate, Min/Max & Member Balance Adjust)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -726,16 +814,18 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
   window.renderAdmin = function(tab) {
     $('#aTabTx').classList.toggle('on', tab==='tx');
     $('#aTabUsers').classList.toggle('on', tab==='users');
+    $('#aTabSettings').classList.toggle('on', tab==='settings');
     $('#aTabBackups').classList.toggle('on', tab==='backups');
+
     if (tab === 'tx') {
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Date & Time</th><th>User & Number</th><th>Type</th><th>Amount</th><th>Method & Ref</th><th>Status & Audit</th><th>Admin Action</th></tr>
+        <tr><th>Date & Time</th><th>User & Number</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status & Audit</th><th>Admin Action</th></tr>
         ${store.transactions.map(t => `<tr>
           <td>${t.createdAt}</td>
           <td><b>${t.userName}</b><br><span class="m">${t.email} · ${t.phone||''}</span></td>
           <td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
-          <td><b>$${fmt(t.amount)}</b></td>
-          <td>${t.method}<br><span class="m">${t.ref}</span></td>
+          <td><b>$${fmt(t.amount)}</b><br><span class="y">${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''}</span></td>
+          <td><b>${t.method}</b><br><span class="m">${t.ref}</span></td>
           <td><span class="badge ${t.status.toLowerCase()}">${t.status}</span><br><small class="m">${t.audit[t.audit.length-1].time}</small></td>
           <td>${t.status==='PENDING' ? `
             <button class="btn-em" style="padding:4px 8px" onclick="adminAct('${t.id}','APPROVED')">Approve</button>
@@ -744,17 +834,63 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
         </tr>`).join('') || '<tr><td colspan="7" class="m" style="text-align:center;padding:20px">No transactions yet</td></tr>'}
       </table>`;
     } else if (tab === 'users') {
+      const rate = store.settings.dollarRate || 125;
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Account Created Time</th><th>Name</th><th>Phone Number</th><th>Gmail</th><th>Role</th><th>Real Balance</th></tr>
+        <tr><th>Created Time</th><th>Member Info</th><th>Current Balance</th><th>Adjust Member Balance (USD or BDT)</th></tr>
         ${store.users.map(u => `<tr>
-          <td><b>${u.createdAt}</b></td>
-          <td><b>${u.name}</b></td>
-          <td>${u.phone || 'N/A'}</td>
-          <td>${u.email}</td>
-          <td><span class="badge ${u.email===ADMIN_EMAIL?'approved':'pending'}">${u.role}</span></td>
-          <td class="g"><b>$${fmt(u.realBal)}</b></td>
+          <td>${u.createdAt}</td>
+          <td><b>${u.name}</b> <span class="badge ${u.email===ADMIN_EMAIL?'approved':'pending'}">${u.role}</span><br><span class="m">${u.email} · ${u.phone||'N/A'}</span></td>
+          <td><b class="g" style="font-size:13px">$${fmt(u.realBal)}</b><br><span class="y">≈ ${fmt(u.realBal * rate, 0)} BDT</span></td>
+          <td>
+            <div style="display:flex;gap:5px;align-items:center">
+              <input id="adj_${u.email}" type="number" placeholder="Amount" style="width:95px;padding:5px 7px">
+              <select id="cur_${u.email}" style="width:72px;padding:5px">
+                <option value="USD">USD ($)</option>
+                <option value="BDT">BDT (৳)</option>
+              </select>
+              <button class="btn-em" style="padding:5px 9px" onclick="adjustMemberBal('${u.email}','add')">+ Add</button>
+              <button class="btn-dk" style="padding:5px 9px;color:var(--r)" onclick="adjustMemberBal('${u.email}','sub')">− Cut</button>
+            </div>
+          </td>
         </tr>`).join('')}
       </table>`;
+    } else if (tab === 'settings') {
+      const st = store.settings;
+      $('#adminBody').innerHTML = `<div class="fgrid" style="max-width:650px;margin:auto;padding:8px">
+        <div class="row2">
+          <label>bKash Personal Number
+            <input id="setBkash" value="${st.bkashNumber}">
+          </label>
+          <label>Nagad Personal Number
+            <input id="setNagad" value="${st.nagadNumber}">
+          </label>
+        </div>
+        <div class="row2">
+          <label>Rocket Personal Number
+            <input id="setRocket" value="${st.rocketNumber}">
+          </label>
+          <label>Dollar Rate (1 USD = ? BDT)
+            <input id="setRate" type="number" value="${st.dollarRate}">
+          </label>
+        </div>
+        <div class="row2">
+          <label>Minimum Deposit (USD)
+            <input id="setMinDep" type="number" value="${st.minDeposit}">
+          </label>
+          <label>Maximum Deposit (USD)
+            <input id="setMaxDep" type="number" value="${st.maxDeposit}">
+          </label>
+        </div>
+        <div class="row2">
+          <label>Minimum Withdraw (USD)
+            <input id="setMinWit" type="number" value="${st.minWithdraw}">
+          </label>
+          <label>Maximum Withdraw (USD)
+            <input id="setMaxWit" type="number" value="${st.maxWithdraw}">
+          </label>
+        </div>
+        <button class="big l" onclick="saveAdminSettings()">💾 Save All Payment & Rate Settings</button>
+      </div>`;
     } else {
       $('#adminBody').innerHTML = `<table>
         <tr><th>Backup ID</th><th>Backup Time</th><th>Created By</th><th>Users Count</th><th>Transactions Count</th></tr>
@@ -764,9 +900,73 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
           <td>${b.createdBy}</td>
           <td>${b.totalUsers} Users</td>
           <td>${b.totalTransactions} Records</td>
-        </tr>`).join('') || '<tr><td colspan="5" class="m" style="text-align:center;padding:20px">Click "Create Full Backup Now" above to save a permanent cloud snapshot</td></tr>'}
+        </tr>`).join('') || '<tr><td colspan="5" class="m" style="text-align:center;padding:20px">Click "Cloud Backup" above to save a permanent snapshot</td></tr>'}
       </table>`;
     }
+  };
+
+  window.saveAdminSettings = async function() {
+    const admin = getCurrentUser();
+    if (!admin || admin.email !== ADMIN_EMAIL) return;
+    store.settings = {
+      bkashNumber: $('#setBkash').value.trim() || '01737966207',
+      nagadNumber: $('#setNagad').value.trim() || '01737966207',
+      rocketNumber: $('#setRocket').value.trim() || '01737966207',
+      dollarRate: parseFloat($('#setRate').value) || 125,
+      minDeposit: parseFloat($('#setMinDep').value) || 5,
+      maxDeposit: parseFloat($('#setMaxDep').value) || 5000,
+      minWithdraw: parseFloat($('#setMinWit').value) || 10,
+      maxWithdraw: parseFloat($('#setMaxWit').value) || 5000
+    };
+    await saveBackup(null, null, true);
+    toast('Payment Numbers, 125 BDT Rate & Min/Max Limits updated live!');
+  };
+
+  window.adjustMemberBal = async function(targetEmail, mode) {
+    const admin = getCurrentUser();
+    if (!admin || admin.email !== ADMIN_EMAIL) return;
+    const targetUser = store.users.find(u => u.email === targetEmail);
+    if (!targetUser) return;
+
+    const rawAmt = parseFloat(document.getElementById('adj_' + targetEmail).value);
+    const currency = document.getElementById('cur_' + targetEmail).value;
+    if (!(rawAmt > 0)) return toast('Enter a valid amount to adjust!', true);
+
+    const rate = store.settings.dollarRate || 125;
+    const usdDelta = currency === 'BDT' ? (rawAmt / rate) : rawAmt;
+
+    if (mode === 'add') {
+      targetUser.realBal = Number((targetUser.realBal + usdDelta).toFixed(2));
+    } else {
+      targetUser.realBal = Math.max(0, Number((targetUser.realBal - usdDelta).toFixed(2)));
+    }
+
+    const tNow = nowTime();
+    const adjTx = {
+      id: 'ADJ-' + Date.now(),
+      ts: Date.now(),
+      email: targetUser.email,
+      phone: targetUser.phone || '',
+      userName: targetUser.name,
+      type: mode === 'add' ? 'DEPOSIT' : 'WITHDRAW',
+      method: 'Admin Adjustment',
+      amount: Number(usdDelta.toFixed(2)),
+      bdtAmount: Number((usdDelta * rate).toFixed(0)),
+      rateUsed: rate,
+      ref: `Admin ${mode === 'add' ? 'Added' : 'Deducted'} ${rawAmt} ${currency}`,
+      status: 'APPROVED',
+      createdAt: tNow,
+      audit: [
+        { time: tNow, action: `Admin ${mode === 'add' ? 'added' : 'deducted'} $${fmt(usdDelta)} (${rawAmt} ${currency})`, by: admin.email }
+      ]
+    };
+
+    store.transactions.unshift(adjTx);
+    await saveBackup(adjTx, targetUser);
+    updateHeaderUI();
+    renderAdmin('users');
+    renderBottomTable();
+    toast(`Adjusted ${targetUser.name}'s balance (${mode === 'add' ? '+' : '-'}$${fmt(usdDelta)})!`);
   };
 
   window.adminAct = async function(txId, decision) {
@@ -779,8 +979,8 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 
     tx.status = decision;
     if (targetUser) {
-      if (tx.type === 'DEPOSIT' && decision === 'APPROVED') targetUser.realBal += tx.amount;
-      if (tx.type === 'WITHDRAW' && decision === 'REJECTED') targetUser.realBal += tx.amount;
+      if (tx.type === 'DEPOSIT' && decision === 'APPROVED') targetUser.realBal = Number((targetUser.realBal + tx.amount).toFixed(2));
+      if (tx.type === 'WITHDRAW' && decision === 'REJECTED') targetUser.realBal = Number((targetUser.realBal + tx.amount).toFixed(2));
     }
     tx.audit.push({ time: tNow, action: `Admin marked ${tx.type} as ${decision}`, by: admin.email });
     await saveBackup(tx, targetUser);
@@ -904,10 +1104,10 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
           return `<tr><td><b>${p.sym}</b></td><td class="${p.side==='L'?'g':'r'}">${p.side==='L'?'LONG':'SHORT'} ${p.lev}x</td><td>$${fmt(p.amt)}</td><td>$${fmt(p.entry)}</td><td>$${fmt(cur)}</td><td class="${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${fmt(pnl)}</td><td><button class="btn-dk" style="padding:2px 8px" onclick="closeTrade(${i})">Close</button></td></tr>`;
         }).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No open positions</td></tr>');
     } else {
-      $('#pt').innerHTML = `<tr><th>Timestamp</th><th>User</th><th>Type</th><th>Amount</th><th>Method & Ref</th><th>Status</th><th>Latest Audit Note</th></tr>` +
+      $('#pt').innerHTML = `<tr><th>Timestamp</th><th>User</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status</th><th>Latest Audit Note</th></tr>` +
         (visibleTx.length ? visibleTx.map(t => `<tr>
           <td>${t.createdAt}</td><td>${t.userName} (${t.email})</td><td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
-          <td><b>$${fmt(t.amount)}</b></td><td>${t.method} (${t.ref})</td>
+          <td><b>$${fmt(t.amount)}</b> <span class="y">(${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''})</span></td><td>${t.method} (${t.ref})</td>
           <td><span class="badge ${t.status.toLowerCase()}">${t.status}</span></td>
           <td class="m">${t.audit[t.audit.length-1].action}</td>
         </tr>`).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No deposit/withdraw records yet</td></tr>');
@@ -922,7 +1122,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     const bal = accMode === 'demo' ? demoBal : u.realBal;
     if (amt <= 0 || amt > bal) return toast('Insufficient balance!', true);
 
-    if (accMode === 'demo') demoBal -= amt; else { u.realBal -= amt; saveBackup(null, u); }
+    if (accMode === 'demo') demoBal -= amt; else { u.realBal = Number((u.realBal - amt).toFixed(2)); saveBackup(null, u); }
     const m = MARKETS.find(x => x.sym === sym);
     pos.push({ sym, side, amt, lev, entry: m.price, mode: accMode });
     updateHeaderUI();
@@ -936,7 +1136,7 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
     const pnl = (p.side === 'L' ? cur - p.entry : p.entry - cur) / p.entry * p.amt * p.lev;
     const ret = Math.max(0, p.amt + pnl);
     if (p.mode === 'demo') demoBal += ret;
-    else { const u = getCurrentUser(); if (u) { u.realBal += ret; saveBackup(null, u); } }
+    else { const u = getCurrentUser(); if (u) { u.realBal = Number((u.realBal + ret).toFixed(2)); saveBackup(null, u); } }
     pos.splice(idx, 1);
     updateHeaderUI();
     renderBottomTable();
