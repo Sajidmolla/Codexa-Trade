@@ -287,7 +287,7 @@ footer b{color:var(--t)}
   </div>
 </div>
 
-<!-- Wallet Modal (bKash / Nagad / Rocket + Live 125 BDT Rate + Min/Max + Admin Note View) -->
+<!-- Wallet Modal (Separate Sender Number & TrxID fields for Deposit) -->
 <div class="modal-bg" id="walletModal">
   <div class="modal">
     <div class="mh">
@@ -296,8 +296,8 @@ footer b{color:var(--t)}
     </div>
     <div class="seg">
       <button id="wTabDep" class="on" onclick="openWallet('deposit')">Deposit</button>
-      <button id="wTabWit" onclick="openWallet('withdraw')">Withdraw</button>
-      <button id="wTabAud" onclick="openWallet('audit')">🔍 History & Admin Note</button>
+      <button id="wTabWit" class="on" onclick="openWallet('withdraw')">Withdraw</button>
+      <button id="wTabAud" class="on" onclick="openWallet('audit')">🔍 History & Admin Note</button>
     </div>
     <div id="walletForm" class="fgrid">
       <label>Payment Method
@@ -330,9 +330,23 @@ footer b{color:var(--t)}
         <b class="g" style="font-size:14px" id="bdtCalcVal">1,250 BDT</b>
       </div>
 
-      <label id="wRefLbl">Sender Number / Transaction ID (TrxID)
-        <input id="wRef" placeholder="Enter Sender Number & TrxID">
-      </label>
+      <!-- Separate Sender Number & TrxID Inputs for Deposit -->
+      <div id="depFieldsWrap" class="row2">
+        <label>Sender Number *
+          <input id="wSenderNum" type="tel" placeholder="017XXXXXXXX">
+        </label>
+        <label>Transaction ID (TrxID) *
+          <input id="wTrxId" placeholder="e.g. 9A7B6C5D">
+        </label>
+      </div>
+
+      <!-- Single Receiving Number Input for Withdraw -->
+      <div id="witFieldWrap" style="display:none">
+        <label>Your Personal bKash / Nagad / Rocket Number *
+          <input id="wWitNum" type="tel" placeholder="017XXXXXXXX">
+        </label>
+      </div>
+
       <button class="big l" id="wSubmitBtn" onclick="submitWalletTx()">Submit Request</button>
     </div>
     <div class="audit-box">
@@ -355,9 +369,9 @@ footer b{color:var(--t)}
     </div>
     <div class="seg">
       <button id="aTabTx" class="on" onclick="renderAdmin('tx')">Deposits & Withdrawals (With Admin Note)</button>
-      <button id="aTabUsers" onclick="renderAdmin('users')">Members Serial List & Balance Adjust</button>
-      <button id="aTabSettings" onclick="renderAdmin('settings')">⚙️ Numbers, Rate, Min/Max & Telegram</button>
-      <button id="aTabBackups" onclick="renderAdmin('backups')">Cloud Backups</button>
+      <button id="aTabUsers" class="on" onclick="renderAdmin('users')">Members Serial List & Balance Adjust</button>
+      <button id="aTabSettings" class="on" onclick="renderAdmin('settings')">⚙️ Numbers, Rate, Min/Max & Telegram</button>
+      <button id="aTabBackups" class="on" onclick="renderAdmin('backups')">Cloud Backups</button>
     </div>
     <div id="adminBody" style="overflow:auto;max-height:62vh"></div>
   </div>
@@ -422,7 +436,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -445,7 +459,7 @@ footer b{color:var(--t)}
     {sym:'BNBUSDT',label:'BNB/USDT',name:'BNB',price:645.2,chg:'-0.21%',pay:'90%'}
   ];
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v6') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v7') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -454,7 +468,6 @@ footer b{color:var(--t)}
   };
   if (!store.settings) store.settings = { ...DEFAULT_SETTINGS };
 
-  // Ensure every member has a strict sequential Serial Number (#1, #2, #3...) sorted by creation order
   function assignSerialNumbers() {
     store.users.sort((a, b) => (a.createdTs || 0) - (b.createdTs || 0));
     store.users.forEach((u, idx) => {
@@ -472,7 +485,7 @@ footer b{color:var(--t)}
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -496,7 +509,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -509,7 +522,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open') && $('#aTabUsers').classList.contains('on')) renderAdmin('users');
     });
@@ -519,7 +532,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -530,7 +543,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -550,7 +563,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -582,9 +595,6 @@ footer b{color:var(--t)}
     setTimeout(() => d.remove(), 3200);
   }
 
-  /* =====================================================================
-     AUTHENTICATION & SERIAL NUMBER ASSIGNMENT
-     ===================================================================== */
   function updateHeaderUI() {
     const u = getCurrentUser();
     const isAdmin = (u && u.email.toLowerCase() === ADMIN_EMAIL) || (store.currentUserEmail === ADMIN_EMAIL);
@@ -731,14 +741,14 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v6', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v7', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
   };
 
   /* =====================================================================
-     DEPOSIT & WITHDRAW + ADMIN NOTE DISPLAY
+     DEPOSIT & WITHDRAW (SEPARATE SENDER NUMBER & TRXID INPUTS)
      ===================================================================== */
   window.openWallet = function(tab) {
     const u = getCurrentUser();
@@ -750,9 +760,9 @@ footer b{color:var(--t)}
     $('#wTabAud').classList.toggle('on', tab==='audit');
     $('#walletForm').style.display = tab==='audit' ? 'none' : 'flex';
     $('#payNumberBox').style.display = tab==='deposit' ? 'flex' : 'none';
+    $('#depFieldsWrap').style.display = tab==='deposit' ? 'grid' : 'none';
+    $('#witFieldWrap').style.display = tab==='withdraw' ? 'block' : 'none';
     $('#walletTitle').textContent = tab==='deposit' ? 'Deposit Funds (bKash / Nagad / Rocket)' : tab==='withdraw' ? 'Withdraw Funds' : 'Transaction History & Admin Notes';
-    $('#wRefLbl').firstChild.textContent = tab==='deposit' ? 'Your Sender Number & TrxID *' : 'Your Personal bKash / Nagad / Rocket Number *';
-    $('#wRef').placeholder = tab==='deposit' ? 'e.g. 017XXXXXXXX · TrxID: 9A7B6C' : 'e.g. 017XXXXXXXX (Personal)';
     $('#wSubmitBtn').textContent = tab==='deposit' ? 'Submit Deposit Request' : 'Submit Withdraw Request';
     $('#wSubmitBtn').className = 'big ' + (tab==='deposit' ? 'l' : 's');
     updateWalletCalc();
@@ -789,15 +799,29 @@ footer b{color:var(--t)}
     const st = store.settings;
     const amt = parseFloat($('#wAmount').value);
     const method = $('#wMethod').value;
-    const ref = $('#wRef').value.trim();
 
     const min = walletTab === 'deposit' ? st.minDeposit : st.minWithdraw;
     const max = walletTab === 'deposit' ? st.maxDeposit : st.maxWithdraw;
     if (!(amt >= min && amt <= max)) {
       return toast(`${walletTab.toUpperCase()} limit is $${min} to $${max}!`, true);
     }
-    if (!ref) return toast('Please enter Sender Number / TrxID or Receiving Number', true);
-    if (walletTab === 'withdraw' && amt > u.realBal) return toast('Insufficient Real Balance!', true);
+
+    let senderNumber = '';
+    let trxId = '';
+    let refCombined = '';
+
+    if (walletTab === 'deposit') {
+      senderNumber = $('#wSenderNum').value.trim();
+      trxId = $('#wTrxId').value.trim();
+      if (!senderNumber) return toast('আপনার Sender Number দিন!', true);
+      if (!trxId) return toast('আপনার Transaction ID (TrxID) দিন!', true);
+      refCombined = `From: ${senderNumber} | TrxID: ${trxId}`;
+    } else {
+      senderNumber = $('#wWitNum').value.trim();
+      if (!senderNumber) return toast('আপনার Personal Receiving Number দিন!', true);
+      if (amt > u.realBal) return toast('Insufficient Real Balance!', true);
+      refCombined = `To: ${senderNumber}`;
+    }
 
     const timeStr = nowTime();
     const bdtAmount = amt * st.dollarRate;
@@ -815,15 +839,20 @@ footer b{color:var(--t)}
       amount: amt,
       bdtAmount,
       rateUsed: st.dollarRate,
-      ref,
+      senderNumber,
+      trxId,
+      ref: refCombined,
       status: 'PENDING',
       adminNote: '',
       createdAt: timeStr,
       audit: [
-        { time: timeStr, action: `${walletTab.toUpperCase()} $${fmt(amt)} (${fmt(bdtAmount,0)} BDT @ ${st.dollarRate}৳) via ${method}`, by: `#${u.serial || 1} ${u.name}` }
+        { time: timeStr, action: `${walletTab.toUpperCase()} $${fmt(amt)} (${fmt(bdtAmount,0)} BDT @ ${st.dollarRate}৳) via ${method} [${refCombined}]`, by: `#${u.serial || 1} ${u.name}` }
       ]
     };
     store.transactions.unshift(tx);
+    if ($('#wSenderNum')) $('#wSenderNum').value = '';
+    if ($('#wTrxId')) $('#wTrxId').value = '';
+    if ($('#wWitNum')) $('#wWitNum').value = '';
     await saveBackup(tx, u);
     updateHeaderUI();
     renderWalletAudit();
@@ -841,7 +870,7 @@ footer b{color:var(--t)}
           <b>${t.type} · $${fmt(t.amount)} (${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''}) · ${t.method}</b>
           <span class="badge ${t.status.toLowerCase()}">${t.status}</span>
         </div>
-        <div class="m">Member #${t.userSerial || '?'} · ${t.userName} | Ref: ${t.ref}</div>
+        <div class="m">Member #${t.userSerial || '?'} · ${t.userName} | ${t.senderNumber ? `Sender: <b>${t.senderNumber}</b>` : ''} ${t.trxId ? `| TrxID: <b class="y">${t.trxId}</b>` : (!t.senderNumber ? t.ref : '')}</div>
         <div class="m">Time: ${t.createdAt}</div>
         ${t.adminNote ? `<div class="note-tag ${t.status==='REJECTED'?'rej':'app'}">📝 Admin Note: ${t.adminNote}</div>` : ''}
         ${t.audit.map(a => `<div style="color:#94a3b8;margin-top:2px">↳ [${a.time}] ${a.action}</div>`).join('')}
@@ -850,7 +879,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     ADMIN CONTROL PANEL (Serial Members, Admin Reject/Approve Note, Settings)
+     ADMIN CONTROL PANEL (Shows Separate Sender Number & TrxID clearly)
      ===================================================================== */
   window.openAdmin = function() {
     const u = getCurrentUser();
@@ -867,13 +896,13 @@ footer b{color:var(--t)}
 
     if (tab === 'tx') {
       $('#adminBody').innerHTML = `<table>
-        <tr><th>Time</th><th>Member (Serial)</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status & Note</th><th>Admin Action (Write Note)</th></tr>
+        <tr><th>Time</th><th>Member (Serial)</th><th>Type</th><th>USD / BDT</th><th>Method · Sender · TrxID</th><th>Status & Note</th><th>Admin Action (Write Note)</th></tr>
         ${store.transactions.map(t => `<tr>
           <td>${t.createdAt}</td>
           <td><span class="serial-tag">#${t.userSerial || '?'}</span> <b>${t.userName}</b><br><span class="m">${t.email} · ${t.phone||''}</span></td>
           <td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
           <td><b>$${fmt(t.amount)}</b><br><span class="y">${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''}</span></td>
-          <td><b>${t.method}</b><br><span class="m">${t.ref}</span></td>
+          <td><b>${t.method}</b><br>${t.senderNumber ? `<span class="m">Number:</span> <b>${t.senderNumber}</b>` : `<span class="m">${t.ref}</span>`}${t.trxId ? `<br><span class="m">TrxID:</span> <b class="y">${t.trxId}</b>` : ''}</td>
           <td>
             <span class="badge ${t.status.toLowerCase()}">${t.status}</span>
             ${t.adminNote ? `<br><span class="note-tag ${t.status==='REJECTED'?'rej':'app'}">Note: ${t.adminNote}</span>` : ''}
@@ -1018,6 +1047,8 @@ footer b{color:var(--t)}
       amount: Number(usdDelta.toFixed(2)),
       bdtAmount: Number((usdDelta * rate).toFixed(0)),
       rateUsed: rate,
+      senderNumber: '',
+      trxId: '',
       ref: noteText,
       status: 'APPROVED',
       adminNote: noteText,
@@ -1178,13 +1209,13 @@ footer b{color:var(--t)}
           return `<tr><td><b>${p.sym}</b></td><td class="${p.side==='L'?'g':'r'}">${p.side==='L'?'LONG':'SHORT'} ${p.lev}x</td><td>$${fmt(p.amt)}</td><td>$${fmt(p.entry)}</td><td>$${fmt(cur)}</td><td class="${pnl>=0?'g':'r'}">${pnl>=0?'+':''}$${fmt(pnl)}</td><td><button class="btn-dk" style="padding:2px 8px" onclick="closeTrade(${i})">Close</button></td></tr>`;
         }).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No open positions</td></tr>');
     } else {
-      $('#pt').innerHTML = `<tr><th>Timestamp</th><th>Member</th><th>Type</th><th>USD / BDT</th><th>Method & Ref</th><th>Status</th><th>Admin Note / Reason</th></tr>` +
+      $('#pt').innerHTML = `<tr><th>Timestamp</th><th>Member</th><th>Type</th><th>USD / BDT</th><th>Method · Sender · TrxID</th><th>Status</th><th>Admin Note / Reason</th></tr>` +
         (visibleTx.length ? visibleTx.map(t => `<tr>
           <td>${t.createdAt}</td>
           <td><span class="serial-tag">#${t.userSerial || '?'}</span> ${t.userName}</td>
           <td class="${t.type==='DEPOSIT'?'g':'r'}"><b>${t.type}</b></td>
           <td><b>$${fmt(t.amount)}</b> <span class="y">(${t.bdtAmount ? fmt(t.bdtAmount,0)+' BDT' : ''})</span></td>
-          <td>${t.method} (${t.ref})</td>
+          <td><b>${t.method}</b> · ${t.senderNumber ? `From: ${t.senderNumber}` : t.ref}${t.trxId ? ` · TrxID: <b class="y">${t.trxId}</b>` : ''}</td>
           <td><span class="badge ${t.status.toLowerCase()}">${t.status}</span></td>
           <td>${t.adminNote ? `<span class="note-tag ${t.status==='REJECTED'?'rej':'app'}">${t.adminNote}</span>` : '<span class="m">Waiting for admin review</span>'}</td>
         </tr>`).join('') : '<tr><td colspan="7" class="m" style="text-align:center;padding:24px">No deposit/withdraw records yet</td></tr>');
