@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Codexa Trade · Live Crypto, Commodities & Stocks Trading Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Codexa Trade · All-Device Responsive Trading Platform</title>
 <style>
-:root{--bg:#090d14;--pn:#0f1520;--pn2:#151d2b;--bd:#1f2a3c;--em:#00c076;--em2:#00a364;--r:#f6465d;--y:#f0b90b;--t:#eaecef;--m:#848e9c;color-scheme:dark}
-*{box-sizing:border-box}html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--t);font:12px/1.4 "IBM Plex Sans",-apple-system,"Segoe UI",Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+:root{
+  --bg:#090d14;--pn:#0f1520;--pn2:#151d2b;--bd:#1f2a3c;
+  --em:#00c076;--em2:#00a364;--r:#f6465d;--y:#f0b90b;
+  --t:#eaecef;--m:#848e9c;color-scheme:dark;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;padding:0;width:100%;overflow-x:hidden}
+body{
+  background:var(--bg);color:var(--t);
+  font:12px/1.4 "IBM Plex Sans",-apple-system,"Segoe UI",Arial,sans-serif;
+  display:flex;flex-direction:column;height:100dvh;overflow:hidden;
+  padding-top:var(--sat);padding-bottom:var(--sab);
+}
 button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
 input,select,textarea{font:inherit;color:var(--t);background:#0c111a;border:1px solid var(--bd);border-radius:6px;padding:8px 10px;outline:none;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--em)}
@@ -15,43 +29,54 @@ input:disabled{background:#080b11;color:#64748b;border-color:#161e2c;cursor:not-
 .g{color:var(--em)}.r{color:var(--r)}.m{color:var(--m)}.y{color:var(--y)}
 
 /* Top Header */
-header{height:54px;flex:none;display:flex;align-items:center;gap:10px;padding:0 14px;background:#0b1019;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
-.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.3px}
-.brand-ic{width:30px;height:30px;border-radius:7px;background:#0a291e;border:1px solid #134e38;display:grid;place-items:center}
+header{
+  min-height:52px;flex:none;display:flex;align-items:center;gap:8px;
+  padding:6px 12px;background:#0b1019;border-bottom:1px solid var(--bd);
+  overflow-x:auto;white-space:nowrap;scrollbar-width:none;
+}
+header::-webkit-scrollbar{display:none}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px;letter-spacing:-.3px;flex:none}
+.brand-ic{width:28px;height:28px;border-radius:7px;background:#0a291e;border:1px solid #134e38;display:grid;place-items:center;flex:none}
 .brand span{color:var(--em)}
-.live-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;background:#0a251c;border:1px solid #134a36;color:var(--em);font-size:10px;font-weight:700;letter-spacing:.5px}
-.live-badge i{width:7px;height:7px;border-radius:50%;background:var(--em);box-shadow:0 0 8px var(--em)}
-.pairw{position:relative}
-.pair-btn{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--pn2);border:1px solid var(--bd);border-radius:7px;font-weight:700;font-size:13px}
-.pl{display:none;position:fixed;top:52px;left:220px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;z-index:50;min-width:225px;max-height:360px;overflow-y:auto;box-shadow:0 10px 30px #000a}
-.pl.o{display:block}.pl div{padding:9px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a2333}.pl div:hover{background:#1e293b}
-.sp{flex:1}
+.live-badge{display:flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;background:#0a251c;border:1px solid #134a36;color:var(--em);font-size:10px;font-weight:700;letter-spacing:.4px;flex:none}
+.live-badge i{width:6px;height:6px;border-radius:50%;background:var(--em);box-shadow:0 0 8px var(--em)}
+.pairw{position:relative;flex:none}
+.pair-btn{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--pn2);border:1px solid var(--bd);border-radius:7px;font-weight:700;font-size:12.5px}
+.pl{display:none;position:fixed;top:52px;left:12px;background:var(--pn2);border:1px solid var(--bd);border-radius:8px;z-index:95;min-width:230px;max-width:92vw;max-height:65vh;overflow-y:auto;box-shadow:0 12px 35px #000c}
+.pl.o{display:block}.pl div{padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a2333}.pl div:hover{background:#1e293b}
+.sp{flex:1;min-width:4px}
 
 /* Account & Balance Pill */
-.acc-pill{display:flex;align-items:center;gap:10px;background:var(--pn2);border:1px solid var(--bd);padding:4px 10px;border-radius:8px}
-.acc-tabs{display:flex;gap:4px}
-.acc-tabs button{padding:4px 9px;border-radius:5px;font-weight:600;color:var(--m)}
+.acc-pill{display:flex;align-items:center;gap:8px;background:var(--pn2);border:1px solid var(--bd);padding:3px 8px;border-radius:8px;flex:none}
+.acc-tabs{display:flex;gap:3px}
+.acc-tabs button{padding:4px 8px;border-radius:5px;font-weight:600;color:var(--m);font-size:11px}
 .acc-tabs button.on{background:#0a291e;color:var(--em);border:1px solid #14533c}
-.bal-box{font-weight:700;font-size:13px;padding-left:8px;border-left:1px solid var(--bd);display:flex;align-items:center;gap:6px}
-.btn-em{background:var(--em);color:#04130d;font-weight:700;padding:7px 14px;border-radius:7px}.btn-em:hover{filter:brightness(1.08)}
-.btn-dk{background:var(--pn2);border:1px solid var(--bd);color:var(--t);font-weight:600;padding:7px 12px;border-radius:7px}.btn-dk:hover{border-color:#334155}
-.btn-adm{background:#2d1f07;border:1px solid #78530c;color:var(--y);font-weight:700;padding:7px 12px;border-radius:7px;display:none}
-.btn-adm.show{display:inline-flex;align-items:center;gap:6px}
-.kyc-pill{padding:6px 10px;border-radius:7px;font-weight:700;font-size:11px;display:none;align-items:center;gap:5px;border:1px solid var(--bd);background:var(--pn2)}
+.bal-box{font-weight:700;font-size:12.5px;padding-left:7px;border-left:1px solid var(--bd);display:flex;align-items:center;gap:5px}
+.btn-em{background:var(--em);color:#04130d;font-weight:700;padding:6px 12px;border-radius:7px;flex:none}.btn-em:hover{filter:brightness(1.08)}
+.btn-dk{background:var(--pn2);border:1px solid var(--bd);color:var(--t);font-weight:600;padding:6px 11px;border-radius:7px;flex:none}.btn-dk:hover{border-color:#334155}
+.btn-adm{background:#2d1f07;border:1px solid #78530c;color:var(--y);font-weight:700;padding:6px 11px;border-radius:7px;display:none;flex:none}
+.btn-adm.show{display:inline-flex;align-items:center;gap:5px}
+.kyc-pill{padding:5px 9px;border-radius:7px;font-weight:700;font-size:11px;display:none;align-items:center;gap:4px;border:1px solid var(--bd);background:var(--pn2);flex:none}
 .kyc-pill.show{display:inline-flex}
 .kyc-pill.verified{background:#0a291e;border-color:#14533c;color:var(--em)}
 .kyc-pill.pending{background:#2d1f07;border-color:#78530c;color:var(--y)}
 .kyc-pill.rejected,.kyc-pill.unverified{background:#2c0f16;border-color:#7f1d1d;color:#fda4af}
 
 /* Markets Sub-Bar */
-.mk-bar{height:38px;flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;background:#080c12;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
+.mk-bar{height:36px;flex:none;display:flex;align-items:center;gap:7px;padding:0 12px;background:#080c12;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.mk-bar::-webkit-scrollbar{display:none}
 .mk-lbl{color:var(--m);font-size:10px;font-weight:700;letter-spacing:.6px}
-.mk-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;background:var(--pn);border:1px solid var(--bd);cursor:pointer;font-size:11px;flex:none}
+.mk-chip{display:flex;align-items:center;gap:6px;padding:3px 9px;border-radius:6px;background:var(--pn);border:1px solid var(--bd);cursor:pointer;font-size:11px;flex:none}
 .mk-chip.on{border-color:var(--em);background:#0c1e1b}
 .mk-pay{background:#0a291e;color:var(--em);padding:1px 5px;border-radius:4px;font-weight:700;font-size:10px}
 .cat-tag{font-size:9px;padding:1px 4px;border-radius:3px;background:#1e293b;color:#94a3b8;font-weight:700;text-transform:uppercase}
 
-/* Main Workspace */
+/* Mobile Quick Switch Tabs (Hidden on Desktop, Shown on Phone/Tablet) */
+.mob-nav{display:none;flex:none;background:#0b1019;border-bottom:1px solid var(--bd);padding:4px 8px;gap:5px}
+.mob-nav button{flex:1;padding:7px 4px;border-radius:6px;background:var(--pn2);border:1px solid var(--bd);color:var(--m);font-weight:700;font-size:11.5px;text-align:center}
+.mob-nav button.on{background:#0a291e;border-color:var(--em);color:var(--em)}
+
+/* Main Workspace (Desktop Grid) */
 main{flex:1;min-height:0;position:relative}
 #trade{height:100%;display:grid;grid-template-columns:42px 1fr 240px 290px;grid-template-rows:minmax(0,1fr) 200px;gap:3px;padding:3px}
 .pn{background:var(--pn);border:1px solid var(--bd);border-radius:6px;min-width:0;min-height:0}
@@ -62,14 +87,15 @@ main{flex:1;min-height:0;position:relative}
 #tb svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 #cc{grid-column:2;display:flex;flex-direction:column}
-.ctop{display:flex;align-items:center;gap:10px;padding:6px 10px;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap}
-.c-pair{font-weight:700;font-size:14px}
-.c-price{font-weight:700;font-size:14px}
-.grp{display:flex;background:#0a0e16;border:1px solid var(--bd);border-radius:6px;padding:2px;gap:2px}
-.grp button{padding:3px 8px;border-radius:4px;color:var(--m);font-weight:600}
+.ctop{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.ctop::-webkit-scrollbar{display:none}
+.c-pair{font-weight:700;font-size:13.5px}
+.c-price{font-weight:700;font-size:13.5px}
+.grp{display:flex;background:#0a0e16;border:1px solid var(--bd);border-radius:6px;padding:2px;gap:2px;flex:none}
+.grp button{padding:3px 7px;border-radius:4px;color:var(--m);font-weight:600;font-size:11px}
 .grp button.on{background:#0a291e;color:var(--em)}
-.ind-btn{padding:4px 9px;border-radius:6px;background:#0c2233;border:1px solid #164e63;color:#38bdf8;font-weight:600}
-.cw{flex:1;position:relative;min-height:0}#cv{position:absolute;inset:0;width:100%;height:100%}
+.ind-btn{padding:4px 8px;border-radius:6px;background:#0c2233;border:1px solid #164e63;color:#38bdf8;font-weight:600;flex:none;font-size:11px}
+.cw{flex:1;position:relative;min-height:220px;touch-action:none}#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
 
 /* Order Book & Ticket */
 #bkp{grid-column:3;display:flex;flex-direction:column;overflow:hidden}
@@ -82,14 +108,14 @@ main{flex:1;min-height:0;position:relative}
 .seg{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}.seg button{flex:1;padding:6px 8px;background:var(--pn2);border:1px solid var(--bd);border-radius:5px;color:var(--m);font-weight:600;white-space:nowrap}
 .seg button.on{color:var(--em);border-color:var(--em);background:#0a291e}
 .fl{display:flex;justify-content:space-between;color:var(--m);margin:8px 0 4px}
-.lq{display:flex;gap:4px}.lq button{flex:1;padding:4px;background:var(--pn2);border:1px solid var(--bd);border-radius:4px;color:var(--m)}
-.big{width:100%;padding:11px;border-radius:6px;font-weight:700;font-size:13px;color:#fff;margin-top:9px}
+.lq{display:flex;gap:4px}.lq button{flex:1;padding:5px;background:var(--pn2);border:1px solid var(--bd);border-radius:4px;color:var(--m)}
+.big{width:100%;padding:12px;border-radius:6px;font-weight:700;font-size:13.5px;color:#fff;margin-top:9px}
 .big.l{background:var(--em);color:#04130d}.big.s{background:var(--r)}
 .cal{background:#0b1019;border:1px solid var(--bd);border-radius:6px;padding:8px;margin-top:10px}.cal div{display:flex;justify-content:space-between;padding:2px 0}
 
 /* Bottom Positions & Audit Table */
 #pp{grid-column:1/4;grid-row:2;overflow:auto}
-.pt{display:flex;gap:16px;padding:0 12px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--pn);z-index:5}
+.pt{display:flex;gap:16px;padding:0 12px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--pn);z-index:5;overflow-x:auto;white-space:nowrap}
 .pt button{padding:8px 0;color:var(--m);font-weight:600;border-bottom:2px solid transparent}
 .pt button.on{color:var(--em);border-color:var(--em)}
 table{width:100%;border-collapse:collapse}
@@ -102,11 +128,11 @@ td{padding:7px 10px;white-space:nowrap;font-variant-numeric:tabular-nums;border-
 .serial-tag{background:#152238;border:1px solid #263b5e;color:#60a5fa;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11px}
 
 /* Bottom Footer & Floating Telegram Support */
-footer{height:34px;flex:none;background:#080c12;border-top:1px solid var(--bd);padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--m);overflow-x:auto;white-space:nowrap}
+footer{height:32px;flex:none;background:#080c12;border-top:1px solid var(--bd);padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--m);overflow-x:auto;white-space:nowrap}
 footer b{color:var(--t)}
-.tg-float{position:fixed;right:18px;bottom:44px;z-index:70;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#229ED9,#1a82b5);color:#fff;font-weight:700;padding:10px 16px;border-radius:99px;box-shadow:0 6px 22px rgba(34,158,217,.45);text-decoration:none;transition:transform .15s}
+.tg-float{position:fixed;right:14px;bottom:42px;z-index:70;display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,#229ED9,#1a82b5);color:#fff;font-weight:700;padding:9px 14px;border-radius:99px;box-shadow:0 6px 22px rgba(34,158,217,.45);text-decoration:none;transition:transform .15s}
 .tg-float:hover{transform:translateY(-2px);filter:brightness(1.06)}
-.tg-float svg{width:18px;height:18px;fill:#fff}
+.tg-float svg{width:17px;height:17px;fill:#fff}
 
 /* Banned Member Fullscreen Lock Overlay */
 .ban-screen{display:none;position:fixed;inset:0;background:rgba(6,9,15,.96);z-index:150;place-items:center;padding:18px;backdrop-filter:blur(6px)}
@@ -116,18 +142,18 @@ footer b{color:var(--t)}
 .ban-reason-box{background:#1c0b10;border:1px solid #7f1d1d;border-radius:8px;padding:12px;margin:14px 0;text-align:left;color:#fecaca;font-size:12.5px;line-height:1.5}
 
 /* Modals */
-.modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:14px}
+.modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:80;place-items:center;padding:10px}
 .modal-bg.open{display:grid}
-.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:600px;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 20px 50px #000c}
+.modal{background:var(--pn);border:1px solid var(--bd);border-radius:10px;width:100%;max-width:600px;max-height:90dvh;overflow:auto;padding:16px;box-shadow:0 20px 50px #000c}
 .modal.wide{max-width:1260px}
-.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
-.mh h3{margin:0;font-size:16px}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--bd);gap:8px;flex-wrap:wrap}
+.mh h3{margin:0;font-size:15px}
 .fgrid{display:flex;flex-direction:column;gap:10px}
 .fgrid label{display:flex;flex-direction:column;gap:4px;color:var(--m)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .pay-card{background:#0a1917;border:1px solid #14533c;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
-.rate-pill{background:#0b1019;border:1px solid var(--bd);border-radius:7px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.rate-pill{background:#0b1019;border:1px solid var(--bd);border-radius:7px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:8px;flex-wrap:wrap}
 .lock-note{font-size:11px;color:#64748b;background:#090d14;border:1px solid var(--bd);padding:8px 10px;border-radius:6px}
 .kyc-req-box{background:#0a1726;border:1px solid #1e3a5f;border-radius:8px;padding:11px 13px;font-size:11.5px;line-height:1.55;color:#cbd5e1}
 .kyc-req-box b{color:var(--em)}
@@ -144,9 +170,109 @@ footer b{color:var(--t)}
 .img-zoom-bg{display:none;position:fixed;inset:0;background:#000d;z-index:120;place-items:center;padding:20px}
 .img-zoom-bg.open{display:grid}
 .img-zoom-bg img{max-width:95vw;max-height:90vh;border-radius:8px;border:2px solid var(--em)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:180;box-shadow:0 8px 25px #000a}
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:180;box-shadow:0 8px 25px #000a;max-width:92vw;text-align:center}
 .toast.r{border-left-color:var(--r)}
-@media(max-width:900px){body{overflow:auto}main{overflow:visible}#trade{display:flex;flex-direction:column;height:auto}#tb{flex-direction:row}#cc{height:400px}#bkp{height:300px}#pp{height:240px}.row2,.row3{grid-template-columns:1fr}footer{flex-direction:column;height:auto;padding:8px;gap:4px;text-align:center}}
+
+/* =====================================================================
+   ALL-DEVICE RESPONSIVE DESIGN (TABLET & MOBILE FULL-SCREEN APP VIEW)
+   ===================================================================== */
+@media (max-width: 1024px) {
+  #trade {
+    grid-template-columns: 40px 1fr 270px;
+    grid-template-rows: minmax(0, 1fr) 190px;
+  }
+  #bkp { display: none; }
+  #tk { grid-column: 3; grid-row: 1 / 3; }
+  #pp { grid-column: 1 / 3; grid-row: 2; }
+}
+
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .live-badge { display: none; }
+  .brand { font-size: 15px; }
+  .pair-btn { padding: 5px 9px; font-size: 12px; }
+  .acc-pill { order: 3; flex: 1 1 auto; justify-content: space-between; }
+  .btn-em, .btn-dk, .btn-adm, .kyc-pill { order: 4; padding: 6px 10px; font-size: 11.5px; }
+  .mob-nav { display: flex; }
+
+  main {
+    flex: none;
+    height: auto;
+    overflow: visible;
+  }
+  #trade {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 6px;
+    gap: 6px;
+  }
+  /* Full-Screen Chart & Compact Horizontal Toolbar on Phone */
+  #tb {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 5px 8px;
+    order: 1;
+  }
+  #cc {
+    order: 2;
+    height: 54dvh;
+    min-height: 330px;
+    width: 100%;
+  }
+  /* Quick Buy/Sell Panel right below Chart on Phone */
+  #tk {
+    order: 3;
+    width: 100%;
+    overflow: visible;
+    padding: 12px;
+  }
+  .mob-trade-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  /* Order Book & History Tabs on Phone */
+  #bkp {
+    display: flex;
+    order: 4;
+    height: 290px;
+    width: 100%;
+  }
+  #pp {
+    order: 5;
+    min-height: 220px;
+    max-height: 320px;
+    width: 100%;
+  }
+  .row2, .row3 { grid-template-columns: 1fr; }
+  .modal { padding: 14px; max-height: 88dvh; }
+  .tg-float {
+    right: 10px;
+    bottom: 14px;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  footer {
+    height: auto;
+    flex-direction: column;
+    padding: 10px 10px 54px;
+    gap: 4px;
+    text-align: center;
+    white-space: normal;
+  }
+}
 </style>
 </head>
 <body>
@@ -175,11 +301,19 @@ footer b{color:var(--t)}
   <button class="btn-em" onclick="openWallet('deposit')">Deposit</button>
   <button class="btn-dk" onclick="openWallet('withdraw')">Withdraw</button>
   <button id="kycHeaderBtn" class="kyc-pill" onclick="openKyc()">🪪 KYC</button>
-  <button id="adminBtn" class="btn-adm" onclick="openAdmin()">⚡ Admin Control</button>
-  <button id="authBtn" class="btn-dk" onclick="openAuth()">👤 Login / Sign Up</button>
+  <button id="adminBtn" class="btn-adm" onclick="openAdmin()">⚡ Admin</button>
+  <button id="authBtn" class="btn-dk" onclick="openAuth()">👤 Login</button>
 </header>
 
 <div class="mk-bar" id="mkBar"></div>
+
+<!-- Phone Quick Jump Navigation Bar -->
+<div class="mob-nav" id="mobNav">
+  <button class="on" onclick="jumpMobileSection('cc', this)">📈 Chart</button>
+  <button onclick="jumpMobileSection('tk', this)">⚡ Trade</button>
+  <button onclick="jumpMobileSection('bkp', this)">📊 Book</button>
+  <button onclick="jumpMobileSection('pp', this)">📋 Orders</button>
+</div>
 
 <main>
   <section id="trade">
@@ -194,7 +328,7 @@ footer b{color:var(--t)}
           <button data-c="candle" class="on">Candles</button>
           <button data-c="area">Area</button>
         </div>
-        <button class="ind-btn" id="indToggle">〜 Indicators <span id="indCnt">1</span></button>
+        <button class="ind-btn" id="indToggle">〜 EMA <span id="indCnt">1</span></button>
         <div class="sp"></div>
         <div class="grp">
           <button onclick="zoomChart(1.2)" title="Zoom In">+</button>
@@ -226,8 +360,10 @@ footer b{color:var(--t)}
         <div><span class="m">Est. Payout (<span id="payPctLbl">88%</span>)</span><b id="payEst" class="g">+$88.00</b></div>
         <div><span class="m">Liq. Price (Long)</span><b id="ll" class="r">--</b></div>
       </div>
-      <button class="big l" onclick="placeTrade('L')">Buy / Long</button>
-      <button class="big s" onclick="placeTrade('S')">Sell / Short</button>
+      <div class="mob-trade-btns">
+        <button class="big l" onclick="placeTrade('L')">Buy / Long</button>
+        <button class="big s" onclick="placeTrade('S')">Sell / Short</button>
+      </div>
     </div>
 
     <div id="pp" class="pn">
@@ -558,7 +694,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -574,11 +710,6 @@ footer b{color:var(--t)}
   const fmt=(n,d=2)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
   const nowTime=()=>new Date().toLocaleString('en-GB',{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
 
-  /* =====================================================================
-     EXPANDED MULTI-ASSET MARKETS: Crypto, Commodities (Gold, Silver) & Stocks (Apple, Tesla, BND)
-     - Crypto pairs with `binance: true` sync directly with Binance Live API + WebSocket
-     - Commodities & US Stocks/ETFs sync globally across all users via deterministic market clock
-     ===================================================================== */
   const MARKETS = [
     {sym:'BTCUSDT',  label:'BTC/USDT', name:'Bitcoin',            cat:'Crypto',    base:95000.00, price:95000.00, chg:'+3.24%', pay:'88%', payNum:0.88, seed:101, binance:true},
     {sym:'XAUUSD',   label:'GOLD/USD', name:'Gold (XAU)',         cat:'Commodity', base:4310.50,  price:4310.50,  chg:'+1.15%', pay:'90%', payNum:0.90, seed:505, binance:false},
@@ -594,7 +725,7 @@ footer b{color:var(--t)}
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v13') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v14') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -621,9 +752,16 @@ footer b{color:var(--t)}
   }
   applyTelegramLink();
 
+  window.jumpMobileSection = function(sectionId, btn) {
+    document.querySelectorAll('#mobNav button').forEach(b => b.classList.remove('on'));
+    if (btn) btn.classList.add('on');
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -647,7 +785,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -660,7 +798,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open')) {
         if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
@@ -673,7 +811,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -684,7 +822,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -704,7 +842,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -989,7 +1127,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     WORKING LEFT DRAWING TOOLBAR & INTERACTIVE CHART
+     LEFT DRAWING TOOLBAR & FULL TOUCH + MOUSE INTERACTIVE CHART
      ===================================================================== */
   let activeTool = 'cross';
   let shapesByPair = {};
@@ -1053,29 +1191,10 @@ footer b{color:var(--t)}
     return { x, y };
   }
 
-  cv.addEventListener('mousemove', (e) => {
+  function handlePointerDown(clientX, clientY) {
     const r = cv.getBoundingClientRect();
-    mouseX = e.clientX - r.left;
-    mouseY = e.clientY - r.top;
-
-    if (isPanning) {
-      const dx = mouseX - panStartX;
-      const maxPan = Math.max(0, C.length - 15);
-      panOffset = Math.max(0, Math.min(maxPan, Math.round(panStartOffset + dx / (chartGeo.bw || 8))));
-    } else if (drawingShape) {
-      const pt = screenToData(mouseX, mouseY);
-      if (drawingShape.type === 'brush') drawingShape.pts.push(pt);
-      else drawingShape.p2 = pt;
-    }
-    cv.style.cursor = activeTool === 'cross' ? (isPanning ? 'grabbing' : 'crosshair') : 'cell';
-  });
-
-  cv.addEventListener('mouseleave', () => { mouseX = -1; mouseY = -1; });
-
-  cv.addEventListener('mousedown', (e) => {
-    const r = cv.getBoundingClientRect();
-    mouseX = e.clientX - r.left;
-    mouseY = e.clientY - r.top;
+    mouseX = clientX - r.left;
+    mouseY = clientY - r.top;
     if (mouseX > chartGeo.PW || mouseY > chartGeo.PH) return;
     if (!shapesByPair[sym]) shapesByPair[sym] = [];
 
@@ -1096,9 +1215,26 @@ footer b{color:var(--t)}
 
     if (activeTool === 'brush') drawingShape = { type: 'brush', pts: [pt] };
     else drawingShape = { type: activeTool, p1: pt, p2: pt };
-  });
+  }
 
-  window.addEventListener('mouseup', () => {
+  function handlePointerMove(clientX, clientY) {
+    const r = cv.getBoundingClientRect();
+    mouseX = clientX - r.left;
+    mouseY = clientY - r.top;
+
+    if (isPanning) {
+      const dx = mouseX - panStartX;
+      const maxPan = Math.max(0, C.length - 15);
+      panOffset = Math.max(0, Math.min(maxPan, Math.round(panStartOffset + dx / (chartGeo.bw || 8))));
+    } else if (drawingShape) {
+      const pt = screenToData(mouseX, mouseY);
+      if (drawingShape.type === 'brush') drawingShape.pts.push(pt);
+      else drawingShape.p2 = pt;
+    }
+    cv.style.cursor = activeTool === 'cross' ? (isPanning ? 'grabbing' : 'crosshair') : 'cell';
+  }
+
+  function handlePointerUp() {
     isPanning = false;
     if (drawingShape) {
       if (!shapesByPair[sym]) shapesByPair[sym] = [];
@@ -1109,7 +1245,27 @@ footer b{color:var(--t)}
         document.querySelectorAll('#tb button').forEach(b => b.classList.toggle('on', b.dataset.t === 'cross'));
       }
     }
-  });
+  }
+
+  // Mouse Events
+  cv.addEventListener('mousedown', (e) => handlePointerDown(e.clientX, e.clientY));
+  cv.addEventListener('mousemove', (e) => handlePointerMove(e.clientX, e.clientY));
+  cv.addEventListener('mouseleave', () => { mouseX = -1; mouseY = -1; });
+  window.addEventListener('mouseup', handlePointerUp);
+
+  // Touch Events (Full Mobile & Tablet Finger Drag/Draw Support)
+  cv.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+  cv.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1) {
+      e.preventDefault();
+      handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: false });
+  cv.addEventListener('touchend', handlePointerUp);
 
   cv.addEventListener('wheel', (e) => {
     e.preventDefault();
@@ -1122,11 +1278,14 @@ footer b{color:var(--t)}
     if (!r.width || !C.length) return;
     cv.width = r.width;
     cv.height = r.height;
-    const W = cv.width, H = cv.height, PW = W - 68, PH = H - 22;
+    const isMob = W_check();
+    const axisW = isMob ? 56 : 68;
+    const W = cv.width, H = cv.height, PW = W - axisW, PH = H - 22;
     ctx.fillStyle = '#0f1520';
     ctx.fillRect(0, 0, W, H);
 
-    const count = Math.max(12, Math.min(C.length, Math.floor(65 / zoom)));
+    const baseCandles = isMob ? 42 : 65;
+    const count = Math.max(12, Math.min(C.length, Math.floor(baseCandles / zoom)));
     const endIdx = Math.max(count, C.length - panOffset);
     const startIdx = Math.max(0, endIdx - count);
     const slice = C.slice(startIdx, endIdx);
@@ -1144,16 +1303,16 @@ footer b{color:var(--t)}
 
     ctx.strokeStyle = '#172030';
     ctx.lineWidth = 1;
-    ctx.font = '11px sans-serif';
+    ctx.font = isMob ? '10px sans-serif' : '11px sans-serif';
     for (let i = 1; i <= 5; i++) {
       const y = (PH / 6) * i;
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(PW, y); ctx.stroke();
       const pr = max - ((max - min) / 6) * i;
       ctx.fillStyle = '#848e9c';
-      ctx.fillText(fmt(pr), PW + 6, y + 3);
+      ctx.fillText(fmt(pr), PW + 5, y + 3);
     }
 
-    const step = Math.max(1, Math.floor(slice.length / 6));
+    const step = Math.max(1, Math.floor(slice.length / (isMob ? 4 : 6)));
     for (let i = 0; i < slice.length; i += step) {
       const x = i * bw + bw / 2;
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, PH); ctx.stroke();
@@ -1263,10 +1422,10 @@ footer b{color:var(--t)}
     ctx.beginPath(); ctx.moveTo(0, yCur); ctx.lineTo(PW, yCur); ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = curCol;
-    ctx.fillRect(PW + 1, yCur - 9, 66, 18);
+    ctx.fillRect(PW + 1, yCur - 9, axisW - 2, 18);
     ctx.fillStyle = '#04130d';
-    ctx.font = 'bold 11px sans-serif';
-    ctx.fillText(fmt(lastC.c), PW + 5, yCur + 4);
+    ctx.font = isMob ? 'bold 10px sans-serif' : 'bold 11px sans-serif';
+    ctx.fillText(fmt(lastC.c), PW + 4, yCur + 4);
 
     if (mouseX >= 0 && mouseX <= PW && mouseY >= 0 && mouseY <= PH) {
       ctx.strokeStyle = '#64748b';
@@ -1277,12 +1436,14 @@ footer b{color:var(--t)}
 
       const hoverData = screenToData(mouseX, mouseY);
       ctx.fillStyle = '#1e293b';
-      ctx.fillRect(PW + 1, mouseY - 9, 66, 18);
+      ctx.fillRect(PW + 1, mouseY - 9, axisW - 2, 18);
       ctx.fillStyle = '#eaecef';
-      ctx.font = '11px sans-serif';
-      ctx.fillText(fmt(hoverData.price), PW + 5, mouseY + 4);
+      ctx.font = isMob ? '10px sans-serif' : '11px sans-serif';
+      ctx.fillText(fmt(hoverData.price), PW + 4, mouseY + 4);
     }
   }
+
+  function W_check() { return window.innerWidth <= 768; }
 
   /* =====================================================================
      AUTHENTICATION & SERIAL NUMBER ASSIGNMENT
@@ -1292,13 +1453,13 @@ footer b{color:var(--t)}
     const u = getCurrentUser();
     const isAdmin = (u && u.email.toLowerCase() === ADMIN_EMAIL) || (store.currentUserEmail === ADMIN_EMAIL);
     $('#adminBtn').classList.toggle('show', !!isAdmin);
-    $('#authBtn').textContent = u ? `👤 #${u.serial || 1} ${u.name}` : (store.currentUserEmail ? `👤 ${store.currentUserEmail}` : '👤 Login / Sign Up');
+    $('#authBtn').textContent = u ? `👤 #${u.serial || 1} ${u.name}` : (store.currentUserEmail ? `👤 ${store.currentUserEmail}` : '👤 Login');
 
     const kycBtn = $('#kycHeaderBtn');
     if (u && !isAdmin) {
       const ks = u.kycStatus || 'UNVERIFIED';
       kycBtn.className = `kyc-pill show ${ks.toLowerCase()}`;
-      kycBtn.textContent = ks === 'VERIFIED' ? '✅ KYC Verified' : ks === 'PENDING' ? '⏳ KYC Pending' : '🪪 Verify KYC';
+      kycBtn.textContent = ks === 'VERIFIED' ? '✅ KYC' : ks === 'PENDING' ? '⏳ KYC' : '🪪 KYC';
     } else {
       kycBtn.className = 'kyc-pill';
     }
@@ -1458,7 +1619,7 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v13', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
@@ -1935,7 +2096,7 @@ footer b{color:var(--t)}
   };
 
   /* =====================================================================
-     MULTI-ASSET MARKETS BAR & DROPDOWN (BTC, GOLD, SILVER, APPLE, TESLA, BND)
+     MULTI-ASSET MARKETS BAR & DROPDOWN
      ===================================================================== */
   function initMarkets() {
     $('#mkBar').innerHTML = '<span class="mk-lbl">MARKETS:</span>' + MARKETS.map(m => `
