@@ -71,12 +71,12 @@ header::-webkit-scrollbar{display:none}
 .mk-pay{background:#0a291e;color:var(--em);padding:1px 5px;border-radius:4px;font-weight:700;font-size:10px}
 .cat-tag{font-size:9px;padding:1px 4px;border-radius:3px;background:#1e293b;color:#94a3b8;font-weight:700;text-transform:uppercase}
 
-/* Mobile Quick Switch Tabs (Hidden on Desktop, Shown on Phone/Tablet) */
+/* Mobile Quick Switch Tabs */
 .mob-nav{display:none;flex:none;background:#0b1019;border-bottom:1px solid var(--bd);padding:4px 8px;gap:5px}
 .mob-nav button{flex:1;padding:7px 4px;border-radius:6px;background:var(--pn2);border:1px solid var(--bd);color:var(--m);font-weight:700;font-size:11.5px;text-align:center}
 .mob-nav button.on{background:#0a291e;border-color:var(--em);color:var(--em)}
 
-/* Main Workspace (Desktop Grid) */
+/* Main Workspace */
 main{flex:1;min-height:0;position:relative}
 #trade{height:100%;display:grid;grid-template-columns:42px 1fr 240px 290px;grid-template-rows:minmax(0,1fr) 200px;gap:3px;padding:3px}
 .pn{background:var(--pn);border:1px solid var(--bd);border-radius:6px;min-width:0;min-height:0}
@@ -95,7 +95,9 @@ main{flex:1;min-height:0;position:relative}
 .grp button{padding:3px 7px;border-radius:4px;color:var(--m);font-weight:600;font-size:11px}
 .grp button.on{background:#0a291e;color:var(--em)}
 .ind-btn{padding:4px 8px;border-radius:6px;background:#0c2233;border:1px solid #164e63;color:#38bdf8;font-weight:600;flex:none;font-size:11px}
-.cw{flex:1;position:relative;min-height:220px;touch-action:none}#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cw{flex:1;position:relative;min-height:220px;touch-action:none;user-select:none;-webkit-user-select:none}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.zoom-hud{position:absolute;left:10px;top:8px;background:rgba(11,16,25,.82);border:1px solid var(--bd);color:var(--m);padding:3px 8px;border-radius:5px;font-size:10px;pointer-events:none;z-index:4}
 
 /* Order Book & Ticket */
 #bkp{grid-column:3;display:flex;flex-direction:column;overflow:hidden}
@@ -173,9 +175,7 @@ footer b{color:var(--t)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);top:62px;background:var(--pn2);border:1px solid var(--bd);border-left:3px solid var(--em);padding:9px 15px;border-radius:6px;z-index:180;box-shadow:0 8px 25px #000a;max-width:92vw;text-align:center}
 .toast.r{border-left-color:var(--r)}
 
-/* =====================================================================
-   ALL-DEVICE RESPONSIVE DESIGN (TABLET & MOBILE FULL-SCREEN APP VIEW)
-   ===================================================================== */
+/* ALL-DEVICE RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
   #trade {
     grid-template-columns: 40px 1fr 270px;
@@ -218,7 +218,6 @@ footer b{color:var(--t)}
     padding: 6px;
     gap: 6px;
   }
-  /* Full-Screen Chart & Compact Horizontal Toolbar on Phone */
   #tb {
     flex-direction: row;
     justify-content: space-around;
@@ -227,11 +226,10 @@ footer b{color:var(--t)}
   }
   #cc {
     order: 2;
-    height: 54dvh;
-    min-height: 330px;
+    height: 55dvh;
+    min-height: 340px;
     width: 100%;
   }
-  /* Quick Buy/Sell Panel right below Chart on Phone */
   #tk {
     order: 3;
     width: 100%;
@@ -243,7 +241,6 @@ footer b{color:var(--t)}
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
-  /* Order Book & History Tabs on Phone */
   #bkp {
     display: flex;
     order: 4;
@@ -331,12 +328,15 @@ footer b{color:var(--t)}
         <button class="ind-btn" id="indToggle">〜 EMA <span id="indCnt">1</span></button>
         <div class="sp"></div>
         <div class="grp">
-          <button onclick="zoomChart(1.2)" title="Zoom In">+</button>
+          <button onclick="zoomChart(1.25)" title="Zoom In">+</button>
           <button onclick="zoomChart(0.8)" title="Zoom Out">−</button>
           <button onclick="resetChart()" title="Reset View">↻</button>
         </div>
       </div>
-      <div class="cw"><canvas id="cv"></canvas></div>
+      <div class="cw">
+        <div class="zoom-hud" id="zoomHud">Zoom: 1.0x · Pinch / Drag</div>
+        <canvas id="cv"></canvas>
+      </div>
     </div>
 
     <div id="bkp" class="pn">
@@ -694,7 +694,7 @@ footer b{color:var(--t)}
             if (idx >= 0) store.users[idx] = uData; else store.users.push(uData);
           }
           assignSerialNumbers();
-          localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+          localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
           updateHeaderUI();
           renderBottomTable();
         }
@@ -725,7 +725,7 @@ footer b{color:var(--t)}
   const TF_SEC = { '15s': 15, '30s': 30, '1m': 60, '5m': 300, '15m': 900 };
   const BI_TF = { '15s': '1m', '30s': '1m', '1m': '1m', '5m': '5m', '15m': '15m' };
 
-  let store = JSON.parse(localStorage.getItem('codexa_vault_v14') || 'null') || {
+  let store = JSON.parse(localStorage.getItem('codexa_vault_v15') || 'null') || {
     users: [],
     transactions: [],
     backups: [],
@@ -761,7 +761,7 @@ footer b{color:var(--t)}
 
   async function saveBackup(syncTx=null, syncUser=null, syncSettings=false) {
     assignSerialNumbers();
-    localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
     if (db) {
       try {
         if (syncUser) await setDoc(doc(db, 'codexa_users', syncUser.email), syncUser, { merge: true });
@@ -785,7 +785,7 @@ footer b{color:var(--t)}
       if (snap.exists()) {
         store.settings = { ...DEFAULT_SETTINGS, ...snap.data() };
         applyTelegramLink();
-        localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+        localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
         if ($('#walletModal').classList.contains('open')) updateWalletCalc();
         if ($('#adminModal').classList.contains('open') && $('#aTabSettings').classList.contains('on')) renderAdmin('settings');
       }
@@ -798,7 +798,7 @@ footer b{color:var(--t)}
         if (idx >= 0) store.users[idx] = u; else store.users.push(u);
       });
       assignSerialNumbers();
-      localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
       updateHeaderUI();
       if ($('#adminModal').classList.contains('open')) {
         if ($('#aTabUsers').classList.contains('on')) renderAdmin('users');
@@ -811,7 +811,7 @@ footer b{color:var(--t)}
       snap.forEach(d => arr.push(d.data()));
       arr.sort((a,b) => b.ts - a.ts);
       store.transactions = arr;
-      localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
       renderBottomTable();
       if ($('#adminModal').classList.contains('open') && $('#aTabTx').classList.contains('on')) renderAdmin('tx');
       if ($('#walletModal').classList.contains('open')) renderWalletAudit();
@@ -822,7 +822,7 @@ footer b{color:var(--t)}
       snap.forEach(d => bArr.push(d.data()));
       bArr.sort((a,b) => b.ts - a.ts);
       store.backups = bArr;
-      localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+      localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
       if ($('#adminModal').classList.contains('open') && $('#aTabBackups').classList.contains('on')) renderAdmin('backups');
     });
   }
@@ -842,7 +842,7 @@ footer b{color:var(--t)}
       txData: JSON.stringify(store.transactions)
     };
     store.backups.unshift(snapshot);
-    localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
     if (db) await setDoc(doc(db, 'codexa_backups', snapId), snapshot);
     if ($('#adminModal').classList.contains('open')) renderAdmin('backups');
     toast(`Full Cloud Backup Snapshot saved (${snapshot.createdAt})!`);
@@ -1127,7 +1127,7 @@ footer b{color:var(--t)}
   }
 
   /* =====================================================================
-     LEFT DRAWING TOOLBAR & FULL TOUCH + MOUSE INTERACTIVE CHART
+     TWO-FINGER PINCH ZOOM, DOUBLE-TAP RESET & TOUCH/MOUSE CHART CONTROLS
      ===================================================================== */
   let activeTool = 'cross';
   let shapesByPair = {};
@@ -1137,6 +1137,10 @@ footer b{color:var(--t)}
   let isPanning = false;
   let panStartX = 0;
   let panStartOffset = 0;
+  let isPinching = false;
+  let pinchStartDist = 0;
+  let pinchStartZoom = 1;
+  let lastTapTime = 0;
   let mouseX = -1, mouseY = -1;
   let chartGeo = { PW: 1, PH: 1, min: 0, max: 1, startIdx: 0, count: 60, bw: 10 };
 
@@ -1148,6 +1152,11 @@ footer b{color:var(--t)}
     { id: 'brush', title: 'Freehand Brush (Click & Drag)', d: 'M4 20c4-1 3-5 6-8l6-6 3 3-6 6c-3 3-7 2-9 5z' },
     { id: 'trash', title: 'Clear All Drawings', d: 'M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13' }
   ];
+
+  function updateZoomHud() {
+    const hud = $('#zoomHud');
+    if (hud) hud.textContent = `Zoom: ${zoom.toFixed(1)}x · Pinch / Drag`;
+  }
 
   function initToolbar() {
     $('#tb').innerHTML = TOOLS.map(t =>
@@ -1171,8 +1180,15 @@ footer b{color:var(--t)}
     };
   }
 
-  window.zoomChart = function(f) { zoom = Math.max(0.4, Math.min(3.5, zoom * f)); };
-  window.resetChart = function() { zoom = 1; panOffset = 0; };
+  window.zoomChart = function(f) {
+    zoom = Math.max(0.35, Math.min(5.0, zoom * f));
+    updateZoomHud();
+  };
+  window.resetChart = function() {
+    zoom = 1;
+    panOffset = 0;
+    updateZoomHud();
+  };
 
   const cv = $('#cv'), ctx = cv.getContext('2d');
 
@@ -1224,7 +1240,7 @@ footer b{color:var(--t)}
 
     if (isPanning) {
       const dx = mouseX - panStartX;
-      const maxPan = Math.max(0, C.length - 15);
+      const maxPan = Math.max(0, C.length - 10);
       panOffset = Math.max(0, Math.min(maxPan, Math.round(panStartOffset + dx / (chartGeo.bw || 8))));
     } else if (drawingShape) {
       const pt = screenToData(mouseX, mouseY);
@@ -1247,25 +1263,61 @@ footer b{color:var(--t)}
     }
   }
 
+  function getTouchDist(t1, t2) {
+    return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+  }
+
   // Mouse Events
   cv.addEventListener('mousedown', (e) => handlePointerDown(e.clientX, e.clientY));
   cv.addEventListener('mousemove', (e) => handlePointerMove(e.clientX, e.clientY));
   cv.addEventListener('mouseleave', () => { mouseX = -1; mouseY = -1; });
   window.addEventListener('mouseup', handlePointerUp);
 
-  // Touch Events (Full Mobile & Tablet Finger Drag/Draw Support)
+  // Touch Events: Two-Finger Pinch Zoom + Single-Finger Pan/Draw + Double-Tap Reset
   cv.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 1) {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      isPinching = true;
+      isPanning = false;
+      drawingShape = null;
+      pinchStartDist = getTouchDist(e.touches[0], e.touches[1]);
+      pinchStartZoom = zoom;
+    } else if (e.touches.length === 1) {
+      const now = Date.now();
+      if (now - lastTapTime < 280) {
+        resetChart();
+        toast('Chart zoom reset');
+        lastTapTime = 0;
+        return;
+      }
+      lastTapTime = now;
       handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
     }
-  }, { passive: true });
+  }, { passive: false });
+
   cv.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 1) {
+    if (e.touches.length === 2 && isPinching) {
+      e.preventDefault();
+      const newDist = getTouchDist(e.touches[0], e.touches[1]);
+      if (pinchStartDist > 0) {
+        const scale = newDist / pinchStartDist;
+        zoom = Math.max(0.35, Math.min(5.0, pinchStartZoom * scale));
+        updateZoomHud();
+      }
+    } else if (e.touches.length === 1 && !isPinching) {
       e.preventDefault();
       handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
     }
   }, { passive: false });
-  cv.addEventListener('touchend', handlePointerUp);
+
+  cv.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+      isPinching = false;
+    }
+    if (e.touches.length === 0) {
+      handlePointerUp();
+    }
+  });
 
   cv.addEventListener('wheel', (e) => {
     e.preventDefault();
@@ -1285,7 +1337,7 @@ footer b{color:var(--t)}
     ctx.fillRect(0, 0, W, H);
 
     const baseCandles = isMob ? 42 : 65;
-    const count = Math.max(12, Math.min(C.length, Math.floor(baseCandles / zoom)));
+    const count = Math.max(8, Math.min(C.length, Math.floor(baseCandles / zoom)));
     const endIdx = Math.max(count, C.length - panOffset);
     const startIdx = Math.max(0, endIdx - count);
     const slice = C.slice(startIdx, endIdx);
@@ -1619,7 +1671,7 @@ footer b{color:var(--t)}
   window.logoutUser = async function() {
     if (auth) { try { await signOut(auth); } catch (_) {} }
     store.currentUserEmail = null;
-    localStorage.setItem('codexa_vault_v14', JSON.stringify(store));
+    localStorage.setItem('codexa_vault_v15', JSON.stringify(store));
     closeModals();
     updateHeaderUI();
     toast('Logged out safely');
